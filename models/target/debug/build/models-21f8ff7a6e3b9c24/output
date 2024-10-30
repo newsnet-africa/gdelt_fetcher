@@ -1,0 +1,6 @@
+cargo:rerun-if-changed=gdelt_service.proto
+cargo:rerun-if-changed=some.proto
+cargo:rerun-if-changed=event.proto
+cargo:rerun-if-changed=mention.proto
+cargo:rerun-if-changed=gkg.proto
+cargo:rerun-if-changed=proto

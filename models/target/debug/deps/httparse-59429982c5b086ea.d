@@ -1,0 +1,12 @@
+/home/lilguy/Projects/NewsNet/models/target/debug/deps/libhttparse-59429982c5b086ea.rmeta: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/lib.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/iter.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/macros.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/mod.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/swar.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/sse42.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/avx2.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/runtime.rs
+
+/home/lilguy/Projects/NewsNet/models/target/debug/deps/httparse-59429982c5b086ea.d: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/lib.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/iter.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/macros.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/mod.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/swar.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/sse42.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/avx2.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/runtime.rs
+
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/lib.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/iter.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/macros.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/mod.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/swar.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/sse42.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/avx2.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/httparse-1.9.4/src/simd/runtime.rs:

@@ -1,0 +1,10 @@
+mod gdelt_actor_tests;
+mod gdelt_category_list_tests;
+mod gdelt_count_tests;
+mod gdelt_date_tests;
+mod gdelt_event_action_tests;
+mod gdelt_location_tests;
+mod gdelt_location_types_tests;
+mod gdelt_quotation_tests;
+mod gdelt_source_collection_identifier_tests;
+mod gdelt_tone_tests;

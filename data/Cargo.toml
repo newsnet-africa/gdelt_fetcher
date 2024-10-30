@@ -1,0 +1,24 @@
+[package]
+name = "data"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "data"
+crate-type = ["lib"]
+
+[dependencies]
+futures = "*"
+downloader = "*"
+chrono = "*"
+once_cell = "*"
+zip-extract = "*"
+zip = "*"
+indicatif = "*"
+json = "*"
+csv = "*"
+serde_json = "*"
+models = {path = "../models"}
+tokio = "*"
+reqwest = "*"
+thiserror = "1.0.63"

@@ -1,0 +1,23 @@
+[package]
+name = "models"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "models"
+crate-type = ["lib"]
+
+[dependencies]
+chrono = "*"
+csv = "*"
+strum = "*"
+strum_macros = "*"
+xml-rs = "*"
+tonic = "*"
+prost = "*"
+tokio = { version = "*", features = ["full"] }
+prost-types = "*"
+
+[build-dependencies]
+prost-build = "*"
+tonic-build = "*"

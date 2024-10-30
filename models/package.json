@@ -1,0 +1,19 @@
+{
+  "name": "models",
+  "version": "1.0.0",
+  "main": "build.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "./build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "lodash": "latest",
+    "protobufjs-cli": "latest"
+  }
+}

@@ -1,0 +1,11 @@
+/home/lilguy/Projects/NewsNet/models/target/debug/deps/libprost_derive-3f268a315fc494f7.so: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/lib.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/mod.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/group.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/map.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/message.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/oneof.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/scalar.rs
+
+/home/lilguy/Projects/NewsNet/models/target/debug/deps/prost_derive-3f268a315fc494f7.d: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/lib.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/mod.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/group.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/map.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/message.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/oneof.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/scalar.rs
+
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/lib.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/mod.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/group.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/map.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/message.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/oneof.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.13.1/src/field/scalar.rs:

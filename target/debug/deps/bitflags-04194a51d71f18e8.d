@@ -1,0 +1,11 @@
+/home/lilguy/Projects/TheNet/gdelt_data/target/debug/deps/libbitflags-04194a51d71f18e8.rmeta: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/lib.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/iter.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/parser.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/traits.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/public.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/internal.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/external.rs
+
+/home/lilguy/Projects/TheNet/gdelt_data/target/debug/deps/bitflags-04194a51d71f18e8.d: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/lib.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/iter.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/parser.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/traits.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/public.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/internal.rs /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/external.rs
+
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/lib.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/iter.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/parser.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/traits.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/public.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/internal.rs:
+/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitflags-2.6.0/src/external.rs:
