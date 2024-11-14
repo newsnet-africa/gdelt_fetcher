@@ -1,0 +1,22 @@
+syntax = "proto3";
+package gdelt_count;
+
+import "gdelt_categorylist.proto";
+import "gdelt_location.proto";
+
+message GDELTCount {
+    // The type of the count, represented as an optional `GDELTCategoryList`.
+    optional gdelt_categorylist.GDELTCategoryList count_type = 1;
+
+    // The count value, represented as an optional `i128`.
+    optional int64 count = 2;
+
+    // The type of the object, represented as an optional `String`.
+    optional string object_type = 3;
+
+    // The location associated with the count, represented as an optional `GDELTLocation`.
+    optional gdelt_location.GDELTLocation location = 4;
+
+    // The approximate character offset, represented as an optional `u128`.
+    optional uint64 approximate_char_offset = 5;
+}

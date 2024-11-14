@@ -1,0 +1,34 @@
+syntax = "proto3";
+package gdelt_action;
+
+message GDELTAction {
+    // Indicates if the event is a root event.
+    bool is_root_event = 1;
+
+    // The event code associated with the action.
+    string event_code = 2;
+
+    // The base event code.
+    string event_base_code = 3;
+
+    // The root event code.
+    string event_root_code = 4;
+
+    // The quad class of the event.
+    uint32 quad_class = 5;
+
+    // The Goldstein scale value of the event.
+    float goldstein_scale = 6;
+
+    // The number of mentions of the event.
+    uint64 number_of_mentions = 7;
+
+    // The number of sources reporting the event.
+    uint64 number_of_sources = 8;
+
+    // The number of articles about the event.
+    uint64 number_of_articles = 9;
+
+    // The average tone of the event.
+    float avg_tone = 10;
+}

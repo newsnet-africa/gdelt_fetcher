@@ -6,3 +6,8 @@ edition = "2021"
 [dependencies]
 data = { path = "./data" }
 models = { path = "./models" }
+
+[export]
+enabled = true
+path = ".bacon-locations"
+line_format = "{kind}:{path}:{line}:{column}:{message}"

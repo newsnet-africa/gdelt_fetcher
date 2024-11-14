@@ -1,0 +1,24 @@
+syntax = "proto3";
+package event;
+
+import "google/protobuf/timestamp.proto";
+import "gdelt_date.proto";
+import "gdelt_actor.proto";
+import "gdelt_action.proto";
+
+message Event {
+    // The global event ID.
+    optional uint64 global_event_id = 1;
+
+    optional gdelt_date.GDELTDate gdelt_date = 2;
+
+    optional google.protobuf.Timestamp date_added = 3;
+
+    optional string source_url = 4;
+
+    optional gdelt_actor.GDELTActor actor_1 = 5;
+
+    optional gdelt_actor.GDELTActor actor_2 = 6;
+
+    optional gdelt_action.GDELTAction event_action = 7;
+}

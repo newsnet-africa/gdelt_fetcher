@@ -1,0 +1,10 @@
+syntax = "proto3";
+package some;
+
+message SomeMessage {
+  string some_field = 1;
+}
+
+service SomeService {
+  rpc SomeMethod(SomeMessage) returns (stream SomeMessage);
+}

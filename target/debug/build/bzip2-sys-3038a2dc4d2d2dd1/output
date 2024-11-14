@@ -31,7 +31,7 @@ HOST_CC = None
 cargo:rerun-if-env-changed=CC
 CC = None
 cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
-RUSTC_WRAPPER = Some(/home/lilguy/.local/share/lvim/mason/packages/rust-analyzer/rust-analyzer-x86_64-unknown-linux-gnu)
+RUSTC_WRAPPER = Some(/home/lilguy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer)
 cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
 CRATE_CC_NO_DEFAULTS = None
 DEBUG = Some(true)
@@ -68,6 +68,6 @@ HOST_ARFLAGS = None
 cargo:rerun-if-env-changed=ARFLAGS
 ARFLAGS = None
 cargo:rustc-link-lib=static=bz2
-cargo:rustc-link-search=native=/home/lilguy/Projects/TheNet/gdelt_data/target/debug/build/bzip2-sys-3038a2dc4d2d2dd1/out/lib
-cargo:root=/home/lilguy/Projects/TheNet/gdelt_data/target/debug/build/bzip2-sys-3038a2dc4d2d2dd1/out
-cargo:include=/home/lilguy/Projects/TheNet/gdelt_data/target/debug/build/bzip2-sys-3038a2dc4d2d2dd1/out/include
+cargo:rustc-link-search=native=/home/lilguy/Projects/TheNet/gdelt_fetcher/target/debug/build/bzip2-sys-3038a2dc4d2d2dd1/out/lib
+cargo:root=/home/lilguy/Projects/TheNet/gdelt_fetcher/target/debug/build/bzip2-sys-3038a2dc4d2d2dd1/out
+cargo:include=/home/lilguy/Projects/TheNet/gdelt_fetcher/target/debug/build/bzip2-sys-3038a2dc4d2d2dd1/out/include

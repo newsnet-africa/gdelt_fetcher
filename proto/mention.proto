@@ -1,0 +1,55 @@
+syntax = "proto3";
+package mention;
+
+import "gdelt_date.proto";
+import "gdelt_source_collection_identifier.proto";
+
+message Mentions {
+    // The global event ID associated with the mention.
+    optional uint64 global_event_id = 1;
+
+    // The date and time of the event.
+    optional gdelt_date.GDELTDate event_time_date = 2;
+
+    // The date and time of the mention.
+    optional gdelt_date.GDELTDate mention_time_date = 3;
+
+    // The type of mention.
+    optional gdelt_source_collection_identifier.SourceCollectionIdentifier mention_type = 4;
+
+    // The source name of the mention.
+    optional string mention_source_name = 5;
+
+    // The identifier of the mention.
+    optional string mention_identifier = 6;
+
+    // The sentence ID where the mention occurs.
+    optional uint64 sentence_id = 7;
+
+    // The character offset of the first actor in the mention.
+    optional uint64 actor_1_char_offset = 8;
+
+    // The character offset of the second actor in the mention.
+    optional uint64 actor_2_char_offset = 9;
+
+    // The character offset of the action in the mention.
+    optional uint64 action_char_offset = 10;
+
+    // Indicates whether the mention is in raw text.
+    optional bool in_raw_text = 11;
+
+    // The confidence level of the mention.
+    optional uint32 confidence = 12;
+
+    // The length of the document containing the mention.
+    optional uint64 mention_doc_length = 13;
+
+    // The tone of the document containing the mention.
+    optional double mention_doc_tone = 14;
+
+    // Translation information for the document containing the mention.
+    optional string mention_doc_translation_info = 15;
+
+    // Any extra information about the mention.
+    optional string extras = 16;
+}

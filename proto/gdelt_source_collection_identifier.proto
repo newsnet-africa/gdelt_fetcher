@@ -1,0 +1,25 @@
+syntax = "proto3";
+package gdelt_source_collection_identifier;
+
+enum SourceCollectionIdentifier {
+    // Unknown source collection
+    UNKNOWN_SCI = 0;
+
+    // Web source collection
+    WEB = 1;
+
+    // Citation source collection
+    CITATION = 2;
+
+    // Core source collection
+    CORE = 3;
+
+    // DTIC source collection
+    DTIC = 4;
+
+    // JSTOR source collection
+    JSTOR = 5;
+
+    // Non-textual source collection
+    NONTEXTUALSOURCE = 6;
+}

@@ -1,0 +1,25 @@
+[jobs.doc-open]
+command = ["cargo", "doc", "--color", "always", "--no-deps", "--open"]
+need_stdout = false
+on_success = "back"                                                    # so that we don't open the browser at each change
+
+[keybindings]
+d = "job:doc-open"
+
+[jobs.clippy]
+command = [
+  "cargo",
+  "clippy",
+  "--color",
+  "always",
+  "--",
+  "-A",
+  "clippy::collapsible_else_if",
+  "-A",
+  "clippy::collapsible_if",
+  "-A",
+  "clippy::field_reassign_with_default",
+  "-A",
+  "clippy::match_like_matches_macro",
+]
+need_stdout = false

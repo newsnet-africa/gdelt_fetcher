@@ -18,7 +18,8 @@ indicatif = "*"
 json = "*"
 csv = "*"
 serde_json = "*"
-models = {path = "../models"}
+models = { path = "../models" }
 tokio = "*"
 reqwest = "*"
 thiserror = "1.0.63"
+iso_country = "*"

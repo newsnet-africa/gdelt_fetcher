@@ -1,0 +1,155 @@
+syntax = "proto3";
+package gdelt_service;
+
+import "event.proto";
+import "mention.proto";
+import "gkg.proto";
+import "google/protobuf/empty.proto";
+
+message Path {
+    repeated string item = 1;
+}
+
+// Event CRUD operations
+message CreateEventRequest {
+    Path path = 1;
+    event.Event event = 2;
+}
+
+message CreateEventResponse {
+    bool success = 1;
+    string message = 2;
+    optional event.Event event = 3;
+}
+
+message GetEventRequest {
+    Path path = 1;
+}
+
+message GetEventResponse {
+    bool success = 1;
+    string message = 2;
+    optional event.Event event = 3;
+}
+
+message UpdateEventRequest {
+    Path path = 1;
+    event.Event event = 2;
+}
+
+message UpdateEventResponse {
+    bool success = 1;
+    string message = 2;
+    optional event.Event event = 3;
+}
+
+message DeleteEventRequest {
+    Path path = 1;
+}
+
+message DeleteEventResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Mention CRUD operations
+message CreateMentionRequest {
+    Path path = 1;
+    mention.Mentions mention = 2;
+}
+
+message CreateMentionResponse {
+    bool success = 1;
+    string message = 2;
+    optional mention.Mentions mention = 3;
+}
+
+message GetMentionRequest {
+    Path path = 1;
+}
+
+message GetMentionResponse {
+    bool success = 1;
+    string message = 2;
+    optional mention.Mentions mention = 3;
+}
+
+message UpdateMentionRequest {
+    Path path = 1;
+    mention.Mentions mention = 2;
+}
+
+message UpdateMentionResponse {
+    bool success = 1;
+    string message = 2;
+    optional mention.Mentions mention = 3;
+}
+
+message DeleteMentionRequest {
+    Path path = 1;
+}
+
+message DeleteMentionResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// GlobalKnowledgeGraph CRUD operations
+message CreateGlobalKnowledgeGraphRequest {
+    Path path = 1;
+    gkg.GlobalKnowledgeGraph gkg = 2;
+}
+
+message CreateGlobalKnowledgeGraphResponse {
+    bool success = 1;
+    string message = 2;
+    optional gkg.GlobalKnowledgeGraph gkg = 3;
+}
+
+message GetGlobalKnowledgeGraphRequest {
+    Path path = 1;
+}
+
+message GetGlobalKnowledgeGraphResponse {
+    bool success = 1;
+    string message = 2;
+    optional gkg.GlobalKnowledgeGraph gkg = 3;
+}
+
+message UpdateGlobalKnowledgeGraphRequest {
+    Path path = 1;
+    gkg.GlobalKnowledgeGraph gkg = 2;
+}
+
+message UpdateGlobalKnowledgeGraphResponse {
+    bool success = 1;
+    string message = 2;
+    optional gkg.GlobalKnowledgeGraph gkg = 3;
+}
+
+message DeleteGlobalKnowledgeGraphRequest {
+    Path path = 1;
+}
+
+message DeleteGlobalKnowledgeGraphResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Define combined CRUD services for Event, Mention, and GlobalKnowledgeGraph
+service GdeltService {
+    rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
+    rpc GetEvent(GetEventRequest) returns (GetEventResponse);
+    rpc UpdateEvent(UpdateEventRequest) returns (UpdateEventResponse);
+    rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
+
+    rpc CreateMention(CreateMentionRequest) returns (CreateMentionResponse);
+    rpc GetMention(GetMentionRequest) returns (GetMentionResponse);
+    rpc UpdateMention(UpdateMentionRequest) returns (UpdateMentionResponse);
+    rpc DeleteMention(DeleteMentionRequest) returns (DeleteMentionResponse);
+
+    rpc CreateGlobalKnowledgeGraph(CreateGlobalKnowledgeGraphRequest) returns (CreateGlobalKnowledgeGraphResponse);
+    rpc GetGlobalKnowledgeGraph(GetGlobalKnowledgeGraphRequest) returns (GetGlobalKnowledgeGraphResponse);
+    rpc UpdateGlobalKnowledgeGraph(UpdateGlobalKnowledgeGraphRequest) returns (UpdateGlobalKnowledgeGraphResponse);
+    rpc DeleteGlobalKnowledgeGraph(DeleteGlobalKnowledgeGraphRequest) returns (DeleteGlobalKnowledgeGraphResponse);
+}

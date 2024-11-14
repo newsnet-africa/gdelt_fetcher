@@ -35,7 +35,7 @@ pub mod api_types {
         Exclude(Vec<QueryType>),
         Domain(String),
         DomainIs(String),
-        ImageFaceTone(Operation, f16),
+        ImageFaceTone(Operation, f32),
         ImageNumFaces(Operation, u8),
         ImageORCMeta(String),
         ImageTags(Vec<String>),
@@ -49,8 +49,8 @@ pub mod api_types {
         SourceCountry(Country),
         SourceLang(Language),
         Theme(GKGTheme),
-        Tone(Operation, f16),
-        ToneAbs(Operation, f16),
+        Tone(Operation, f32),
+        ToneAbs(Operation, f32),
     }
 
     pub enum OutputMode {
@@ -68,7 +68,7 @@ pub mod api_types {
         TimelineSourceCountry,
         ToneChart,
         WordCloudImageTags,
-        WordCloudImageWebTags
+        WordCloudImageWebTags,
     }
 
     pub enum OutputFormat {
@@ -89,7 +89,7 @@ pub mod api_types {
     }
 
     pub enum Translator {
-        Google
+        Google,
     }
 
     pub enum SortType {

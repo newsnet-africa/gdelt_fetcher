@@ -1,0 +1,48 @@
+syntax = "proto3";
+package gdelt_location;
+
+message GDELTLocation {
+    enum GDELTLocationTypes {
+        UNKNOWN_LOCATION = 0;
+
+        // Represents a country location.
+        COUNTRY = 1;
+
+        // Represents a province location.
+        PROVINCE = 2;
+
+        // Represents a city location.
+        CITY = 3;
+    }
+
+    // The type of the location.
+    optional GDELTLocationTypes location_type = 1;
+
+    // The full name of the location.
+    optional string location_full_name = 2;
+
+    // The country code of the location.
+    optional string location_country_code = 3;
+
+    message AdminCodes {
+        optional string admin1 = 1;
+        optional string admin2 = 2;
+    }
+
+    // The administrative codes of the location (admin1, admin2).
+    AdminCodes location_admin_code = 4;
+
+    message Coordinates {
+        double latitude = 1;
+        double longitude = 2;
+    }
+
+    // The coordinates of the location (latitude, longitude).
+    optional Coordinates co_ord = 5;
+
+    // The feature ID of the location.
+    optional string feature_id = 6;
+
+    // The character offset of the location.
+    optional uint64 char_offset = 7;
+}

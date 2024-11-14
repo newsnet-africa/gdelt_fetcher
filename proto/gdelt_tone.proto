@@ -1,0 +1,25 @@
+syntax = "proto3";
+package gdelt_tone;
+
+message GDELTTone {
+    // The overall tone of the event.
+    double tone = 1;
+
+    // The positive score of the event.
+    double positive_score = 2;
+
+    // The negative score of the event.
+    double negative_score = 3;
+
+    // The polarity of the event.
+    double polarity = 4;
+
+    // The activity reference density of the event.
+    double activity_reference_density = 5;
+
+    // The self-reference density of the event.
+    double self_reference_density = 6;
+
+    // The word count of the event.
+    uint64 word_count = 7;
+}

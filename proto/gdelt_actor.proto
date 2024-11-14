@@ -1,0 +1,34 @@
+syntax = "proto3";
+package gdelt_actor;
+
+message GDELTActor {
+    // The code of the actor; if available.
+    optional string code = 1;
+
+    // The name of the actor; if available.
+    optional string name = 2;
+
+    // The country code associated with the actor; if available.
+    optional string country_code = 3;
+
+    // The known group code associated with the actor; if available.
+    optional string known_group_code = 4;
+
+    // The ethnic code associated with the actor; if available.
+    optional string ethnic_code = 5;
+
+    // A message containing two optional religion codes associated with the actor.
+    message ReligionCode {
+        optional string code1 = 1;
+        optional string code2 = 2;
+    }
+    ReligionCode religion_code = 6;
+
+    // A message containing three optional additional codes associated with the actor.
+    message AdditionalCodes {
+        optional string code1 = 1;
+        optional string code2 = 2;
+        optional string code3 = 3;
+    }
+    AdditionalCodes codes = 7;
+}
