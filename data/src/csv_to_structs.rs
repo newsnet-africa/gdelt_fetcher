@@ -1,7 +1,7 @@
 // region Modules and Imports
 
 use crate::gdelt_fetcher::DOWNLOAD_PATH_FOLDER;
-use crate::utils::types::DatabaseType;
+use crate::utils::types::csv_types::DatabaseType;
 use csv::ReaderBuilder;
 use models::models::gdelt::gkg::GlobalKnowledgeGraph;
 use models::models::gdelt::mentions::Mentions;
@@ -72,16 +72,16 @@ pub async fn csv_to_structs(
             .ok_or(CsvToStructError::PathFolderError)?,
         full_file_name
     );
-    
+
     // Open the CSV file
     let file = File::open(csv_file_path)?;
-    
+
     // Create a CSV reader with flexible settings
     let mut reader = ReaderBuilder::new().flexible(false).from_reader(file);
-    
+
     // Create a vector to store the records
     let mut records_vec = Vec::new();
-    
+
     // Iterate over the CSV records and populate the object
     for record in reader.records() {
         match record {
@@ -102,7 +102,7 @@ pub async fn csv_to_structs(
             Err(_) => continue,
         }
     }
-    
+
     // Return the vector of populated objects
     Ok(records_vec)
 }

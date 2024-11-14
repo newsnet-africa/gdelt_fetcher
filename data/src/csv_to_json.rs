@@ -1,6 +1,6 @@
 // region Modules and Imports
 
-use super::utils::types::{DatabaseType, JsonRustTypes};
+use super::utils::types::csv_types::{DatabaseType, JsonRustTypes};
 use crate::gdelt_fetcher::DOWNLOAD_PATH_FOLDER;
 use csv::ReaderBuilder;
 use json::{object::Object, JsonValue};

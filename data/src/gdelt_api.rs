@@ -1,6 +1,9 @@
-use crate::utils::types::api_types::*;
+use crate::utils::types::api_types::output_format::OutputFormat;
+use crate::utils::types::api_types::output_mode::OutputMode;
+use crate::utils::types::api_types::query_types::QueryType;
+use crate::utils::types::api_types::sort_types::SortType;
+use crate::utils::types::api_types::translator::Translator;
 use chrono::{DateTime, Duration, Utc};
-use iso_country::Country;
 
 pub struct GdeltApiRequest {
     query: Vec<QueryType>,

@@ -48,3 +48,5 @@ pub mod gdelt_source_collection_identifier;
 /// Tone refers to the sentiment or emotional tone of events, such as positive, negative, or neutral.
 /// This module likely includes structures and functions to parse, store, and analyze tone data from GDELT datasets.
 pub mod gdelt_tone;
+
+pub mod gdelt_languages;
