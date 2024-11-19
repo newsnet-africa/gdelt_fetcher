@@ -11,6 +11,8 @@ pub mod rss_types;
 pub mod sort_types;
 pub mod translator;
 
+pub const BASE_API_URL: &str = "https://api.gdeltproject.org/api/v2/doc/doc?";
+
 pub trait ToRequestLink {
     fn to_request_link(&self) -> String;
 }

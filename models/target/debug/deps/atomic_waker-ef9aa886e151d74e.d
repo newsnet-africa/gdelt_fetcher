@@ -1,5 +1,5 @@
-/home/lilguy/Projects/NewsNet/models/target/debug/deps/libatomic_waker-ef9aa886e151d74e.rmeta: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/atomic-waker-1.1.2/src/lib.rs
+/home/bigguy/Projects/TheNet/gdelt_fetcher/models/target/debug/deps/libatomic_waker-ef9aa886e151d74e.rmeta: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/atomic-waker-1.1.2/src/lib.rs
 
-/home/lilguy/Projects/NewsNet/models/target/debug/deps/atomic_waker-ef9aa886e151d74e.d: /home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/atomic-waker-1.1.2/src/lib.rs
+/home/bigguy/Projects/TheNet/gdelt_fetcher/models/target/debug/deps/atomic_waker-ef9aa886e151d74e.d: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/atomic-waker-1.1.2/src/lib.rs
 
-/home/lilguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/atomic-waker-1.1.2/src/lib.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/atomic-waker-1.1.2/src/lib.rs:

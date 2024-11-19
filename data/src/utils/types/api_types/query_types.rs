@@ -5,33 +5,8 @@ use models::models::gdelt::utils::gdelt_languages::GDELTLanguage;
 
 use super::ToRequestLink;
 
-pub enum QueryString {
-    Term(String),
-    BooleanOR(Vec<String>),
-}
-
-impl ToRequestLink for QueryString {
-    fn to_request_link(&self) -> String {
-        match self {
-            Self::Term(quote) => {
-                format!("\"{}\"", quote)
-            }
-            Self::BooleanOR(vect) => {
-                let mut query = String::new();
-                for (i, q) in vect.iter().enumerate() {
-                    query.push_str(&q);
-                    if i < vect.len() - 1 {
-                        query.push_str(" OR ");
-                    }
-                }
-                query
-            }
-        }
-    }
-}
-
 pub enum QueryType {
-    Query(QueryString),
+    QueryString(String),
     Exclude(Vec<QueryType>),
     Domain(String),
     DomainIs(String),
@@ -56,21 +31,7 @@ pub enum QueryType {
 impl ToRequestLink for QueryType {
     fn to_request_link(&self) -> String {
         match self {
-            Self::Query(query_string) => match query_string {
-                QueryString::Term(quote) => {
-                    format!("\"{}\"", quote)
-                }
-                QueryString::BooleanOR(vect) => {
-                    let mut query = String::new();
-                    for (i, q) in vect.iter().enumerate() {
-                        query.push_str(&q);
-                        if i < vect.len() - 1 {
-                            query.push_str(" OR ");
-                        }
-                    }
-                    query
-                }
-            },
+            Self::QueryString(query_string) => query_string.clone(),
             Self::Exclude(vect) => {
                 let mut query = String::new();
                 for (i, q) in vect.iter().enumerate() {
@@ -133,6 +94,25 @@ impl ToRequestLink for QueryType {
             }
             Self::ToneAbs(op, tone) => {
                 format!("toneabs:{}{}", op.to_request_link(), tone)
+            }
+        }
+    }
+}
+
+impl ToRequestLink for Vec<QueryType> {
+    fn to_request_link(&self) -> String {
+        match self.len() {
+            0 => String::new(),
+            1 => self[0].to_request_link(),
+            _ => {
+                let mut query = "(".to_string();
+                for (i, q) in self.iter().enumerate() {
+                    query.push_str(&q.to_request_link());
+                    if i < self.len() - 1 {
+                        query.push_str(" OR ");
+                    }
+                }
+                query
             }
         }
     }

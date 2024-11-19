@@ -1,7 +1,8 @@
 use crate::utils::types::api_types::output_mode::OutputMode;
 use crate::utils::types::api_types::query_types::QueryType;
 use crate::utils::types::api_types::sort_types::SortType;
-use crate::utils::types::api_types::translator::Translator;
+use crate::utils::types::api_types::translator::{self, Translator};
+use crate::utils::types::api_types::BASE_API_URL;
 use crate::utils::types::api_types::{output_format::OutputFormat, ToRequestLink};
 use chrono::{DateTime, Duration, Utc};
 
@@ -9,7 +10,7 @@ pub struct GdeltApiRequest {
     query: Vec<QueryType>,
     mode: Option<OutputMode>,
     format: Option<OutputFormat>,
-    timestamp: Option<Duration>,
+    timespan: Option<Duration>,
     start_end_times: Option<(DateTime<Utc>, DateTime<Utc>)>,
     max_records: Option<u8>,
     timeline: Option<u8>,
@@ -24,7 +25,7 @@ impl GdeltApiRequest {
             format: None,
             query,
             mode: None,
-            timestamp: None,
+            timespan: None,
             start_end_times: None,
             max_records: None,
             timeline: None,
@@ -37,6 +38,65 @@ impl GdeltApiRequest {
 
 impl ToRequestLink for GdeltApiRequest {
     fn to_request_link(&self) -> String {
-        todo!("https://api.gdeltproject.org/api/v2/doc/doc?")
+        let mut complete_request = String::new();
+        let query = format!("query={}", self.query.to_request_link());
+        complete_request.push_str(&query);
+
+        if let Some(mode) = &self.mode {
+            let mode_str = format!("&mode={}", mode.to_request_link());
+            complete_request.push_str(&mode_str);
+        }
+
+        if let Some(format) = &self.format {
+            let format_str = format!("&format={}", format.to_request_link());
+            complete_request.push_str(&format_str);
+        }
+
+        if let Some(timespan) = &self.timespan {
+            let timespan_str = format!("&timespan={}", timespan.num_days());
+            complete_request.push_str(&timespan_str);
+        }
+
+        if let Some((start, end)) = &self.start_end_times {
+            let start_end_str = format!(
+                "&startdatetime={}&enddatetime={}",
+                start.to_rfc3339(),
+                end.to_rfc3339()
+            );
+            complete_request.push_str(&start_end_str);
+        }
+
+        if let Some(max_records) = &self.max_records {
+            let max_records_str = format!("&maxrecords={}", max_records);
+            complete_request.push_str(&max_records_str);
+        }
+
+        if let Some(timeline) = &self.timeline {
+            let timeline_str = format!("&timeline={}", timeline);
+            complete_request.push_str(&timeline_str);
+        }
+
+        if let Some(trans) = &self.trans {
+            let trans_str = format!("&trans={}", trans.to_request_link());
+            complete_request.push_str(&trans_str);
+        }
+
+        if let Some(sort_type) = &self.sort {
+            let sort_str = format!("&sort={}", sort_type.to_request_link());
+            complete_request.push_str(&sort_str);
+        }
+
+        let timezoom_str = if self.timezoom {
+            "&timezoom=yes".to_string()
+        } else {
+            "&timezoom=no".to_string()
+        };
+        complete_request.push_str(&timezoom_str);
+
+        let mut request = BASE_API_URL.clone().to_string();
+        request.push_str(&complete_request);
+        request
     }
 }
+
+// TODO: Change String to &str
