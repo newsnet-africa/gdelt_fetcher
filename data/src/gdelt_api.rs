@@ -1,8 +1,8 @@
-use crate::utils::types::api_types::output_format::OutputFormat;
 use crate::utils::types::api_types::output_mode::OutputMode;
 use crate::utils::types::api_types::query_types::QueryType;
 use crate::utils::types::api_types::sort_types::SortType;
 use crate::utils::types::api_types::translator::Translator;
+use crate::utils::types::api_types::{output_format::OutputFormat, ToRequestLink};
 use chrono::{DateTime, Duration, Utc};
 
 pub struct GdeltApiRequest {
@@ -32,5 +32,11 @@ impl GdeltApiRequest {
             sort: None,
             timezoom: false,
         }
+    }
+}
+
+impl ToRequestLink for GdeltApiRequest {
+    fn to_request_link(&self) -> String {
+        todo!("https://api.gdeltproject.org/api/v2/doc/doc?")
     }
 }
