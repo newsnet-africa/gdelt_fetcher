@@ -1,0 +1,3 @@
+alloc::vec::Vec<(models::gdelt::utils::gdelt_categorylist::GDELTCategoryList, core::option::Option<u64>)>
+(models::gdelt::utils::gdelt_categorylist::GDELTCategoryList, models::gdelt::utils::gdelt_categorylist::GDELTCategoryList)
+std::vec::Vec<(models::gdelt::utils::gdelt_categorylist::GDELTCategoryList, std::option::Option<u64>)>

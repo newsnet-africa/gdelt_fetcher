@@ -7,40 +7,30 @@ use super::ToRequestLink;
 
 pub enum QueryType {
     QueryString(String),
-    Exclude(Vec<QueryType>),
+    Exclude(Box<QueryType>),
     Domain(String),
     DomainIs(String),
-    ImageFaceTone(Operation, f32),
-    ImageNumFaces(Operation, u8),
+    ImageFaceTone(Operation<f32>),
+    ImageNumFaces(Operation<u8>),
     ImageORCMeta(String),
-    ImageTags(Vec<String>),
-    ImageWebCount(Operation, u128),
-    Near {
-        distance: u8,
-        root_word: String,
-        near_word: String,
-    },
-    Repeat(String),
+    ImageTags(String),
+    ImageWebTag(String),
+    ImageWebCount(Operation<u128>),
+    Near { distance: u8, root_word: String },
+    Repeat { distance: u8, root_word: String },
     SourceCountry(Country),
     SourceLang(GDELTLanguage),
     Theme(GDELTCategoryList),
-    Tone(Operation, f32),
-    ToneAbs(Operation, f32),
+    Tone(Operation<f32>),
+    ToneAbs(Operation<f32>),
 }
 
 impl ToRequestLink for QueryType {
     fn to_request_link(&self) -> String {
         match self {
             Self::QueryString(query_string) => query_string.clone(),
-            Self::Exclude(vect) => {
-                let mut query = String::new();
-                for (i, q) in vect.iter().enumerate() {
-                    query.push_str(&q.to_request_link());
-                    if i < vect.len() - 1 {
-                        query.push_str(" AND ");
-                    }
-                }
-                query
+            Self::Exclude(query_type) => {
+                format!("-\"{}\"", query_type.to_request_link())
             }
             Self::Domain(domain) => {
                 format!("domain:{}", domain)
@@ -48,40 +38,41 @@ impl ToRequestLink for QueryType {
             Self::DomainIs(domain) => {
                 format!("domainis:{}", domain)
             }
-            Self::ImageFaceTone(op, tone) => {
-                format!("imagefacetone:{}{}", op.to_request_link(), tone)
+            Self::ImageFaceTone(op) => {
+                format!("imagefacetone:{}", op.to_request_link())
             }
-            Self::ImageNumFaces(op, num) => {
-                format!("imagenumfaces:{}{}", op.to_request_link(), num)
+            Self::ImageNumFaces(op) => {
+                format!("imagenumfaces:{}", op.to_request_link())
             }
             Self::ImageORCMeta(meta) => {
-                format!("imageorcmeta:{}", meta)
+                format!("imageorcmeta:\"{}\"", meta)
             }
             Self::ImageTags(vect) => {
-                let mut query = String::new();
-                for (i, q) in vect.iter().enumerate() {
-                    query.push_str(&q);
-                    if i < vect.len() - 1 {
-                        query.push_str(" OR ");
-                    }
-                }
-                query
+                format!("imagetags:\"{}\"", vect)
             }
-            Self::ImageWebCount(op, count) => {
-                format!("imagewebcount:{}{}", op.to_request_link(), count)
+            Self::ImageWebCount(op) => {
+                format!("imagewebcount:{}", op.to_request_link())
+            }
+            Self::ImageWebTag(tag) => {
+                format!("imagewebtag:\"{}\"", tag)
             }
             Self::Near {
                 distance,
                 root_word,
-                near_word,
             } => {
-                format!("{} NEAR{}{}", root_word, distance, near_word)
+                format!("near{}:\"{}\"", root_word, distance)
             }
-            Self::Repeat(quote) => {
-                format!("repeat:{}", quote)
+            Self::Repeat {
+                distance,
+                root_word,
+            } => {
+                format!("repeat{}:\"{}\"", root_word, distance)
             }
             Self::SourceCountry(country) => {
-                format!("sourcecountry:{}", country.name())
+                format!(
+                    "sourcecountry:{}",
+                    country.name().to_lowercase().replace(" ", "")
+                )
             }
             Self::SourceLang(lang) => {
                 format!("sourcelang:{}", lang.to_request_link())
@@ -89,11 +80,11 @@ impl ToRequestLink for QueryType {
             Self::Theme(theme) => {
                 format!("theme:{}", theme.to_request_link())
             }
-            Self::Tone(op, tone) => {
-                format!("tone:{}{}", op.to_request_link(), tone)
+            Self::Tone(op) => {
+                format!("tone:{}", op.to_request_link())
             }
-            Self::ToneAbs(op, tone) => {
-                format!("toneabs:{}{}", op.to_request_link(), tone)
+            Self::ToneAbs(op) => {
+                format!("toneabs:{}", op.to_request_link())
             }
         }
     }

@@ -1,15 +1,18 @@
 // region: Imports
 use super::utils::gdelt_categorylist::GDELTCategoryList;
-use crate::generated::gdelt_count::GdeltCount;
-use crate::generated::gkg::global_knowledge_graph::{Amount, NameWithOffset, OrganisationWithOffset, PersonWithOffset, ThemeWithOffset, TranslationInfo};
 use super::utils::gdelt_counts::GDELTCount;
 use super::utils::gdelt_date::GDELTDate;
 use super::utils::gdelt_location::GDELTLocation;
 use super::utils::gdelt_quotation::GDELTQuotation;
 use super::utils::gdelt_source_collection_identifier::SourceCollectionIdentifier;
 use super::utils::gdelt_tone::Tone;
-use crate::models::gdelt::{CellItem, DatabaseTableEntry, GDELTObject, ToProto};
+use crate::generated::gdelt_count::GdeltCount;
+use crate::generated::gkg::global_knowledge_graph::{
+    Amount, NameWithOffset, OrganisationWithOffset, PersonWithOffset, ThemeWithOffset,
+    TranslationInfo,
+};
 use crate::generated::gkg::GlobalKnowledgeGraph as GdeltGlobalKnowledgeGraph;
+use crate::models::gdelt::{CellItem, DatabaseTableEntry, GDELTObject, ToProto};
 // endregion
 
 /// \[GlobalKnowledgeGraph\] represents a record in the Global Knowledge Graph (GKG) dataset.
@@ -78,7 +81,10 @@ impl ToProto for GlobalKnowledgeGraph {
             Some(GdeltGlobalKnowledgeGraph {
                 record_id: self.record_id.clone(),
                 v2_1_date: self.v2_1_date.as_ref().and_then(|date| date.to_proto()),
-                source_collection_identifier: self.source_collection_identifier.clone().map(|sci| sci as i32),
+                source_collection_identifier: self
+                    .source_collection_identifier
+                    .clone()
+                    .map(|sci| sci as i32),
                 source_common_name: self.source_common_name.clone(),
                 document_identifier: self.document_identifier.clone(),
                 counts_v1: match self.counts.0.clone() {
@@ -90,15 +96,20 @@ impl ToProto for GlobalKnowledgeGraph {
                     None => vec![],
                 },
                 themes_v1: match self.themes.0.clone() {
-                    Some(themes) => themes.iter().map(|categ| u16::from(categ.clone()) as i32).collect(),
+                    Some(themes) => themes
+                        .iter()
+                        .map(|categ| u16::from(categ.clone()) as i32)
+                        .collect(),
                     None => vec![],
                 },
                 themes_v2: match self.themes.1.clone() {
-                    Some(themes) => themes.iter().map(|categ| 
-                        ThemeWithOffset {
+                    Some(themes) => themes
+                        .iter()
+                        .map(|categ| ThemeWithOffset {
                             theme: u16::from(categ.clone().0) as i32,
                             offset: categ.1,
-                    }).collect(),
+                        })
+                        .collect(),
                     None => vec![],
                 },
                 locations_v1: match self.locations.0.clone() {
@@ -111,20 +122,24 @@ impl ToProto for GlobalKnowledgeGraph {
                 },
                 persons_v1: self.persons.0.clone().unwrap_or_else(|| vec![]),
                 persons_v2: match self.persons.1.clone() {
-                    Some(persons) => persons.iter().map(|(person, offset)| PersonWithOffset {
-                        person: person.clone(),
-                        offset: offset.clone() as u64,
-                    }).collect(),
+                    Some(persons) => persons
+                        .iter()
+                        .map(|(person, offset)| PersonWithOffset {
+                            person: person.clone(),
+                            offset: offset.clone() as u64,
+                        })
+                        .collect(),
                     None => vec![],
                 },
                 organisations_v1: self.organisations.0.clone().unwrap_or_else(|| vec![]),
                 organisations_v2: match self.organisations.1.clone() {
-                    Some(organisations) => organisations.iter().map(|(org, offset)| {
-                        OrganisationWithOffset {
+                    Some(organisations) => organisations
+                        .iter()
+                        .map(|(org, offset)| OrganisationWithOffset {
                             organisation: org.clone(),
                             offset: offset.clone() as u64,
-                        }
-                    }).collect(),
+                        })
+                        .collect(),
                     None => vec![],
                 },
                 tone: None,
@@ -141,29 +156,33 @@ impl ToProto for GlobalKnowledgeGraph {
                     None => vec![],
                 },
                 all_names: match self.all_names.clone() {
-                    Some(names) => names.iter().map(|(name, offset)| {
-                        NameWithOffset {
+                    Some(names) => names
+                        .iter()
+                        .map(|(name, offset)| NameWithOffset {
                             name: name.clone(),
                             offset: offset.clone() as u64,
-                        }
-                    }).collect(),
+                        })
+                        .collect(),
                     None => vec![],
                 },
                 amounts: match self.amounts.clone() {
-                    Some(amounts) => amounts.iter().map(|(value, currency, count)| {
-                        Amount {
+                    Some(amounts) => amounts
+                        .iter()
+                        .map(|(value, currency, count)| Amount {
                             value: value.clone() as i64,
                             currency: currency.clone(),
                             count: count.clone() as u64,
-                        }
-                    }).collect(),
+                        })
+                        .collect(),
                     None => vec![],
-                },translation_info: self.translation_info.clone().map(|(language, translation)| {
-                    TranslationInfo {
+                },
+                translation_info: self
+                    .translation_info
+                    .clone()
+                    .map(|(language, translation)| TranslationInfo {
                         language,
                         translation,
-                    }
-                }),
+                    }),
             })
         }
     }
@@ -402,8 +421,10 @@ impl GDELTObject for GlobalKnowledgeGraph {
                 Some(v) => Some(
                     v.iter()
                         .map(|categ| {
-                            let offset = GDELTCategoryList::extract_value(categ.clone());
-                            (categ.clone(), offset)
+                            // TODO: Fix the V2Themes Fuckery
+                            // let offset = GDELTCategoryList::from(categ.clone());
+                            // (categ.clone(), offset)
+                            (categ.clone(), Some(1))
                         })
                         .collect::<Vec<(GDELTCategoryList, Option<u64>)>>(),
                 ),
@@ -665,3 +686,4 @@ impl GDELTObject for GlobalKnowledgeGraph {
         }
     }
 }
+

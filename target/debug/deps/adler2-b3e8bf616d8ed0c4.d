@@ -1,0 +1,8 @@
+/home/bigguy/Projects/TheNet/gdelt_fetcher/target/debug/deps/libadler2-b3e8bf616d8ed0c4.rmeta: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/algo.rs
+
+/home/bigguy/Projects/TheNet/gdelt_fetcher/target/debug/deps/libadler2-b3e8bf616d8ed0c4.rlib: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/algo.rs
+
+/home/bigguy/Projects/TheNet/gdelt_fetcher/target/debug/deps/adler2-b3e8bf616d8ed0c4.d: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/algo.rs
+
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/lib.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler2-2.0.0/src/algo.rs:

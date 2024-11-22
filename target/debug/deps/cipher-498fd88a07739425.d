@@ -1,0 +1,12 @@
+/home/bigguy/Projects/TheNet/gdelt_fetcher/target/debug/deps/libcipher-498fd88a07739425.rmeta: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/block.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/errors.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_core.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_wrapper.rs
+
+/home/bigguy/Projects/TheNet/gdelt_fetcher/target/debug/deps/libcipher-498fd88a07739425.rlib: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/block.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/errors.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_core.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_wrapper.rs
+
+/home/bigguy/Projects/TheNet/gdelt_fetcher/target/debug/deps/cipher-498fd88a07739425.d: /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/block.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/errors.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_core.rs /home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_wrapper.rs
+
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/lib.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/block.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/errors.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_core.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cipher-0.4.4/src/stream_wrapper.rs:

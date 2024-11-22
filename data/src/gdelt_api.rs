@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::utils::types::api_types::output_mode::OutputMode;
 use crate::utils::types::api_types::query_types::QueryType;
 use crate::utils::types::api_types::sort_types::SortType;
@@ -33,6 +35,48 @@ impl GdeltApiRequest {
             sort: None,
             timezoom: false,
         }
+    }
+
+    pub fn set_mode(&mut self, mode: OutputMode) {
+        self.mode = Some(mode);
+    }
+
+    pub fn set_format(&mut self, format: OutputFormat) {
+        self.format = Some(format);
+    }
+
+    pub fn set_timespan(&mut self, timespan: Duration) {
+        self.timespan = Some(timespan);
+    }
+
+    pub fn set_start_end_times(&mut self, start: DateTime<Utc>, end: DateTime<Utc>) {
+        self.start_end_times = Some((start, end));
+    }
+
+    pub fn set_max_records(&mut self, max_records: u8) {
+        self.max_records = Some(max_records);
+    }
+
+    pub fn set_timeline(&mut self, timeline: u8) {
+        self.timeline = Some(timeline);
+    }
+
+    pub fn set_trans(&mut self, trans: Translator) {
+        self.trans = Some(trans)
+    }
+
+    pub fn set_sort(&mut self, sort: SortType) {
+        self.sort = Some(sort);
+    }
+
+    pub fn set_timezoom(&mut self, timezoom: bool) {
+        self.timezoom = timezoom;
+    }
+}
+
+impl Display for GdeltApiRequest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.to_request_link())
     }
 }
 
@@ -100,3 +144,4 @@ impl ToRequestLink for GdeltApiRequest {
 }
 
 // TODO: Change String to &str
+//

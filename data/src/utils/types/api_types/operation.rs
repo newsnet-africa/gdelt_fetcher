@@ -1,12 +1,17 @@
+use std::fmt::Display;
+
 use super::ToRequestLink;
 
-pub enum Operation {
-    MoreThan(f32),
-    LessThan(f32),
-    Equal(f32),
+pub enum Operation<T>
+where
+    T: PartialOrd + Display,
+{
+    MoreThan(T),
+    LessThan(T),
+    Equal(T),
 }
 
-impl ToRequestLink for Operation {
+impl<T: PartialOrd + Display> ToRequestLink for Operation<T> {
     fn to_request_link(&self) -> String {
         match self {
             Self::MoreThan(value) => format!(">{}", value),
