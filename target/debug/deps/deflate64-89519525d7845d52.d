@@ -1,0 +1,10 @@
+/home/bigguy/Projects/NewsNet/gdelt_fetcher/target/debug/deps/libdeflate64-89519525d7845d52.rmeta: /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/huffman_tree.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/inflater_managed.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/input_buffer.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/output_window.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/stream.rs
+
+/home/bigguy/Projects/NewsNet/gdelt_fetcher/target/debug/deps/deflate64-89519525d7845d52.d: /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/huffman_tree.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/inflater_managed.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/input_buffer.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/output_window.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/stream.rs
+
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/lib.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/huffman_tree.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/inflater_managed.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/input_buffer.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/output_window.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/deflate64-0.1.9/src/stream.rs:

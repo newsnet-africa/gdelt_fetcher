@@ -1,0 +1,13 @@
+/home/bigguy/Projects/NewsNet/gdelt_fetcher/target/debug/deps/libaes-8d19a64c9325436c.rmeta: /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/soft.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/soft/fixslice64.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/autodetect.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/utils.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes128.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes192.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes256.rs
+
+/home/bigguy/Projects/NewsNet/gdelt_fetcher/target/debug/deps/aes-8d19a64c9325436c.d: /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/lib.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/soft.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/soft/fixslice64.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/autodetect.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/utils.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes128.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes192.rs /home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes256.rs
+
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/lib.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/soft.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/soft/fixslice64.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/autodetect.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/utils.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes128.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes192.rs:
+/home/bigguy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aes-0.8.4/src/ni/aes256.rs:

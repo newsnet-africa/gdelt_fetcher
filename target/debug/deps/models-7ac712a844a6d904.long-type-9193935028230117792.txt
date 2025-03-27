@@ -1,0 +1,1 @@
+components::shared::id_components::GEGRecordID: gdelt_schema::SchemaKey<'a, gdelt_schema::geg::GlobalEntityGraph>
