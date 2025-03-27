@@ -1,0 +1,12 @@
+[package]
+name = "models"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+csv = "*"
+url = "*"
+chrono = "*"
+serde = { version="*", features=["derive"]}
+rss = "*"
+serde_json = "*"

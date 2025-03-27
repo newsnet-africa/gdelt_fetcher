@@ -1,0 +1,85 @@
+/*
+Theme Name: Clean Grid Child
+Theme URI: https://themesdna.com/clean-grid-wordpress-theme/
+Template: clean-grid
+Version: 1.0.0
+Author: ThemesDNA
+Author URI: https://themesdna.com/
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: clean-grid
+Tags: two-columns, right-sidebar, grid-layout, flexible-header, custom-background, custom-colors, custom-header, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, full-width-template, theme-options, threaded-comments, translati
+on-ready, blog, photography, portfolio
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+
+Clean Grid is based on Underscores http://underscores.me/, (C) 2012-2018 Automattic, Inc.
+Underscores is distributed under the terms of the GNU GPL v2 or later.
+
+Resetting and rebuilding styles have been helped along thanks to the fine work of
+Eric Meyer http://meyerweb.com/eric/tools/css/reset/index.htmlalong with Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
+
+KALEV: Forked 10/21/2018
+
+*/
+
+
+/* BEGIN HEADER SECTION STYLING */
+    h1.clean-grid-site-title { 
+    	margin: 0 0 0px 0 !important;
+    }
+    div.clean-grid-header-inside {
+    	background: #000;	
+    }
+    .clean-grid-site-title a {
+	font: normal bold 24px 'Audiowide',Arial,Helvetica,sans-serif !important; margin:0 0 0 0 !important;line-height:1 !important; color:#FFF !important;
+    }
+    .clean-grid-site-description{
+    	display: none; 
+    }
+    .clean-grid-footer .clean-grid-foot-wrap p.clean-grid-copyright{
+	float:none;margin:0;color:#ECFFF1;text-align:center;padding:8px 0;line-height:1;font-family: 'Audiowide' !important;
+    }
+    /* hide the popover "read more" box that shows up on the images otherwise */
+    .clean-grid-grid-post-mask {
+    	display: none; 
+    }
+
+/* END HEADER SECTION STYLING */
+
+
+/* BEGIN POST PAGE STYLING */
+    nav.navigation.post-navigation {
+	display: none !important;
+    }
+        .clean-grid-post-thumbnail-single {
+	width: 1070px;
+	padding-bottom: 15px;
+    }
+    .entry-content p:first-of-type {
+	border-top: 5px solid black; padding-top: 20px;
+    }
+    body,button,input,select,textarea {
+	color:#000000 !important;
+        font-family: Roboto,Arial,Helvetica,sans-serif !important;
+	font-size: 11pt;
+    }
+    .entry-content pre {
+    	color: #000000 !important;
+    }
+    blockquote {
+    	text-align: left !important;
+    }
+    blockquote:before {
+    	display: none !important;
+    }
+    blockquote:after {
+    	display: none !important;
+    }
+
+
+
+
+
+/* END POST PAGE STYLING */

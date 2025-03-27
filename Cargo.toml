@@ -1,0 +1,11 @@
+[package]
+name = "gdelt_fetcher"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+data = {path = "./data"}
+env_logger = "*"
+
+[workspace]
+members = ["data", "models"]

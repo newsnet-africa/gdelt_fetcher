@@ -1,0 +1,16 @@
+[package]
+name = "data"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+zip = "*"
+tokio = { version = "*", features = ["full"] }
+env_logger = "*"
+log = "*"
+reqwest = { version = "*", features = ["stream"] }
+chrono = "*"
+regex = "*"
+url = "*"
+anyhow = "*"
+futures = "*"
