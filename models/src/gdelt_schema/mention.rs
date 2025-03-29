@@ -30,7 +30,23 @@ pub struct Mention {
     pub translation_info: TranslationInfo,
 }
 
-pub struct MentionCSVRecord<'a> {}
+pub struct MentionCSVRecord<'a> {
+    global_event_id: u128,
+    event_time_date: u64,
+    mention_time_date: u64,
+    mention_type: u8,
+    mention_source_name: &'a str,
+    mention_identifier: &'a str,
+    sentence_id: u128,
+    actor_1_offset: u128,
+    actor_2_offset: u128,
+    action_offset: u128,
+    in_raw_text: bool,
+    confidence: u8,
+    mention_doc_len: u128,
+    mention_doc_tone: u8,
+    translation_info: (&'a str, &'a str),
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct MentionCSVRecord<'a> {

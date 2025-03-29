@@ -14,6 +14,9 @@ pub struct GDGRecordID(String);
 pub struct GEGRecordID(String);
 
 #[repr(transparent)]
+pub struct GQGRecordID(String);
+
+#[repr(transparent)]
 pub struct GRGRecordID(String);
 
 #[repr(transparent)]

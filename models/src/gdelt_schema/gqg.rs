@@ -1,7 +1,7 @@
 use chrono::NaiveDate;
 use url::Url;
 
-use crate::components::shared::language::Language;
+use crate::{Schema, components::shared::language::Language};
 
 pub struct Quote {
     pub pre: String,
@@ -17,10 +17,18 @@ pub struct GlobalQuotationGraph {
     pub quotes: Vec<Quote>,
 }
 
+pub struct GlobalQuotatioGraphCSVRecord<'a> {
+    date: &'a str,
+    url: &'a str,
+    title: &'a str,
+    lang: &'a str,
+    quotes: Vec<&'a str>,
+}
+
 impl<'a> Schema<'a> for GlobalQuotationGraph {
     type Source = GlobalQuotationGraphCSVRecord<'a>;
 
-    type Key = GKGRecordID;
+    type Key = GQGRecordID;
 
     fn depends_on<'other_schema, T: Schema<'other_schema>>(&self) -> Option<T::Key> {
         todo!()
