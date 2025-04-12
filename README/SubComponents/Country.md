@@ -3,6 +3,7 @@ file_type: SubComponent, FromCode
 SubComponent: 
 SourceStandardCodes:
   - "[[FIPS]]"
+  - "[[CAMEOCountry]]"
 ---
 # Standard Codes
 ---

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/StandardCode/CAMEOCountry.md",
+                "file": "README/SubComponents/ActorTypes.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "CAMEOCountry"
+              "title": "ActorTypes"
             }
           },
           {
@@ -318,24 +318,44 @@
             "id": "1ba7fbfc0d432382",
             "type": "leaf",
             "state": {
-              "type": "BC-matrix",
+              "type": "empty",
               "state": {},
               "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "title": "New tab"
             }
           },
           {
             "id": "39abf99823ac2325",
             "type": "leaf",
             "state": {
-              "type": "BC-tree",
+              "type": "empty",
               "state": {},
               "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "2bd125b8657b46cb",
+            "type": "leaf",
+            "state": {
+              "type": "BC-matrix",
+              "state": {},
+              "icon": "BC-trail-icon",
+              "title": "Breadcrumbs Matrix"
+            }
+          },
+          {
+            "id": "88164ac42d3f7700",
+            "type": "leaf",
+            "state": {
+              "type": "BC-tree",
+              "state": {},
+              "icon": "feather-corner-right-down",
+              "title": "Breadcrumbs Down"
             }
           }
         ],
-        "currentTab": 14
+        "currentTab": 16
       }
     ],
     "direction": "horizontal",
@@ -361,18 +381,22 @@
       "xournalpp:Create new Xournal++ note": false,
       "templater-obsidian:Templater": false,
       "tags-overview:Tags overview": false,
-      "tag-page-md:Refresh tag page": false
+      "tag-page-md:Refresh tag page": false,
+      "breadcrumbs:Breadcrumbs Visualisation": false
     }
   },
   "active": "7582d422b42ccc0d",
   "lastOpenFiles": [
-    "README/StandardCode/Main.md",
-    "README/_mod/Templates/StandardCode.md",
-    "README/StandardCode/CAMEOCountry.md",
     "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
-    "README/StandardCode/FIPS.md",
-    "README/_mod/Templates/FromCode.md",
+    "README/SubComponents/ActorTypes.md",
     "README/SubComponents/Country.md",
+    "reference_docs/CAMEO.type.txt",
+    "README/StandardCode/Main.md",
+    "README/SubComponents/Main.md",
+    "README/StandardCode/FIPS.md",
+    "README/StandardCode/CAMEOCountry.md",
+    "README/_mod/Templates/StandardCode.md",
+    "README/_mod/Templates/FromCode.md",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working/dep-graph.part.bin",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92.lock",
@@ -381,7 +405,6 @@
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw.lock",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working/dep-graph.part.bin",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working",
-    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb.lock",
     "README/_mod/FileClasses/StandardCode.md",
     "README/_mod/FileClasses/FromCode.md",
     "README/_mod/FileClasses/SuperComponent.md",
@@ -398,8 +421,6 @@
     "_config/Metadata Menu/FileClasses/Studying/Subsection.md",
     "CSC/First/Kurose, Ross/Chapter 5.md",
     "CSC/Definitions/Kurose, Ross.md",
-    "CSC/First/Kurose, Ross/mod.md",
-    "README.md",
-    "CSC/First/Kurose, Ross/Chapter 4.md"
+    "CSC/First/Kurose, Ross/mod.md"
   ]
 }
