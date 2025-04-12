@@ -28,7 +28,9 @@
     "SubComponent_of",
     "SuperComponent_of",
     "SubComponent",
-    "SuperComponent"
+    "SuperComponent",
+    "is_code_for",
+    "can_be_coded_by"
   ],
   "CHECKBOX_STATES_OVERWRITTEN": false,
   "gridDefaultDepth": 25,
@@ -81,7 +83,8 @@
     "prev",
     "sub_component_of",
     "SubComponent_of",
-    "SubComponent"
+    "SubComponent",
+    "is_code_for"
   ],
   "limitJumpToFirstFields": [
     "sub_component_of",
@@ -90,7 +93,9 @@
     "SubComponent_of",
     "SuperComponent_of",
     "SubComponent",
-    "SuperComponent"
+    "SuperComponent",
+    "is_code_for",
+    "can_be_coded_by"
   ],
   "showAll": "All",
   "noPathMessage": "This note has no real or implied parents",
@@ -134,6 +139,17 @@
       "same": [],
       "down": [
         "SuperComponent"
+      ],
+      "next": [],
+      "prev": []
+    },
+    {
+      "up": [
+        "is_code_for"
+      ],
+      "same": [],
+      "down": [
+        "can_be_coded_by"
       ],
       "next": [],
       "prev": []

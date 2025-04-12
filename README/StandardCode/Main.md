@@ -10,12 +10,13 @@ SomeCode([u8; 4]) // A 4 digit (or letter) code
 ```
 
 > [!example]- Now lets imagine some dumb shit
-> Let's say we were want to know add a feature that tells us how close the news article is taking place 
+> Let's say we were want to add a feature that tells us how close a news article is taking place 
 > > [!info]- 
 > > That the actual real reason this logic is useful is more in the parsing use cases but it involves knowing _exactly_ how we store Provinces which is nested in a country, but [[GDELT-Event_Codebook-V2.0.pdf#page=7&selection=0,0,123,19|GDELT Locations are slightly more complicated than that.]] 
 > 
 > > [!note] Note
 > > For this example, the `Location` object is (poorly) stored as a raw array straight from GDELT (This example also shows us why we even create in memory objects like a **proper** `Location` to begin with):
+> > Read the [[GDELT-Event_Codebook-V2.0.pdf#page=7&selection=0,0,123,19| Location Codebook]] to see why `Location` look like this.
 > >  ```rust
 > >  struct Location([String, String, String, String, String, String, String, String]); //Can you see how fucked this looks already dude.
 > > ```

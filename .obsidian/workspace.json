@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/SubComponents/ActorTypes.md",
+                "file": "README/_mod/FileClasses/StandardCode.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,17 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "ActorTypes"
+              "title": "StandardCode"
+            }
+          },
+          {
+            "id": "caa5cabe5aed980c",
+            "type": "leaf",
+            "state": {
+              "type": "FileClassView__StandardCode",
+              "state": {},
+              "icon": "package",
+              "title": "StandardCode"
             }
           },
           {
@@ -37,7 +47,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/SubComponents/Country.md",
+                "file": "README/StandardCode/Main.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -52,7 +62,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Country"
+              "title": "Main"
             }
           },
           {
@@ -90,8 +100,33 @@
               "icon": "lucide-file-text",
               "title": "GDELT-Event_Codebook-V2.0"
             }
+          },
+          {
+            "id": "3a7ad217f0e6a0b6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README/StandardCode/FIPS.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "FIPS"
+            }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -338,6 +373,26 @@
             "id": "2bd125b8657b46cb",
             "type": "leaf",
             "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "88164ac42d3f7700",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "66cefa3221449548",
+            "type": "leaf",
+            "state": {
               "type": "BC-matrix",
               "state": {},
               "icon": "BC-trail-icon",
@@ -345,7 +400,7 @@
             }
           },
           {
-            "id": "88164ac42d3f7700",
+            "id": "02da813ebe6d61fe",
             "type": "leaf",
             "state": {
               "type": "BC-tree",
@@ -355,7 +410,7 @@
             }
           }
         ],
-        "currentTab": 16
+        "currentTab": 18
       }
     ],
     "direction": "horizontal",
@@ -385,16 +440,18 @@
       "breadcrumbs:Breadcrumbs Visualisation": false
     }
   },
-  "active": "7582d422b42ccc0d",
+  "active": "3a7ad217f0e6a0b6",
   "lastOpenFiles": [
-    "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
-    "README/SubComponents/ActorTypes.md",
-    "README/SubComponents/Country.md",
-    "reference_docs/CAMEO.type.txt",
-    "README/StandardCode/Main.md",
-    "README/SubComponents/Main.md",
-    "README/StandardCode/FIPS.md",
     "README/StandardCode/CAMEOCountry.md",
+    "README/_mod/FileClasses/StandardCode.md",
+    "README/StandardCode/TypeCode.md",
+    "README/StandardCode/FIPS.md",
+    "README/StandardCode/Main.md",
+    "README/SubComponents/Country.md",
+    "README/SubComponents/ActorTypes.md",
+    "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
+    "reference_docs/CAMEO.type.txt",
+    "README/SubComponents/Main.md",
     "README/_mod/Templates/StandardCode.md",
     "README/_mod/Templates/FromCode.md",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working/dep-graph.part.bin",
@@ -405,7 +462,6 @@
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw.lock",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working/dep-graph.part.bin",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working",
-    "README/_mod/FileClasses/StandardCode.md",
     "README/_mod/FileClasses/FromCode.md",
     "README/_mod/FileClasses/SuperComponent.md",
     "gdelt_fetcher/README/SubComponents/Country.md",
