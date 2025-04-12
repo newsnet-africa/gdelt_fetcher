@@ -1,0 +1,394 @@
+{
+  "main": {
+    "id": "6de423b5cdb905c3",
+    "type": "split",
+    "children": [
+      {
+        "id": "0ab626c051918278",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7582d422b42ccc0d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README/StandardCode/FIPS.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "FIPS"
+            }
+          },
+          {
+            "id": "361761bcce23d88f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README/SubComponents/Country.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "Country"
+            }
+          },
+          {
+            "id": "66d12a2c63f003f4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README/_mod/Templates/StandardCode.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "StandardCode"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c31ae492c75d359f",
+    "type": "split",
+    "children": [
+      {
+        "id": "21d0eba5c020582b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d12c7ef20059b982",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "b368e41695a9c614",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#ParagraphSummary",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c2c4fe243310992c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "709dae65a5ed286d",
+    "type": "split",
+    "children": [
+      {
+        "id": "483f133e0398db79",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "75887c064123917d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Untitled.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Untitled"
+            }
+          },
+          {
+            "id": "0c237977efdcd692",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Untitled.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Untitled"
+            }
+          },
+          {
+            "id": "d5125623afe25a66",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "054985ef70a7f447",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "93c78ad3247bd749",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "9caa3f1979c4aca2",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "de6e9e81300e23dc",
+            "type": "leaf",
+            "state": {
+              "type": "Timetable",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "096d6347779b8d30",
+            "type": "leaf",
+            "state": {
+              "type": "tags-overview-view",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "ad619726549fb80a",
+            "type": "leaf",
+            "state": {
+              "type": "Timetable",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "12bb7bf4874c38a1",
+            "type": "leaf",
+            "state": {
+              "type": "Timetable",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "a712a8403cce6cfc",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "1fa58a709923fcd8",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "8b4b86323956a268",
+            "type": "leaf",
+            "state": {
+              "type": "Timetable",
+              "state": {},
+              "icon": "table",
+              "title": "Timetable"
+            }
+          },
+          {
+            "id": "1ba7fbfc0d432382",
+            "type": "leaf",
+            "state": {
+              "type": "BC-matrix",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "39abf99823ac2325",
+            "type": "leaf",
+            "state": {
+              "type": "BC-tree",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          }
+        ],
+        "currentTab": 14
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "audio-recorder:Start/stop recording": false,
+      "markdown-importer:Open format converter": false,
+      "publish:Publish changes...": false,
+      "random-note:Open random note": false,
+      "zk-prefixer:Create new unique note": false,
+      "workspaces:Manage workspace layouts": false,
+      "obsidian-git:Open Git source control": false,
+      "handwritten-notes:Create empty handwritten note": false,
+      "xournalpp:Create new Xournal++ note": false,
+      "templater-obsidian:Templater": false,
+      "tags-overview:Tags overview": false,
+      "tag-page-md:Refresh tag page": false
+    }
+  },
+  "active": "66d12a2c63f003f4",
+  "lastOpenFiles": [
+    "README/StandardCode/FIPS.md",
+    "README/SubComponents/Country.md",
+    "README/_mod/Templates/StandardCode.md",
+    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working/dep-graph.part.bin",
+    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working",
+    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92.lock",
+    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw-working/dep-graph.part.bin",
+    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw-working",
+    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw.lock",
+    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working/dep-graph.part.bin",
+    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working",
+    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb.lock",
+    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfj5zt4-0iiyjsh-working/dep-graph.part.bin",
+    "README/StandardCode/CAMEOCountry.md",
+    "README/_mod/Templates/FromCode.md",
+    "README/_mod/FileClasses/StandardCode.md",
+    "README/_mod/FileClasses/FromCode.md",
+    "README/_mod/FileClasses/SuperComponent.md",
+    "gdelt_fetcher/README/SubComponents/Country.md",
+    "gdelt_fetcher/README/_mod/FileClasses/SubComponent.md",
+    "gdelt_fetcher/README/README.md",
+    "Scratch.md",
+    "gdelt_fetcher/models/TODOLIST.md",
+    "Even.md",
+    "_config/Templates/Studying/Parent Section.md",
+    "CSC/First/Kurose, Ross/Chapter 1.md",
+    "_config/Metabind/Parent Progress Tracker.md",
+    "_config/Metadata Menu/FileClasses/Studying/Chapter.md",
+    "_config/Metadata Menu/FileClasses/Studying/Subsection.md",
+    "CSC/First/Kurose, Ross/Chapter 5.md",
+    "CSC/Definitions/Kurose, Ross.md",
+    "CSC/First/Kurose, Ross/mod.md",
+    "README.md",
+    "CSC/First/Kurose, Ross/Chapter 4.md",
+    "CSC/First/Kurose, Ross/Chapter 3.md"
+  ]
+}

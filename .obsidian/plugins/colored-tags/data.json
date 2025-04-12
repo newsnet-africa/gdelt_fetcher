@@ -1,0 +1,25 @@
+{
+  "palette": {
+    "seed": 0,
+    "selected": "adaptive-soft",
+    "custom": "e12729-f37324-f8cc1b-72b043-007f4e"
+  },
+  "mixColors": true,
+  "transition": true,
+  "accessibility": {
+    "highTextContrast": false
+  },
+  "knownTags": {
+    "TODO": 1,
+    "THING": 2,
+    "SubSection": 3,
+    "SubSection/Level1": 1,
+    "ParagraphSummary": 4,
+    "SubSection/Level": 2,
+    "SubSection/Level2": 3,
+    "S": 5,
+    "internet": 6,
+    "internet/intro": 1
+  },
+  "_version": 3
+}

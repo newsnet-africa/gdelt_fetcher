@@ -1,5 +1,7 @@
 #[repr(transparent)]
 pub struct UNCode([u8; 3]);
+#[repr(transparent)]
+pub struct FIPSCode([u8; 2]);
 
 pub enum Country {
     Afghanistan,
