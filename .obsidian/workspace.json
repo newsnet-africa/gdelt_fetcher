@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/StandardCode/FIPS.md",
+                "file": "README/StandardCode/CAMEOCountry.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "FIPS"
+              "title": "CAMEOCountry"
             }
           },
           {
@@ -61,7 +61,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/_mod/Templates/StandardCode.md",
+                "file": "README/StandardCode/CAMEOCountry.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -76,11 +76,22 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "StandardCode"
+              "title": "CAMEOCountry"
+            }
+          },
+          {
+            "id": "4e67bf9557d416e8",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "GDELT-Event_Codebook-V2.0"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -353,11 +364,15 @@
       "tag-page-md:Refresh tag page": false
     }
   },
-  "active": "66d12a2c63f003f4",
+  "active": "7582d422b42ccc0d",
   "lastOpenFiles": [
-    "README/StandardCode/FIPS.md",
-    "README/SubComponents/Country.md",
+    "README/StandardCode/Main.md",
     "README/_mod/Templates/StandardCode.md",
+    "README/StandardCode/CAMEOCountry.md",
+    "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
+    "README/StandardCode/FIPS.md",
+    "README/_mod/Templates/FromCode.md",
+    "README/SubComponents/Country.md",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working/dep-graph.part.bin",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92.lock",
@@ -367,9 +382,6 @@
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working/dep-graph.part.bin",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb.lock",
-    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfj5zt4-0iiyjsh-working/dep-graph.part.bin",
-    "README/StandardCode/CAMEOCountry.md",
-    "README/_mod/Templates/FromCode.md",
     "README/_mod/FileClasses/StandardCode.md",
     "README/_mod/FileClasses/FromCode.md",
     "README/_mod/FileClasses/SuperComponent.md",
@@ -388,7 +400,6 @@
     "CSC/Definitions/Kurose, Ross.md",
     "CSC/First/Kurose, Ross/mod.md",
     "README.md",
-    "CSC/First/Kurose, Ross/Chapter 4.md",
-    "CSC/First/Kurose, Ross/Chapter 3.md"
+    "CSC/First/Kurose, Ross/Chapter 4.md"
   ]
 }
