@@ -1,6 +1,12 @@
 ---
 file_type: StandardCode
 ---
+IsACodeFor:: [[ActorTypes]]
+
+IsACodeFor:: [[ActorTypes]]
+
+IsACodeFor:: [[ActorTypes]]
+
 # Actor Type Codes
 These codes identify actors and their roles to provide context about the actors in question. These roles are useful for filtering out the nature of an event.
 

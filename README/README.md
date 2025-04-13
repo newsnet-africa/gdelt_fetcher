@@ -1,6 +1,9 @@
 #  Structure
 This library is in charge of everything that relates to the data that comes from the GDELT project. Here the following is supposed to happen:
 
+Source of the Dictionaries:
+The dictionaries that store the mappings of the codes of the SubComponents are stored [here](https://www.gdeltproject.org/data.html#documentation). 
+
 - [ ] Fetch Data from the source
 	- [x] CSV:
 		- [x] [[GDELT-Event_Codebook-V2.0.pdf|Event]] data
@@ -12,7 +15,7 @@ This library is in charge of everything that relates to the data that comes from
 		- [ ] [[GDELT GEO 2.0 API Debuts! – The GDELT Project.html|GGG]] data
 		- [ ] [[Announcing The Global Quotation Graph – The GDELT Project.html|GQG]] data
 		- [ ] [[Announcing the GDELT Global Difference Graph (GDG)_ Planetary Scale Change Detection For The Global News Media – The GDELT Project.html|GDG]] data 
-		> 	 Although I think it might be better to pull the GDG as an RSS Feed, given that it is an option, unlike some of the other graphs which only give us JSON files
+		> Although I think it might be better to pull the GDG as an RSS Feed, given that it is an option, unlike some of the other graphs which only give us JSON files
 - [ ] Parse the data into their Serialisable Rust object counterparts
 	- [ ] CSV:
 		- [ ] [[GDELT-Event_Codebook-V2.0.pdf|Event]] data
@@ -24,4 +27,4 @@ This library is in charge of everything that relates to the data that comes from
 		- [ ] [[GDELT GEO 2.0 API Debuts! – The GDELT Project.html|GGG]] data
 		- [ ] [[Announcing The Global Quotation Graph – The GDELT Project.html|GQG]] data
 		- [ ] [[Announcing the GDELT Global Difference Graph (GDG)_ Planetary Scale Change Detection For The Global News Media – The GDELT Project.html|GDG]] data
-	> Note that these objects are composed of other objects which should be found in the rest of this folder. The structure of these objects will be represented by the relationships that are created in this README Folder and Obsidian will graph them for you. If I'm not lazy, I'll also add details for how each subcomponent can be formed from the raw data.
+	> Note that these objects are composed of other subcomponent or otherwise objects which should be found in the rest of this folder. The structure of these objects will be represented by the relationships that are created in this README Folder and Obsidian will graph them for you. If I'm not lazy, I'll also add details for how each subcomponent can be formed from the raw data.

@@ -8,12 +8,12 @@
         "type": "tabs",
         "children": [
           {
-            "id": "7582d422b42ccc0d",
+            "id": "b4b06135591ea22b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/_mod/FileClasses/StandardCode.md",
+                "file": "README/README.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,45 +28,11 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "StandardCode"
+              "title": "README"
             }
           },
           {
-            "id": "caa5cabe5aed980c",
-            "type": "leaf",
-            "state": {
-              "type": "FileClassView__StandardCode",
-              "state": {},
-              "icon": "package",
-              "title": "StandardCode"
-            }
-          },
-          {
-            "id": "361761bcce23d88f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README/StandardCode/Main.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "Main"
-            }
-          },
-          {
-            "id": "66d12a2c63f003f4",
+            "id": "842a4b7ecac6f156",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -90,24 +56,26 @@
             }
           },
           {
-            "id": "4e67bf9557d416e8",
+            "id": "f415af26a06b904b",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "webviewer",
               "state": {
-                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
+                "url": "https://www.gdeltproject.org/data.html#documentation",
+                "title": "Data: Querying, Analyzing and Downloading: The GDELT Project",
+                "mode": "webview"
               },
-              "icon": "lucide-file-text",
-              "title": "GDELT-Event_Codebook-V2.0"
+              "icon": "globe-2",
+              "title": "Data: Querying, Analyzing and Downloading: The GDELT Project"
             }
           },
           {
-            "id": "3a7ad217f0e6a0b6",
+            "id": "8daa5c000d6e3741",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/StandardCode/FIPS.md",
+                "file": "README/StandardCode/EthnicCode.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -122,11 +90,11 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "FIPS"
+              "title": "EthnicCode"
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -393,24 +361,44 @@
             "id": "66cefa3221449548",
             "type": "leaf",
             "state": {
-              "type": "BC-matrix",
+              "type": "empty",
               "state": {},
-              "icon": "BC-trail-icon",
-              "title": "Breadcrumbs Matrix"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           },
           {
             "id": "02da813ebe6d61fe",
             "type": "leaf",
             "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "2a2d9118786a984f",
+            "type": "leaf",
+            "state": {
+              "type": "BC-matrix",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "e8829675c793472d",
+            "type": "leaf",
+            "state": {
               "type": "BC-tree",
               "state": {},
-              "icon": "feather-corner-right-down",
-              "title": "Breadcrumbs Down"
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
             }
           }
         ],
-        "currentTab": 18
+        "currentTab": 20
       }
     ],
     "direction": "horizontal",
@@ -436,22 +424,31 @@
       "xournalpp:Create new Xournal++ note": false,
       "templater-obsidian:Templater": false,
       "tags-overview:Tags overview": false,
-      "tag-page-md:Refresh tag page": false,
-      "breadcrumbs:Breadcrumbs Visualisation": false
+      "tag-page-md:Refresh tag page": false
     }
   },
-  "active": "3a7ad217f0e6a0b6",
+  "active": "8daa5c000d6e3741",
   "lastOpenFiles": [
     "README/StandardCode/CAMEOCountry.md",
+    "README/StandardCode/FIPS.md",
+    "README/StandardCode/KnownGroupCode.md",
+    "README/SubComponents/KnownGroup.md",
+    "README/StandardCode/EthnicCode.md",
+    "README/SubComponents/Untitled.md",
+    "reference_docs/CAMEO.ethnic.txt",
+    "README/SubComponents/ActorTypes.md",
+    "README/SubComponents/Country.md",
+    "reference_docs/CAMEO.knowngroup.txt",
+    "README/SuperComponent/Actor.md",
+    "README/SuperComponent",
+    "README/README.md",
+    "README/_mod/FileClasses/FromCode.md",
+    "README/SubComponents/Main.md",
     "README/_mod/FileClasses/StandardCode.md",
     "README/StandardCode/TypeCode.md",
-    "README/StandardCode/FIPS.md",
     "README/StandardCode/Main.md",
-    "README/SubComponents/Country.md",
-    "README/SubComponents/ActorTypes.md",
     "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
     "reference_docs/CAMEO.type.txt",
-    "README/SubComponents/Main.md",
     "README/_mod/Templates/StandardCode.md",
     "README/_mod/Templates/FromCode.md",
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working/dep-graph.part.bin",
@@ -459,10 +456,6 @@
     "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92.lock",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw-working/dep-graph.part.bin",
     "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw-working",
-    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw.lock",
-    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working/dep-graph.part.bin",
-    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfj67lq-18ki4bb-working",
-    "README/_mod/FileClasses/FromCode.md",
     "README/_mod/FileClasses/SuperComponent.md",
     "gdelt_fetcher/README/SubComponents/Country.md",
     "gdelt_fetcher/README/_mod/FileClasses/SubComponent.md",
@@ -471,12 +464,6 @@
     "gdelt_fetcher/models/TODOLIST.md",
     "Even.md",
     "_config/Templates/Studying/Parent Section.md",
-    "CSC/First/Kurose, Ross/Chapter 1.md",
-    "_config/Metabind/Parent Progress Tracker.md",
-    "_config/Metadata Menu/FileClasses/Studying/Chapter.md",
-    "_config/Metadata Menu/FileClasses/Studying/Subsection.md",
-    "CSC/First/Kurose, Ross/Chapter 5.md",
-    "CSC/Definitions/Kurose, Ross.md",
-    "CSC/First/Kurose, Ross/mod.md"
+    "CSC/First/Kurose, Ross/Chapter 1.md"
   ]
 }

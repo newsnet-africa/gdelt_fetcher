@@ -1,7 +1,7 @@
 {
   "addDendronNotes": false,
   "addDateNotes": false,
-  "aliasesInIndex": false,
+  "aliasesInIndex": true,
   "alphaSortAsc": true,
   "altLinkFields": [],
   "CSVPaths": "",
@@ -17,7 +17,7 @@
   "dendronNoteField": "up",
   "dvWaitTime": 5000,
   "enableAlphaSort": true,
-  "enableRelationSuggestor": false,
+  "enableRelationSuggestor": true,
   "fieldSuggestor": true,
   "filterImpliedSiblingsOfDifferentTypes": false,
   "jugglLayout": "hierarchy",
@@ -30,7 +30,9 @@
     "SubComponent",
     "SuperComponent",
     "is_code_for",
-    "can_be_coded_by"
+    "can_be_coded_by",
+    "SourceStandardCodes",
+    "IsACodeFor"
   ],
   "CHECKBOX_STATES_OVERWRITTEN": false,
   "gridDefaultDepth": 25,
@@ -46,10 +48,10 @@
   "namingSystemRegex": "",
   "namingSystemSplit": ".",
   "namingSystemEndsWithDelimiter": false,
-  "refreshOnNoteChange": false,
+  "refreshOnNoteChange": true,
   "useAllMetadata": true,
   "openMatrixOnLoad": true,
-  "openDuckOnLoad": false,
+  "openDuckOnLoad": true,
   "openDownOnLoad": true,
   "parseJugglLinksWithoutJuggl": false,
   "showNameOrType": true,
@@ -57,8 +59,8 @@
   "regexNoteField": "",
   "relSuggestorTrigger": "\\",
   "rlLeaf": true,
-  "showAllPathsIfNoneToIndexNote": false,
-  "showAllAliases": true,
+  "showAllPathsIfNoneToIndexNote": true,
+  "showAllAliases": false,
   "showBCs": true,
   "showBCsInEditLPMode": false,
   "showRefreshNotice": true,
@@ -84,23 +86,21 @@
     "sub_component_of",
     "SubComponent_of",
     "SubComponent",
-    "is_code_for"
+    "is_code_for",
+    "IsACodeFor"
   ],
   "limitJumpToFirstFields": [
-    "sub_component_of",
-    "is_made_up_of",
-    "s_made_up_of",
-    "SubComponent_of",
-    "SuperComponent_of",
     "SubComponent",
     "SuperComponent",
     "is_code_for",
-    "can_be_coded_by"
+    "can_be_coded_by",
+    "SourceStandardCodes",
+    "IsACodeFor"
   ],
   "showAll": "All",
   "noPathMessage": "This note has no real or implied parents",
   "tagNoteField": "",
-  "threadIntoNewPane": false,
+  "threadIntoNewPane": true,
   "threadingTemplate": "{{field}} of {{current}}",
   "threadingDirTemplates": {
     "up": "",
@@ -109,7 +109,7 @@
     "next": "",
     "prev": ""
   },
-  "threadUnderCursor": false,
+  "threadUnderCursor": true,
   "trailSeperator": "→",
   "treatCurrNodeAsImpliedSibling": false,
   "trimDendronNotes": false,
@@ -153,10 +153,21 @@
       ],
       "next": [],
       "prev": []
+    },
+    {
+      "up": [
+        "IsACodeFor"
+      ],
+      "same": [],
+      "down": [
+        "SourceStandardCodes"
+      ],
+      "next": [],
+      "prev": []
     }
   ],
-  "writeBCsInline": false,
-  "showWriteAllBCsCmd": false,
+  "writeBCsInline": true,
+  "showWriteAllBCsCmd": true,
   "visGraph": "Force Directed Graph",
   "visRelation": "Parent",
   "visClosed": "Real",
@@ -171,6 +182,6 @@
     "parentsParentsIsParent": false,
     "cousinsIsSibling": false
   },
-  "refreshOnNoteSave": false,
-  "showUpInJuggl": false
+  "refreshOnNoteSave": true,
+  "showUpInJuggl": true
 }
