@@ -31,7 +31,7 @@
   ],
   "frontmatterOnly": false,
   "showFileClassSelectInModal": true,
-  "chooseFileClassAtFileCreation": true,
+  "chooseFileClassAtFileCreation": false,
   "autoInsertFieldsAtFileClassInsertion": true,
   "fileClassIcon": "package",
   "isAutoCalculationEnabled": true

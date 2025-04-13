@@ -8,12 +8,24 @@
         "type": "tabs",
         "children": [
           {
-            "id": "b4b06135591ea22b",
+            "id": "97bc809e2857d6a8",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "graph",
+              "state": {},
+              "pinned": true,
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          },
+          {
+            "id": "7ed9eff3257b5ea3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/README.md",
+                "file": "README/SuperComponent/Event.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,73 +40,23 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "Event"
             }
           },
           {
-            "id": "842a4b7ecac6f156",
+            "id": "149ec4983564f3c9",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "README/StandardCode/CAMEOCountry.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
+                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
               },
-              "icon": "lucide-file",
-              "title": "CAMEOCountry"
-            }
-          },
-          {
-            "id": "f415af26a06b904b",
-            "type": "leaf",
-            "state": {
-              "type": "webviewer",
-              "state": {
-                "url": "https://www.gdeltproject.org/data.html#documentation",
-                "title": "Data: Querying, Analyzing and Downloading: The GDELT Project",
-                "mode": "webview"
-              },
-              "icon": "globe-2",
-              "title": "Data: Querying, Analyzing and Downloading: The GDELT Project"
-            }
-          },
-          {
-            "id": "8daa5c000d6e3741",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README/StandardCode/EthnicCode.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "EthnicCode"
+              "icon": "lucide-file-text",
+              "title": "GDELT-Event_Codebook-V2.0"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -381,6 +343,76 @@
             "id": "2a2d9118786a984f",
             "type": "leaf",
             "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "e8829675c793472d",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "051a82243b4e959e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "a023e823dddbf577",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "2750a8fe4323f9f5",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "9c7735988a2c77b6",
+            "type": "leaf",
+            "state": {
+              "type": "juggl_nodes",
+              "state": {},
+              "icon": "ag-node-list",
+              "title": "Juggl nodes"
+            }
+          },
+          {
+            "id": "b459e12bd84c07e1",
+            "type": "leaf",
+            "state": {
+              "type": "juggl_style",
+              "state": {},
+              "icon": "ag-style",
+              "title": "Juggl style"
+            }
+          },
+          {
+            "id": "9cec885d63c06b10",
+            "type": "leaf",
+            "state": {
               "type": "BC-matrix",
               "state": {},
               "icon": "lucide-file",
@@ -388,7 +420,17 @@
             }
           },
           {
-            "id": "e8829675c793472d",
+            "id": "edc1f90bfd81fbaa",
+            "type": "leaf",
+            "state": {
+              "type": "BC-ducks",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "d0f3801a52ecd690",
             "type": "leaf",
             "state": {
               "type": "BC-tree",
@@ -398,7 +440,7 @@
             }
           }
         ],
-        "currentTab": 20
+        "currentTab": 28
       }
     ],
     "direction": "horizontal",
@@ -424,46 +466,47 @@
       "xournalpp:Create new Xournal++ note": false,
       "templater-obsidian:Templater": false,
       "tags-overview:Tags overview": false,
-      "tag-page-md:Refresh tag page": false
+      "tag-page-md:Refresh tag page": false,
+      "juggl:Juggl global graph": false
     }
   },
-  "active": "8daa5c000d6e3741",
+  "active": "149ec4983564f3c9",
   "lastOpenFiles": [
-    "README/StandardCode/CAMEOCountry.md",
-    "README/StandardCode/FIPS.md",
-    "README/StandardCode/KnownGroupCode.md",
-    "README/SubComponents/KnownGroup.md",
-    "README/StandardCode/EthnicCode.md",
-    "README/SubComponents/Untitled.md",
-    "reference_docs/CAMEO.ethnic.txt",
-    "README/SubComponents/ActorTypes.md",
-    "README/SubComponents/Country.md",
-    "reference_docs/CAMEO.knowngroup.txt",
+    "README/Schema",
+    "README/SuperComponent/Event.md",
     "README/SuperComponent/Actor.md",
-    "README/SuperComponent",
-    "README/README.md",
-    "README/_mod/FileClasses/FromCode.md",
-    "README/SubComponents/Main.md",
-    "README/_mod/FileClasses/StandardCode.md",
-    "README/StandardCode/TypeCode.md",
-    "README/StandardCode/Main.md",
-    "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
-    "reference_docs/CAMEO.type.txt",
-    "README/_mod/Templates/StandardCode.md",
-    "README/_mod/Templates/FromCode.md",
-    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working/dep-graph.part.bin",
-    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92-working",
-    "target/debug/incremental/models-1irbe4u8ni7hh/s-h6cvfpgqll-02ayv92.lock",
-    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw-working/dep-graph.part.bin",
-    "target/debug/incremental/models-2zyg9ohj5fq2m/s-h6cvfpgmer-0j6n7fw-working",
-    "README/_mod/FileClasses/SuperComponent.md",
-    "gdelt_fetcher/README/SubComponents/Country.md",
-    "gdelt_fetcher/README/_mod/FileClasses/SubComponent.md",
-    "gdelt_fetcher/README/README.md",
-    "Scratch.md",
-    "gdelt_fetcher/models/TODOLIST.md",
-    "Even.md",
-    "_config/Templates/Studying/Parent Section.md",
-    "CSC/First/Kurose, Ross/Chapter 1.md"
+    "README/SubComponents/EventSubComponents/Subcategories/DiplomaticRelations.md",
+    "README/StandardCode/EventCodes/SubcategoryCode.md",
+    "README/StandardCode/EventCodes/TopLevelActionCode.md",
+    "README/SubComponents/EventSubComponents/Subcategories/Sanctions.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/YieldingAndSanctions.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Threats.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Rejection.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/ReducedRelation.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/PublicStatement.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Protest.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/MaterialAidProvision.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/MassViolence.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/ForcePosture.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Disapproval.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/CooperationAndIntent.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/ConsultationAndDiplomacy.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Conflict.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Coersion.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Assault.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/Appeal.md",
+    "README/SubComponents/EventSubComponents/Subcategories/Yield.md",
+    "README/SubComponents/EventSubComponents/Subcategories/Political.md",
+    "README/SubComponents/EventSubComponents/Subcategories",
+    "reference_docs/CAMEO.eventcodes.txt",
+    "README/SubComponents/EventSubComponents/Top Level Actions",
+    "README/StandardCode/EventCodes",
+    "README/StandardCode/ActorCodes",
+    "README/SubComponents/EventSubComponents",
+    "README/SubComponents/ActorSubComponents",
+    "reference_docs/CAMEO.ethnic.txt",
+    "reference_docs/CAMEO.knowngroup.txt",
+    "README/SuperComponent"
   ]
 }
