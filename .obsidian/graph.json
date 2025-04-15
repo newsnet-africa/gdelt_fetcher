@@ -1,6 +1,6 @@
 {
   "collapse-filter": true,
-  "search": "path:README/SuperComponent  OR path:README/SubComponents  ",
+  "search": "path:README/SuperComponent  OR path:README/SubComponents/EventSubComponents  ",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -15,7 +15,7 @@
       }
     },
     {
-      "query": "path:README/SubComponents/ActorSubComponents  OR path:\"README/SubComponents/EventSubComponents/Top Level Actions\"  ",
+      "query": "path:README/SubComponents/ActorSubComponents  OR path:\"README/SubComponents/EventSubComponents/Top Level Actions\"  OR path:README/SubComponents/LocationSubComponents  ",
       "color": {
         "a": 1,
         "rgb": 9785269

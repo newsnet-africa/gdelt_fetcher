@@ -4,7 +4,6 @@ SourceStandardCodes:
   - "[[TopLevelActionCode]]"
 SubComponent:
   - "[[Event]]"
-SuperComponent: 
+SuperComponent:
+  - "[[DiplomaticRelations]]"
 ---
-SuperComponent:: [[DiplomaticRelations]]
-

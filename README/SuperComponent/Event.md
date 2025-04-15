@@ -62,7 +62,8 @@ With the above example in mind, let's look at how the sub categories can define 
 > 
 > ```mermaid
 > flowchart TD
-> 	Nzuzo --creates action--> Disapproves --receives action--> Randon
+> 	Nzuzo --creates action--> Disapproves 
+> 	Randon --receives action --> Disapproves
 > 	Accuse..Accusation  --SubCategory--> Accusation
 > 	subgraph Disapproves
 > 		Accuse..Accusation

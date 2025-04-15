@@ -22,10 +22,38 @@
           {
             "id": "7ed9eff3257b5ea3",
             "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
+              },
+              "pinned": true,
+              "icon": "lucide-file-text",
+              "title": "GDELT-Event_Codebook-V2.0"
+            }
+          },
+          {
+            "id": "f678f2e52b854790",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "reference_docs/CAMEO.Manual.1.1b3.pdf"
+              },
+              "pinned": true,
+              "icon": "lucide-file-text",
+              "title": "CAMEO.Manual.1.1b3"
+            }
+          },
+          {
+            "id": "c6f804c297ebfdbd",
+            "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README/SuperComponent/Event.md",
+                "file": "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -40,19 +68,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Event"
-            }
-          },
-          {
-            "id": "149ec4983564f3c9",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "GDELT-Event_Codebook-V2.0"
+              "title": "InvestigationAndDemands"
             }
           }
         ],
@@ -470,43 +486,43 @@
       "juggl:Juggl global graph": false
     }
   },
-  "active": "149ec4983564f3c9",
+  "active": "f678f2e52b854790",
   "lastOpenFiles": [
-    "README/Schema",
+    "models/src/components/base_components/verb.rs~",
+    "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
+    "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
+    "models/src/components/base_components/verb.rs",
+    "models/src/components/base_components/verb/mod.rs",
+    "models/src/components/base_components/verb",
+    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca/work-products.bin",
+    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca/query-cache.bin",
+    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca/dep-graph.bin",
+    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca",
+    "target/debug/incremental/models-3pdl6m556x1vt/s-h6g5u7wgr4-02k9q2w-7jydjcu27zcz295fd84vv77fw/work-products.bin",
+    "target/debug/incremental/models-3pdl6m556x1vt/s-h6g5u7wgr4-02k9q2w-7jydjcu27zcz295fd84vv77fw/query-cache.bin",
+    "README/SubComponents/ActorSubComponents/ActorTypes.md",
+    "README/StandardCode/LocationCodes/GeoTypeCode.md",
+    "README/StandardCode/EventCodes/SubcategoryCode.md",
+    "README/SubComponents/EventSubComponents/Top Level Actions/ReducedRelation.md",
+    "README/SubComponents/LocationSubComponents/Administration.md",
+    "README/SubComponents/LocationSubComponents/GeoFeature.md",
+    "README/SubComponents/LocationSubComponents/GeoType.md",
     "README/SuperComponent/Event.md",
+    "README/SuperComponent/Location.md",
+    "README/StandardCode/LocationCodes/GeoFeatureID.md",
+    "README/StandardCode/LocationCodes/AdministrationCode.md",
     "README/SuperComponent/Actor.md",
     "README/SubComponents/EventSubComponents/Subcategories/DiplomaticRelations.md",
-    "README/StandardCode/EventCodes/SubcategoryCode.md",
     "README/StandardCode/EventCodes/TopLevelActionCode.md",
     "README/SubComponents/EventSubComponents/Subcategories/Sanctions.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/YieldingAndSanctions.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/Threats.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/Rejection.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/ReducedRelation.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/PublicStatement.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/Protest.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/MaterialAidProvision.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/MassViolence.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/ForcePosture.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/Disapproval.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/CooperationAndIntent.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/ConsultationAndDiplomacy.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/Conflict.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/Coersion.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/Assault.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/Appeal.md",
-    "README/SubComponents/EventSubComponents/Subcategories/Yield.md",
-    "README/SubComponents/EventSubComponents/Subcategories/Political.md",
-    "README/SubComponents/EventSubComponents/Subcategories",
-    "reference_docs/CAMEO.eventcodes.txt",
-    "README/SubComponents/EventSubComponents/Top Level Actions",
-    "README/StandardCode/EventCodes",
-    "README/StandardCode/ActorCodes",
-    "README/SubComponents/EventSubComponents",
-    "README/SubComponents/ActorSubComponents",
-    "reference_docs/CAMEO.ethnic.txt",
-    "reference_docs/CAMEO.knowngroup.txt",
-    "README/SuperComponent"
+    "README/SubComponents/EventSubComponents/Top Level Actions/Disapproval.md"
   ]
 }
