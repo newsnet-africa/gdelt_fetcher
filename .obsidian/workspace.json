@@ -20,59 +20,19 @@
             }
           },
           {
-            "id": "7ed9eff3257b5ea3",
+            "id": "d96aa1aaf28a16cf",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "pdf",
               "state": {
-                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
+                "file": "reference_docs/gkg/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf"
               },
-              "pinned": true,
               "icon": "lucide-file-text",
-              "title": "GDELT-Event_Codebook-V2.0"
-            }
-          },
-          {
-            "id": "f678f2e52b854790",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "reference_docs/CAMEO.Manual.1.1b3.pdf"
-              },
-              "pinned": true,
-              "icon": "lucide-file-text",
-              "title": "CAMEO.Manual.1.1b3"
-            }
-          },
-          {
-            "id": "c6f804c297ebfdbd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "InvestigationAndDemands"
+              "title": "GDELT-Global_Knowledge_Graph_Codebook-V2.1"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -486,25 +446,25 @@
       "juggl:Juggl global graph": false
     }
   },
-  "active": "f678f2e52b854790",
+  "active": "d12c7ef20059b982",
   "lastOpenFiles": [
-    "models/src/components/base_components/verb.rs~",
+    "reference_docs/gkg/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf",
+    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnw0jc7b-0igc45d-working/dep-graph.part.bin",
+    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnw0jc7b-0igc45d-working",
+    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnw0jc7b-0igc45d.lock",
+    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnw0jbgo-0v95ibt-working/dep-graph.part.bin",
+    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnw0jbgo-0v95ibt-working",
+    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnw0jbgo-0v95ibt.lock",
+    "models/src/schema/global_knowledge_graph_table.rszWkwuJ.bck",
+    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnvwc4do-1jjmlqp-working/dep-graph.part.bin",
+    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnvwc4do-1jjmlqp-working",
+    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnvwc4do-1im0i1v-working/dep-graph.part.bin",
+    "README/SubComponents/LocationSubComponents/Administration.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
-    "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf",
-    "models/src/components/base_components/verb.rs",
-    "models/src/components/base_components/verb/mod.rs",
-    "models/src/components/base_components/verb",
-    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca/work-products.bin",
-    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca/query-cache.bin",
-    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca/dep-graph.bin",
-    "target/debug/incremental/models-07i4buylaculx/s-h6g5u7wkii-09akm5e-87ssa1sca2zta0lnvlswqs4ca",
-    "target/debug/incremental/models-3pdl6m556x1vt/s-h6g5u7wgr4-02k9q2w-7jydjcu27zcz295fd84vv77fw/work-products.bin",
-    "target/debug/incremental/models-3pdl6m556x1vt/s-h6g5u7wgr4-02k9q2w-7jydjcu27zcz295fd84vv77fw/query-cache.bin",
     "README/SubComponents/ActorSubComponents/ActorTypes.md",
     "README/StandardCode/LocationCodes/GeoTypeCode.md",
     "README/StandardCode/EventCodes/SubcategoryCode.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/ReducedRelation.md",
-    "README/SubComponents/LocationSubComponents/Administration.md",
     "README/SubComponents/LocationSubComponents/GeoFeature.md",
     "README/SubComponents/LocationSubComponents/GeoType.md",
     "README/SuperComponent/Event.md",

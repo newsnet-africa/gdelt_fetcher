@@ -5,3 +5,5 @@ pub mod known_group;
 pub mod religion;
 
 pub struct ActorName(String);
+
+pub struct ActorCountry(Country);

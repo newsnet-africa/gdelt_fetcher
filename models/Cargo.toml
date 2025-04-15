@@ -10,3 +10,4 @@ chrono = "*"
 serde = { version="*", features=["derive"]}
 rss = "*"
 serde_json = "*"
+xml-rs = "*"
