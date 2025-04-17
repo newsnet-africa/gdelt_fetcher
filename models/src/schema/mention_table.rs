@@ -1,16 +1,18 @@
 use chrono::{DateTime, Utc};
+use rust_iso639::IndividualLanguages;
+use url::Url;
 
 use crate::components::base_components::event::AverageTone;
 
 use super::primary_keys::GlobalEventID;
 
 pub enum MentionType {
-    Web(todo!()),
-    CitationOnly(todo!()),
-    Core(todo!()),
-    DTIC(todo!()),
-    JSTOR(todo!()),
-    NonTextualSource(todo!()),
+    Web(Url),
+    CitationOnly(String),
+    Core(String),
+    DTIC(String),
+    JSTOR(String),
+    NonTextualSource(String),
 }
 
 pub struct SentenceID(u128);
@@ -20,7 +22,7 @@ pub struct CharOffset(u128);
 pub struct Confidence(u8);
 
 pub struct TranslationInfo {
-    pub source_lang: Language,
+    pub source_lang: IndividualLanguages,
     pub engine: String,
 }
 

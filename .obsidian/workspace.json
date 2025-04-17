@@ -25,10 +25,20 @@
             "state": {
               "type": "pdf",
               "state": {
-                "file": "reference_docs/gkg/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf"
+                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "GDELT-Global_Knowledge_Graph_Codebook-V2.1"
+              "title": "GDELT-Event_Codebook-V2.0"
+            }
+          },
+          {
+            "id": "8955729d7594e33c",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ],
@@ -446,19 +456,20 @@
       "juggl:Juggl global graph": false
     }
   },
-  "active": "d12c7ef20059b982",
+  "active": "d96aa1aaf28a16cf",
   "lastOpenFiles": [
-    "reference_docs/gkg/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf",
-    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnw0jc7b-0igc45d-working/dep-graph.part.bin",
-    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnw0jc7b-0igc45d-working",
-    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnw0jc7b-0igc45d.lock",
-    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnw0jbgo-0v95ibt-working/dep-graph.part.bin",
-    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnw0jbgo-0v95ibt-working",
-    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnw0jbgo-0v95ibt.lock",
-    "models/src/schema/global_knowledge_graph_table.rszWkwuJ.bck",
-    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnvwc4do-1jjmlqp-working/dep-graph.part.bin",
-    "target/debug/incremental/models-1i58e8xo6ls7q/s-h6gnvwc4do-1jjmlqp-working",
-    "target/debug/incremental/models-1qd0qa0ouksui/s-h6gnvwc4do-1im0i1v-working/dep-graph.part.bin",
+    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isc45gdc-0dvpito-working/dep-graph.part.bin",
+    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isc45gdc-0dvpito-working",
+    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isc45gdc-0dvpito.lock",
+    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isc45fn9-1mxpwpe-working/dep-graph.part.bin",
+    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isc45fn9-1mxpwpe-working",
+    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isc45fn9-1mxpwpe.lock",
+    "models/src/components/base_components/event/verb.rsOEwKgy.bck",
+    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isc1q4k4-1ey5kru-working/dep-graph.part.bin",
+    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isc1q4k4-1ey5kru-working",
+    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isc1q4k4-1ey5kru.lock",
+    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isc1q2cv-1v9ddqk-working/dep-graph.part.bin",
+    "README/README.md",
     "README/SubComponents/LocationSubComponents/Administration.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
     "README/SubComponents/ActorSubComponents/ActorTypes.md",
@@ -482,7 +493,6 @@
     "README/SubComponents/EventSubComponents/Top Level Actions/Protest.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/MaterialAidProvision.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/MassViolence.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/ForcePosture.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/Disapproval.md"
+    "README/SubComponents/EventSubComponents/Top Level Actions/ForcePosture.md"
   ]
 }

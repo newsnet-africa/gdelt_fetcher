@@ -49,7 +49,7 @@ ava	Caucasian Avars
 awa	Awadhi
 aym	Aymara
 aze	Azerbaijani
-bad	Baganda
+bad	Baganda,
 bah	Bahais
 bai	Bamileke
 bak	Bashkirs

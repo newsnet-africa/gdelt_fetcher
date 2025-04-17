@@ -46,7 +46,7 @@ CAMEOEVENTCODE	EVENTDESCRIPTION
 0313	Express intent to cooperate on judicial matters
 0314	Express intent to cooperate on intelligence
 032	Express intent to provide diplomatic cooperation such as policy support
-033	Express intent to provide matyerial aid, not specified below
+033	Express intent to provide aid, not specified below
 0331	Express intent to provide economic aid
 0332	Express intent to provide military aid
 0333	Express intent to provide humanitarian aid

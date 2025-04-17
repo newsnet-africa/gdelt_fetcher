@@ -1,3 +1,5 @@
+use country::CountryZone;
+
 pub mod actor_type;
 pub mod country;
 pub mod ethnicity;
@@ -6,4 +8,4 @@ pub mod religion;
 
 pub struct ActorName(String);
 
-pub struct ActorCountry(Country);
+pub struct ActorCountry(CountryZone);

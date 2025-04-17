@@ -1,1 +1,2 @@
-pub struct CAMEOVerbCode([u8; 4]);
+#[repr(transparent)]
+pub struct CAMEOVerbCode(pub [u8; 4]);

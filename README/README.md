@@ -16,7 +16,7 @@ The dictionaries that store the mappings of the codes of the SubComponents are s
 		- [ ] [[Announcing The Global Quotation Graph – The GDELT Project.html|GQG]] data
 		- [ ] [[Announcing the GDELT Global Difference Graph (GDG)_ Planetary Scale Change Detection For The Global News Media – The GDELT Project.html|GDG]] data 
 		> Although I think it might be better to pull the GDG as an RSS Feed, given that it is an option, unlike some of the other graphs which only give us JSON files
-- [ ] Parse the data into their Serialisable Rust object counterparts
+- [>] Parse the data into their Serialisable Rust object counterparts
 	- [ ] CSV:
 		- [ ] [[GDELT-Event_Codebook-V2.0.pdf|Event]] data
 		- [ ] [[GDELT-Event_Codebook-V2.0.pdf|Mention]] data
@@ -28,3 +28,9 @@ The dictionaries that store the mappings of the codes of the SubComponents are s
 		- [ ] [[Announcing The Global Quotation Graph – The GDELT Project.html|GQG]] data
 		- [ ] [[Announcing the GDELT Global Difference Graph (GDG)_ Planetary Scale Change Detection For The Global News Media – The GDELT Project.html|GDG]] data
 	> Note that these objects are composed of other subcomponent or otherwise objects which should be found in the rest of this folder. The structure of these objects will be represented by the relationships that are created in this README Folder and Obsidian will graph them for you. If I'm not lazy, I'll also add details for how each subcomponent can be formed from the raw data.
+	
+	- [x] Actor
+	- [x] Country
+	- [x] KnownGroup
+	- [x] Ethnicity
+	- [x] Religion
