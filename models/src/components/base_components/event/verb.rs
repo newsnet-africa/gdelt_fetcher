@@ -1,8 +1,9 @@
 use subcategories::{
-    Aid, Assault, Coercion, Consultation, Cooperation, DiplomaticCooperation, Disapproval, Fight,
-    ForcePosture, InternationalInvolvement, Investigation, MassViolence, MaterialCooperation,
-    PoliticalReform, Protest, PublicStatement, Rejection, Relations, ReturnRelease, Threat,
-    Yieldable,
+    AdministrativeSanctions, Aid, ArialWeapons, Assault, Bombing, Change, Coercion, Consultation,
+    Cooperation, DiplomaticCooperation, Disapproval, Fight, ForcePosture, InternationalInvolvement,
+    Investigation, MassViolence, MaterialCooperation, MilitaryEngagement, MilitaryForce, NonForce,
+    PhysicalAssault, PoliticalReform, Protest, PublicStatement, Rejection, Relations,
+    ReturnRelease, SeizeDamageProperty, Threat, WMD, Yieldable,
 };
 use top_level_actions::Verb;
 
@@ -16,6 +17,7 @@ pub mod top_level_actions {
     };
 
     pub enum Verb {
+        Unspecified,
         MakePublicStatement(PublicStatement),
         Appeal(Cooperation),
         IntentionToCooperate(Cooperation),
@@ -65,6 +67,7 @@ pub mod subcategories {
         AcceptMediation,
         Mediate,
         Ceasefire,
+        Withdraw,
     }
 
     pub enum Consultation {
@@ -94,6 +97,7 @@ pub mod subcategories {
         Military,
         Judicial,
         ShareIntelligenceOrInformation,
+        Aid(Aid),
     }
 
     pub enum Aid {
@@ -128,6 +132,8 @@ pub mod subcategories {
         HumanRightsAbuses,
         MilitaryAction,
         WarCrimes,
+        EspionageTreason,
+        Aggression,
     }
 
     pub enum Disapproval {
@@ -185,6 +191,7 @@ pub mod subcategories {
     }
 
     pub enum Change {
+        Unspecified,
         Leadership,
         Policy,
         Rights,
@@ -223,10 +230,11 @@ pub mod subcategories {
         Unspecified,
         PeaceKeepers,
         InspectorsObservers,
-        Aid,
+        Aid(Aid),
     }
 
     pub enum SeizeDamageProperty {
+        Unspecified,
         Confiscate,
         Destroy,
     }
@@ -267,6 +275,7 @@ pub mod subcategories {
     }
 
     pub enum ArialWeapons {
+        Unspecified,
         PrecisionGuided,
         RemotelyPiloted,
     }
@@ -317,7 +326,6 @@ impl From<CAMEOVerbCode> for Verb {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
         match &str_value[..2] {
             "01" => match str_value.chars().nth(2) {
-                Some('0') => Verb::MakePublicStatement(PublicStatement::Unspecified),
                 Some('1') => Verb::MakePublicStatement(PublicStatement::DeclineToComment),
                 Some('2') => Verb::MakePublicStatement(PublicStatement::MakePessamisticComment),
                 Some('3') => Verb::MakePublicStatement(PublicStatement::MakeOptimisticComment),
@@ -329,13 +337,10 @@ impl From<CAMEOVerbCode> for Verb {
                 Some('7') => Verb::MakePublicStatement(PublicStatement::EngageInSymbolicAct),
                 Some('8') => Verb::MakePublicStatement(PublicStatement::MakeEmpatheticComment),
                 Some('9') => Verb::MakePublicStatement(PublicStatement::ExpressAccord),
+                None | Some(_) => Verb::MakePublicStatement(PublicStatement::Unspecified),
             },
             "02" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Appeal(Cooperation::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    None | Some(_) => Verb::Appeal(Cooperation::MaterialCooperation(
-                        MaterialCooperation::Unspecified,
-                    )),
                     Some('1') => Verb::Appeal(Cooperation::MaterialCooperation(
                         MaterialCooperation::Economic,
                     )),
@@ -348,21 +353,21 @@ impl From<CAMEOVerbCode> for Verb {
                     Some('4') => Verb::Appeal(Cooperation::MaterialCooperation(
                         MaterialCooperation::ShareIntelligenceOrInformation,
                     )),
+                    None | Some(_) => Verb::Appeal(Cooperation::MaterialCooperation(
+                        MaterialCooperation::Unspecified,
+                    )),
                 },
                 Some('2') => Verb::Appeal(Cooperation::DiplomaticCooperation),
                 Some('3') => match str_value.chars().nth(3) {
-                    None | Some(_) => Verb::Appeal(Cooperation::Aid(Aid::Unspecified)),
                     Some('1') => Verb::Appeal(Cooperation::Aid(Aid::Economic)),
                     Some('2') => Verb::Appeal(Cooperation::Aid(Aid::Military)),
                     Some('3') => Verb::Appeal(Cooperation::Aid(Aid::Humanitarian)),
                     Some('4') => {
                         Verb::Appeal(Cooperation::Aid(Aid::MilitaryProtectionOrPeaceKeeping))
                     }
+                    None | Some(_) => Verb::Appeal(Cooperation::Aid(Aid::Unspecified)),
                 },
                 Some('4') => match str_value.chars().nth(3) {
-                    None | Some(_) => {
-                        Verb::Appeal(Cooperation::PoliticalReform(PoliticalReform::Unspecified))
-                    }
                     Some('1') => {
                         Verb::Appeal(Cooperation::PoliticalReform(PoliticalReform::Leadership))
                     }
@@ -375,9 +380,11 @@ impl From<CAMEOVerbCode> for Verb {
                     Some('4') => Verb::Appeal(Cooperation::PoliticalReform(
                         PoliticalReform::InstitutionRegime,
                     )),
+                    None | Some(_) => {
+                        Verb::Appeal(Cooperation::PoliticalReform(PoliticalReform::Unspecified))
+                    }
                 },
                 Some('5') => match str_value.chars().nth(3) {
-                    None | Some(_) => Verb::Appeal(Cooperation::Yield(Yieldable::Unspecified)),
                     Some('1') => {
                         Verb::Appeal(Cooperation::Yield(Yieldable::AdministrativeSanctions(
                             subcategories::AdministrativeSanctions::Unspecified,
@@ -396,17 +403,15 @@ impl From<CAMEOVerbCode> for Verb {
                             subcategories::MilitaryEngagement::Unspecified,
                         )))
                     }
+                    None | Some(_) => Verb::Appeal(Cooperation::Yield(Yieldable::Unspecified)),
                 },
                 Some('6') => Verb::Appeal(Cooperation::ToMeetOrNegotiate),
                 Some('7') => Verb::Appeal(Cooperation::SettleDispute),
                 Some('8') => Verb::Appeal(Cooperation::AcceptMediation),
+                None | Some(_) => Verb::Appeal(Cooperation::Unspecified),
             },
             "03" => match str_value.chars().nth(2) {
-                Some('0') => Verb::IntentionToCooperate(Cooperation::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    None | Some(_) => Verb::IntentionToCooperate(Cooperation::MaterialCooperation(
-                        MaterialCooperation::Unspecified,
-                    )),
                     Some('1') => Verb::IntentionToCooperate(Cooperation::MaterialCooperation(
                         MaterialCooperation::Economic,
                     )),
@@ -419,23 +424,23 @@ impl From<CAMEOVerbCode> for Verb {
                     Some('4') => Verb::IntentionToCooperate(Cooperation::MaterialCooperation(
                         MaterialCooperation::ShareIntelligenceOrInformation,
                     )),
+                    None | Some(_) => Verb::IntentionToCooperate(Cooperation::MaterialCooperation(
+                        MaterialCooperation::Unspecified,
+                    )),
                 },
                 Some('2') => Verb::IntentionToCooperate(Cooperation::DiplomaticCooperation),
                 Some('3') => match str_value.chars().nth(3) {
-                    None | Some(_) => {
-                        Verb::IntentionToCooperate(Cooperation::Aid(Aid::Unspecified))
-                    }
                     Some('1') => Verb::IntentionToCooperate(Cooperation::Aid(Aid::Economic)),
                     Some('2') => Verb::IntentionToCooperate(Cooperation::Aid(Aid::Military)),
                     Some('3') => Verb::IntentionToCooperate(Cooperation::Aid(Aid::Humanitarian)),
                     Some('4') => Verb::IntentionToCooperate(Cooperation::Aid(
                         Aid::MilitaryProtectionOrPeaceKeeping,
                     )),
+                    None | Some(_) => {
+                        Verb::IntentionToCooperate(Cooperation::Aid(Aid::Unspecified))
+                    }
                 },
                 Some('4') => match str_value.chars().nth(3) {
-                    None | Some(_) => Verb::IntentionToCooperate(Cooperation::PoliticalReform(
-                        PoliticalReform::Unspecified,
-                    )),
                     Some('1') => Verb::IntentionToCooperate(Cooperation::PoliticalReform(
                         PoliticalReform::Leadership,
                     )),
@@ -448,11 +453,11 @@ impl From<CAMEOVerbCode> for Verb {
                     Some('4') => Verb::IntentionToCooperate(Cooperation::PoliticalReform(
                         PoliticalReform::InstitutionRegime,
                     )),
+                    None | Some(_) => Verb::IntentionToCooperate(Cooperation::PoliticalReform(
+                        PoliticalReform::Unspecified,
+                    )),
                 },
                 Some('5') => match str_value.chars().nth(3) {
-                    None | Some(_) => {
-                        Verb::IntentionToCooperate(Cooperation::Yield(Yieldable::Unspecified))
-                    }
                     Some('1') => Verb::IntentionToCooperate(Cooperation::Yield(
                         Yieldable::AdministrativeSanctions(
                             subcategories::AdministrativeSanctions::Unspecified,
@@ -475,25 +480,26 @@ impl From<CAMEOVerbCode> for Verb {
                             subcategories::MilitaryEngagement::Unspecified,
                         ),
                     )),
+                    None | Some(_) => {
+                        Verb::IntentionToCooperate(Cooperation::Yield(Yieldable::Unspecified))
+                    }
                 },
                 Some('6') => Verb::IntentionToCooperate(Cooperation::ToMeetOrNegotiate),
                 Some('7') => Verb::IntentionToCooperate(Cooperation::SettleDispute),
                 Some('8') => Verb::IntentionToCooperate(Cooperation::AcceptMediation),
                 Some('9') => Verb::IntentionToCooperate(Cooperation::Mediate),
+                None | Some(_) => Verb::IntentionToCooperate(Cooperation::Unspecified),
             },
             "04" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Consult(Consultation::Unspecified),
                 Some('1') => Verb::Consult(Consultation::DiscussByTelephone),
                 Some('2') => Verb::Consult(Consultation::MakeAVisit),
                 Some('3') => Verb::Consult(Consultation::HostAVisit),
                 Some('4') => Verb::Consult(Consultation::MeetAtThirdLocation),
                 Some('5') => Verb::Consult(Consultation::Mediate),
                 Some('6') => Verb::Consult(Consultation::EngageInNegotiation),
+                None | Some(_) => Verb::Consult(Consultation::Unspecified),
             },
             "05" => match str_value.chars().nth(2) {
-                Some('0') => {
-                    Verb::EngageInDiplomaticCooperation(DiplomaticCooperation::Unspecified)
-                }
                 Some('1') => {
                     Verb::EngageInDiplomaticCooperation(DiplomaticCooperation::PraiseOrEndorse)
                 }
@@ -511,284 +517,304 @@ impl From<CAMEOVerbCode> for Verb {
                 Some('7') => {
                     Verb::EngageInDiplomaticCooperation(DiplomaticCooperation::SignFormalAgreement)
                 }
+                None | Some(_) => {
+                    Verb::EngageInDiplomaticCooperation(DiplomaticCooperation::Unspecified)
+                }
             },
             "06" => match str_value.chars().nth(2) {
-                Some('0') => Verb::EngageInMaterialCooperation(MaterialCooperation::Unspecified),
                 Some('1') => Verb::EngageInMaterialCooperation(MaterialCooperation::Economic),
                 Some('2') => Verb::EngageInMaterialCooperation(MaterialCooperation::Military),
                 Some('3') => Verb::EngageInMaterialCooperation(MaterialCooperation::Judicial),
                 Some('4') => Verb::EngageInMaterialCooperation(
                     MaterialCooperation::ShareIntelligenceOrInformation,
                 ),
+                None | Some(_) => {
+                    Verb::EngageInMaterialCooperation(MaterialCooperation::Unspecified)
+                }
             },
             "07" => match str_value.chars().nth(2) {
-                Some('0') => Verb::ProvideAid(Aid::Unspecified),
                 Some('1') => Verb::ProvideAid(Aid::Economic),
                 Some('2') => Verb::ProvideAid(Aid::Military),
                 Some('3') => Verb::ProvideAid(Aid::Humanitarian),
                 Some('4') => Verb::ProvideAid(Aid::MilitaryProtectionOrPeaceKeeping),
                 Some('5') => Verb::ProvideAid(Aid::GrantAsylum),
+                None | Some(_) => Verb::ProvideAid(Aid::Unspecified),
             },
             "08" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Yield(Yieldable::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('1') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('2') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('3') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('4') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('5') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('6') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('7') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('8') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
-                    Some('9') => Verb::Yield(Yieldable::AdministrativeSanctions(())),
+                    Some('1') => Verb::Yield(Yieldable::AdministrativeSanctions(
+                        AdministrativeSanctions::PoliticalFreedoms,
+                    )),
+                    Some('2') => Verb::Yield(Yieldable::AdministrativeSanctions(
+                        AdministrativeSanctions::Curfew,
+                    )),
+                    Some('3') => Verb::Yield(Yieldable::AdministrativeSanctions(
+                        AdministrativeSanctions::StateOfEmergencyOrMartialLaw,
+                    )),
+                    None | Some(_) => Verb::Yield(Yieldable::AdministrativeSanctions(
+                        AdministrativeSanctions::Unspecified,
+                    )),
                 },
                 Some('2') => Verb::Yield(Yieldable::PoliticalDissent),
                 Some('3') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('1') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('2') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('3') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('4') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('5') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('6') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('7') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('8') => Verb::Yield(Yieldable::PoliticalReform(())),
-                    Some('9') => Verb::Yield(Yieldable::PoliticalReform(())),
+                    Some('1') => {
+                        Verb::Yield(Yieldable::PoliticalReform(PoliticalReform::Leadership))
+                    }
+                    Some('2') => Verb::Yield(Yieldable::PoliticalReform(PoliticalReform::Policy)),
+                    Some('3') => Verb::Yield(Yieldable::PoliticalReform(PoliticalReform::Rights)),
+                    Some('4') => Verb::Yield(Yieldable::PoliticalReform(
+                        PoliticalReform::InstitutionRegime,
+                    )),
+                    None | Some(_) => {
+                        Verb::Yield(Yieldable::PoliticalReform(PoliticalReform::Unspecified))
+                    }
                 },
                 Some('4') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('1') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('2') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('3') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('4') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('5') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('6') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('7') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('8') => Verb::Yield(Yieldable::ReturnRelease(())),
-                    Some('9') => Verb::Yield(Yieldable::ReturnRelease(())),
+                    Some('1') => Verb::Yield(Yieldable::ReturnRelease(ReturnRelease::Person)),
+                    Some('2') => Verb::Yield(Yieldable::ReturnRelease(ReturnRelease::Property)),
+                    None | Some(_) => {
+                        Verb::Yield(Yieldable::ReturnRelease(ReturnRelease::Unspecified))
+                    }
                 },
                 Some('5') => Verb::Yield(Yieldable::EconomicSanctions),
                 Some('6') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('1') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('2') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('3') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('4') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('5') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('6') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('7') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('8') => Verb::Yield(Yieldable::InternationalInvolvement(())),
-                    Some('9') => Verb::Yield(Yieldable::InternationalInvolvement(())),
+                    Some('1') => Verb::Yield(Yieldable::InternationalInvolvement(
+                        InternationalInvolvement::PeaceKeepers,
+                    )),
+                    Some('2') => Verb::Yield(Yieldable::InternationalInvolvement(
+                        InternationalInvolvement::InspectorsObservers,
+                    )),
+                    Some('3') => Verb::Yield(Yieldable::InternationalInvolvement(
+                        InternationalInvolvement::Aid(Aid::Unspecified),
+                    )),
+                    None | Some(_) => Verb::Yield(Yieldable::InternationalInvolvement(
+                        InternationalInvolvement::Unspecified,
+                    )),
                 },
                 Some('7') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('1') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('2') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('3') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('4') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('5') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('6') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('7') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('8') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
-                    Some('9') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(())),
+                    Some('1') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(
+                        MilitaryEngagement::DeclareTruceCeasefire,
+                    )),
+                    Some('2') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(
+                        MilitaryEngagement::MilitaryBlockade,
+                    )),
+                    Some('3') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(
+                        MilitaryEngagement::ArmedForces,
+                    )),
+                    Some('4') => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(
+                        MilitaryEngagement::RetreatSurrender,
+                    )),
+                    None | Some(_) => Verb::Yield(Yieldable::DeEscelateMilitaryEngagement(
+                        MilitaryEngagement::Unspecified,
+                    )),
                 },
+                None | Some(_) => Verb::Yield(Yieldable::Unspecified),
             },
             "09" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Investigate(Investigation::Unspecified),
                 Some('1') => Verb::Investigate(Investigation::CrimeCorruption),
                 Some('2') => Verb::Investigate(Investigation::HumanRightsAbuses),
                 Some('3') => Verb::Investigate(Investigation::MilitaryAction),
                 Some('4') => Verb::Investigate(Investigation::WarCrimes),
+                None | Some(_) => Verb::Investigate(Investigation::Unspecified),
             },
             "10" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Demand(Cooperation::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('1') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('2') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('3') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('4') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('5') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('6') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('7') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('8') => Verb::Demand(Cooperation::MaterialCooperation(())),
-                    Some('9') => Verb::Demand(Cooperation::MaterialCooperation(())),
+                    Some('1') => Verb::Demand(Cooperation::MaterialCooperation(
+                        MaterialCooperation::Economic,
+                    )),
+                    Some('2') => Verb::Demand(Cooperation::MaterialCooperation(
+                        MaterialCooperation::Military,
+                    )),
+                    Some('3') => Verb::Demand(Cooperation::MaterialCooperation(
+                        MaterialCooperation::Judicial,
+                    )),
+                    Some('4') => Verb::Demand(Cooperation::MaterialCooperation(
+                        MaterialCooperation::ShareIntelligenceOrInformation,
+                    )),
+                    None | Some(_) => Verb::Demand(Cooperation::MaterialCooperation(
+                        MaterialCooperation::Unspecified,
+                    )),
                 },
                 Some('2') => Verb::Demand(Cooperation::DiplomaticCooperation),
                 Some('3') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Demand(Cooperation::Aid(())),
-                    Some('1') => Verb::Demand(Cooperation::Aid(())),
-                    Some('2') => Verb::Demand(Cooperation::Aid(())),
-                    Some('3') => Verb::Demand(Cooperation::Aid(())),
-                    Some('4') => Verb::Demand(Cooperation::Aid(())),
-                    Some('5') => Verb::Demand(Cooperation::Aid(())),
-                    Some('6') => Verb::Demand(Cooperation::Aid(())),
-                    Some('7') => Verb::Demand(Cooperation::Aid(())),
-                    Some('8') => Verb::Demand(Cooperation::Aid(())),
-                    Some('9') => Verb::Demand(Cooperation::Aid(())),
+                    Some('1') => Verb::Demand(Cooperation::Aid(Aid::Economic)),
+                    Some('2') => Verb::Demand(Cooperation::Aid(Aid::Military)),
+                    Some('3') => Verb::Demand(Cooperation::Aid(Aid::Humanitarian)),
+                    Some('4') => {
+                        Verb::Demand(Cooperation::Aid(Aid::MilitaryProtectionOrPeaceKeeping))
+                    }
+                    None | Some(_) => Verb::Demand(Cooperation::Aid(Aid::Unspecified)),
                 },
                 Some('4') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('1') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('2') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('3') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('4') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('5') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('6') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('7') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('8') => Verb::Demand(Cooperation::PoliticalReform(())),
-                    Some('9') => Verb::Demand(Cooperation::PoliticalReform(())),
+                    Some('1') => {
+                        Verb::Demand(Cooperation::PoliticalReform(PoliticalReform::Leadership))
+                    }
+                    Some('2') => {
+                        Verb::Demand(Cooperation::PoliticalReform(PoliticalReform::Policy))
+                    }
+                    Some('3') => {
+                        Verb::Demand(Cooperation::PoliticalReform(PoliticalReform::Rights))
+                    }
+                    Some('4') => Verb::Demand(Cooperation::PoliticalReform(
+                        PoliticalReform::InstitutionRegime,
+                    )),
+                    None | Some(_) => {
+                        Verb::Demand(Cooperation::PoliticalReform(PoliticalReform::Unspecified))
+                    }
                 },
                 Some('5') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Demand(Cooperation::Yield(())),
-                    Some('1') => Verb::Demand(Cooperation::Yield(())),
-                    Some('2') => Verb::Demand(Cooperation::Yield(())),
-                    Some('3') => Verb::Demand(Cooperation::Yield(())),
-                    Some('4') => Verb::Demand(Cooperation::Yield(())),
-                    Some('5') => Verb::Demand(Cooperation::Yield(())),
-                    Some('6') => Verb::Demand(Cooperation::Yield(())),
-                    Some('7') => Verb::Demand(Cooperation::Yield(())),
-                    Some('8') => Verb::Demand(Cooperation::Yield(())),
-                    Some('9') => Verb::Demand(Cooperation::Yield(())),
+                    Some('1') => Verb::Demand(Cooperation::Yield(
+                        Yieldable::AdministrativeSanctions(AdministrativeSanctions::Unspecified),
+                    )),
+                    Some('2') => Verb::Demand(Cooperation::Yield(Yieldable::PoliticalDissent)),
+                    Some('3') => Verb::Demand(Cooperation::Yield(Yieldable::ReturnRelease(
+                        ReturnRelease::Unspecified,
+                    ))),
+                    Some('4') => Verb::Demand(Cooperation::Yield(Yieldable::EconomicSanctions)),
+                    Some('5') => Verb::Demand(Cooperation::Yield(
+                        Yieldable::InternationalInvolvement(InternationalInvolvement::Unspecified),
+                    )),
+                    Some('6') => Verb::Demand(Cooperation::Yield(
+                        Yieldable::DeEscelateMilitaryEngagement(MilitaryEngagement::Unspecified),
+                    )),
+                    None | Some(_) => Verb::Demand(Cooperation::Yield(Yieldable::Unspecified)),
                 },
+                Some('6') => Verb::Demand(Cooperation::Withdraw),
                 Some('7') => Verb::Demand(Cooperation::Ceasefire),
                 Some('8') => Verb::Demand(Cooperation::ToMeetOrNegotiate),
+                None | Some(_) => Verb::Demand(Cooperation::Unspecified),
             },
             "11" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Disapprove(Disapproval::Unspecified),
                 Some('1') => Verb::Disapprove(Disapproval::CriticiseOrDenounce),
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('1') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('2') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('3') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('4') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('5') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('6') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('7') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('8') => Verb::Disapprove(Disapproval::Accuse(())),
-                    Some('9') => Verb::Disapprove(Disapproval::Accuse(())),
+                    Some('1') => {
+                        Verb::Disapprove(Disapproval::Accuse(Investigation::CrimeCorruption))
+                    }
+                    Some('2') => {
+                        Verb::Disapprove(Disapproval::Accuse(Investigation::HumanRightsAbuses))
+                    }
+                    Some('3') => Verb::Disapprove(Disapproval::Accuse(Investigation::Aggression)),
+                    Some('4') => Verb::Disapprove(Disapproval::Accuse(Investigation::WarCrimes)),
+                    Some('5') => {
+                        Verb::Disapprove(Disapproval::Accuse(Investigation::EspionageTreason))
+                    }
+                    None | Some(_) => {
+                        Verb::Disapprove(Disapproval::Accuse(Investigation::Unspecified))
+                    }
                 },
                 Some('3') => Verb::Disapprove(Disapproval::RallyOppositionAgainst),
                 Some('4') => Verb::Disapprove(Disapproval::ComplainOfficially),
                 Some('5') => Verb::Disapprove(Disapproval::BringLawsuitAgainst),
                 Some('6') => Verb::Disapprove(Disapproval::FindGuiltyOrLiable),
+                None | Some(_) => Verb::Disapprove(Disapproval::Unspecified),
             },
             "12" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Reject(Rejection::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
+                    Some('1') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::MaterialCooperation(MaterialCooperation::Economic),
+                    )),
+                    Some('2') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::MaterialCooperation(MaterialCooperation::Military),
+                    )),
+                    None | Some(_) => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::MaterialCooperation(MaterialCooperation::Unspecified),
+                    )),
                 },
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
+                    Some('1') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::MaterialCooperation(MaterialCooperation::Economic),
+                    )),
+                    Some('2') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::MaterialCooperation(MaterialCooperation::Military),
+                    )),
+                    Some('3') => {
+                        Verb::Reject(Rejection::Cooperation(Cooperation::MaterialCooperation(
+                            MaterialCooperation::Aid(Aid::Humanitarian),
+                        )))
+                    }
+                    Some('4') => {
+                        Verb::Reject(Rejection::Cooperation(Cooperation::MaterialCooperation(
+                            MaterialCooperation::Aid(Aid::MilitaryProtectionOrPeaceKeeping),
+                        )))
+                    }
+                    None | Some(_) => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::MaterialCooperation(MaterialCooperation::Unspecified),
+                    )),
                 },
                 Some('3') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
+                    Some('1') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::PoliticalReform(PoliticalReform::Leadership),
+                    )),
+                    Some('2') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::PoliticalReform(PoliticalReform::Policy),
+                    )),
+                    Some('3') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::PoliticalReform(PoliticalReform::Rights),
+                    )),
+                    Some('4') => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::PoliticalReform(PoliticalReform::InstitutionRegime),
+                    )),
+                    None | Some(_) => Verb::Reject(Rejection::Cooperation(
+                        Cooperation::PoliticalReform(PoliticalReform::Unspecified),
+                    )),
                 },
                 Some('4') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
+                    Some('1') => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::AdministrativeSanctions(AdministrativeSanctions::Unspecified),
+                    ))),
+                    Some('2') => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::PoliticalDissent,
+                    ))),
+                    Some('3') => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::ReturnRelease(ReturnRelease::Unspecified),
+                    ))),
+                    Some('4') => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::EconomicSanctions,
+                    ))),
+                    Some('5') => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::InternationalInvolvement(InternationalInvolvement::Unspecified),
+                    ))),
+                    Some('6') => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::DeEscelateMilitaryEngagement(MilitaryEngagement::Unspecified),
+                    ))),
+                    None | Some(_) => Verb::Reject(Rejection::Cooperation(Cooperation::Yield(
+                        Yieldable::Unspecified,
+                    ))),
                 },
-                Some('5') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
-                },
-                Some('6') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
-                },
-                Some('7') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('1') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('2') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('3') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('4') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('5') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('6') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('7') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('8') => Verb::Reject(Rejection::Cooperation(())),
-                    Some('9') => Verb::Reject(Rejection::Cooperation(())),
-                },
+                Some('5') => Verb::Reject(Rejection::Cooperation(Cooperation::ToMeetOrNegotiate)),
+                Some('6') => Verb::Reject(Rejection::Cooperation(Cooperation::AcceptMediation)),
+                Some('7') => Verb::Reject(Rejection::Cooperation(Cooperation::SettleDispute)),
                 Some('8') => Verb::Reject(Rejection::DefyNorms),
                 Some('9') => Verb::Reject(Rejection::Veto),
+                None | Some(_) => Verb::Reject(Rejection::Unspecified),
             },
             "13" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Threaten(Threat::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Threaten(Threat::NonForce(())),
-                    Some('1') => Verb::Threaten(Threat::NonForce(())),
-                    Some('2') => Verb::Threaten(Threat::NonForce(())),
-                    Some('3') => Verb::Threaten(Threat::NonForce(())),
-                    Some('4') => Verb::Threaten(Threat::NonForce(())),
-                    Some('5') => Verb::Threaten(Threat::NonForce(())),
-                    Some('6') => Verb::Threaten(Threat::NonForce(())),
-                    Some('7') => Verb::Threaten(Threat::NonForce(())),
-                    Some('8') => Verb::Threaten(Threat::NonForce(())),
-                    Some('9') => Verb::Threaten(Threat::NonForce(())),
+                    Some('1') => Verb::Threaten(Threat::NonForce(NonForce::ReduceOrStopAid)),
+                    Some('2') => {
+                        Verb::Threaten(Threat::NonForce(NonForce::SanctionsBoycottEmbargo))
+                    }
+                    Some('3') => Verb::Threaten(Threat::NonForce(NonForce::ReduceOrBreakRelations)),
+                    None | Some(_) => {
+                        Verb::Threaten(Threat::NonForce(subcategories::NonForce::Unspecified))
+                    }
                 },
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('1') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('2') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('3') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('4') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('5') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('6') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('7') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('8') => Verb::Threaten(Threat::AdministrativeSanctions(())),
-                    Some('9') => Verb::Threaten(Threat::AdministrativeSanctions(())),
+                    Some('1') => Verb::Threaten(Threat::AdministrativeSanctions(
+                        AdministrativeSanctions::PoliticalFreedoms,
+                    )),
+                    Some('2') => Verb::Threaten(Threat::AdministrativeSanctions(
+                        AdministrativeSanctions::BanPoliticalPartiesOrPoliticians,
+                    )),
+                    Some('3') => Verb::Threaten(Threat::AdministrativeSanctions(
+                        AdministrativeSanctions::Curfew,
+                    )),
+                    Some('4') => Verb::Threaten(Threat::AdministrativeSanctions(
+                        AdministrativeSanctions::StateOfEmergencyOrMartialLaw,
+                    )),
+                    None | Some(_) => Verb::Threaten(Threat::AdministrativeSanctions(
+                        AdministrativeSanctions::Unspecified,
+                    )),
                 },
                 Some('3') => Verb::Threaten(Threat::PoliticalDissentOrProtest),
                 Some('4') => Verb::Threaten(Threat::HaltNegotiations),
@@ -796,210 +822,181 @@ impl From<CAMEOVerbCode> for Verb {
                 Some('6') => Verb::Threaten(Threat::HaltInternationalInvolvement),
                 Some('7') => Verb::Threaten(Threat::Repression),
                 Some('8') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('1') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('2') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('3') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('4') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('5') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('6') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('7') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('8') => Verb::Threaten(Threat::MilitaryForce(())),
-                    Some('9') => Verb::Threaten(Threat::MilitaryForce(())),
+                    Some('1') => Verb::Threaten(Threat::MilitaryForce(MilitaryForce::Blockade)),
+                    Some('2') => Verb::Threaten(Threat::MilitaryForce(MilitaryForce::Occupation)),
+                    Some('3') => {
+                        Verb::Threaten(Threat::MilitaryForce(MilitaryForce::UnconventionalViolence))
+                    }
+                    Some('4') => {
+                        Verb::Threaten(Threat::MilitaryForce(MilitaryForce::ConventionalAttack))
+                    }
+                    Some('5') => Verb::Threaten(Threat::MilitaryForce(MilitaryForce::WMD)),
+                    None | Some(_) => {
+                        Verb::Threaten(Threat::MilitaryForce(MilitaryForce::Unspecified))
+                    }
                 },
                 Some('9') => Verb::Threaten(Threat::Ultimatum),
+                None | Some(_) => Verb::Threaten(Threat::Unspecified),
             },
             "14" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Protest(Protest::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('1') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('2') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('3') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('4') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('5') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('6') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('7') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('8') => Verb::Protest(Protest::DemonstrateOrRally(())),
-                    Some('9') => Verb::Protest(Protest::DemonstrateOrRally(())),
+                    Some('1') => Verb::Protest(Protest::DemonstrateOrRally(Change::Leadership)),
+                    Some('2') => Verb::Protest(Protest::DemonstrateOrRally(Change::Policy)),
+                    Some('3') => Verb::Protest(Protest::DemonstrateOrRally(Change::Rights)),
+                    Some('4') => Verb::Protest(Protest::DemonstrateOrRally(Change::Institution)),
+                    None | Some(_) => {
+                        Verb::Protest(Protest::DemonstrateOrRally(Change::Unspecified))
+                    }
                 },
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('1') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('2') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('3') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('4') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('5') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('6') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('7') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('8') => Verb::Protest(Protest::HungerStrike(())),
-                    Some('9') => Verb::Protest(Protest::HungerStrike(())),
+                    Some('1') => Verb::Protest(Protest::HungerStrike(Change::Leadership)),
+                    Some('2') => Verb::Protest(Protest::HungerStrike(Change::Policy)),
+                    Some('3') => Verb::Protest(Protest::HungerStrike(Change::Rights)),
+                    Some('4') => Verb::Protest(Protest::HungerStrike(Change::Institution)),
+                    None | Some(_) => Verb::Protest(Protest::HungerStrike(Change::Unspecified)),
                 },
                 Some('3') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('1') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('2') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('3') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('4') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('5') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('6') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('7') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('8') => Verb::Protest(Protest::StrikeBoycott(())),
-                    Some('9') => Verb::Protest(Protest::StrikeBoycott(())),
+                    Some('1') => Verb::Protest(Protest::StrikeBoycott(Change::Leadership)),
+                    Some('2') => Verb::Protest(Protest::StrikeBoycott(Change::Policy)),
+                    Some('3') => Verb::Protest(Protest::StrikeBoycott(Change::Rights)),
+                    Some('4') => Verb::Protest(Protest::StrikeBoycott(Change::Institution)),
+                    None | Some(_) => Verb::Protest(Protest::StrikeBoycott(Change::Unspecified)),
                 },
                 Some('4') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('1') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('2') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('3') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('4') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('5') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('6') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('7') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('8') => Verb::Protest(Protest::PassageBlock(())),
-                    Some('9') => Verb::Protest(Protest::PassageBlock(())),
+                    Some('1') => Verb::Protest(Protest::PassageBlock(Change::Leadership)),
+                    Some('2') => Verb::Protest(Protest::PassageBlock(Change::Policy)),
+                    Some('3') => Verb::Protest(Protest::PassageBlock(Change::Rights)),
+                    Some('4') => Verb::Protest(Protest::PassageBlock(Change::Institution)),
+                    None | Some(_) => Verb::Protest(Protest::PassageBlock(Change::Unspecified)),
                 },
                 Some('5') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('1') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('2') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('3') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('4') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('5') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('6') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('7') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('8') => Verb::Protest(Protest::ViolentRiot(())),
-                    Some('9') => Verb::Protest(Protest::ViolentRiot(())),
+                    Some('1') => Verb::Protest(Protest::ViolentRiot(Change::Leadership)),
+                    Some('2') => Verb::Protest(Protest::ViolentRiot(Change::Policy)),
+                    Some('3') => Verb::Protest(Protest::ViolentRiot(Change::Rights)),
+                    Some('4') => Verb::Protest(Protest::ViolentRiot(Change::Institution)),
+                    None | Some(_) => Verb::Protest(Protest::ViolentRiot(Change::Unspecified)),
                 },
+                None | Some(_) => Verb::Protest(Protest::Unspecified),
             },
             "15" => match str_value.chars().nth(2) {
-                Some('0') => Verb::ExhibitForcePosture(ForcePosture::Unspecified),
                 Some('1') => Verb::ExhibitForcePosture(ForcePosture::IncreasePoliceAlertStatus),
                 Some('2') => Verb::ExhibitForcePosture(ForcePosture::IncreaseMilitaryAlertStatus),
                 Some('3') => Verb::ExhibitForcePosture(ForcePosture::MobilizeOrIncreasePolicePower),
                 Some('4') => Verb::ExhibitForcePosture(ForcePosture::MobilizeOrIncreaseArmedForces),
+                None | Some(_) => Verb::ExhibitForcePosture(ForcePosture::Unspecified),
             },
             "16" => match str_value.chars().nth(2) {
-                Some('0') => Verb::ReduceRelations(Relations::Unspecified),
                 Some('1') => Verb::ReduceRelations(Relations::Diplomatic),
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('1') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('2') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('3') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('4') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('5') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('6') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('7') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('8') => Verb::ReduceRelations(Relations::MaterialAid(())),
-                    Some('9') => Verb::ReduceRelations(Relations::MaterialAid(())),
+                    Some('1') => Verb::ReduceRelations(Relations::MaterialAid(Aid::Economic)),
+                    Some('2') => Verb::ReduceRelations(Relations::MaterialAid(Aid::Military)),
+                    Some('3') => Verb::ReduceRelations(Relations::MaterialAid(Aid::Humanitarian)),
+                    None | Some(_) => {
+                        Verb::ReduceRelations(Relations::MaterialAid(Aid::Unspecified))
+                    }
                 },
                 Some('3') => Verb::ReduceRelations(Relations::ImposeEmbargoBoycottSanction),
                 Some('4') => Verb::ReduceRelations(Relations::Negotiations),
                 Some('5') => Verb::ReduceRelations(Relations::Mediation),
                 Some('6') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('1') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('2') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('3') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('4') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('5') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('6') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('7') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('8') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
-                    Some('9') => Verb::ReduceRelations(Relations::ExpelWithdraw(())),
+                    Some('1') => Verb::ReduceRelations(Relations::ExpelWithdraw(
+                        InternationalInvolvement::PeaceKeepers,
+                    )),
+                    Some('2') => Verb::ReduceRelations(Relations::ExpelWithdraw(
+                        InternationalInvolvement::InspectorsObservers,
+                    )),
+                    Some('3') => Verb::ReduceRelations(Relations::ExpelWithdraw(
+                        InternationalInvolvement::Aid(Aid::Humanitarian),
+                    )),
+                    None | Some(_) => Verb::ReduceRelations(Relations::ExpelWithdraw(
+                        InternationalInvolvement::Unspecified,
+                    )),
                 },
+                None | Some(_) => Verb::ReduceRelations(Relations::Unspecified),
             },
             "17" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Coerce(Coercion::Unspecified),
                 Some('1') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('1') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('2') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('3') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('4') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('5') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('6') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('7') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('8') => Verb::Coerce(Coercion::WithProperty(())),
-                    Some('9') => Verb::Coerce(Coercion::WithProperty(())),
+                    Some('1') => {
+                        Verb::Coerce(Coercion::WithProperty(SeizeDamageProperty::Confiscate))
+                    }
+                    Some('2') => Verb::Coerce(Coercion::WithProperty(SeizeDamageProperty::Destroy)),
+                    None | Some(_) => {
+                        Verb::Coerce(Coercion::WithProperty(SeizeDamageProperty::Unspecified))
+                    }
                 },
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('1') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('2') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('3') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('4') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('5') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('6') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('7') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('8') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
-                    Some('9') => Verb::Coerce(Coercion::AdministrativeSanctions(())),
+                    Some('1') => Verb::Coerce(Coercion::AdministrativeSanctions(
+                        AdministrativeSanctions::PoliticalFreedoms,
+                    )),
+                    Some('2') => Verb::Coerce(Coercion::AdministrativeSanctions(
+                        AdministrativeSanctions::BanPoliticalPartiesOrPoliticians,
+                    )),
+                    Some('3') => Verb::Coerce(Coercion::AdministrativeSanctions(
+                        AdministrativeSanctions::Curfew,
+                    )),
+                    Some('4') => Verb::Coerce(Coercion::AdministrativeSanctions(
+                        AdministrativeSanctions::StateOfEmergencyOrMartialLaw,
+                    )),
+                    None | Some(_) => Verb::Coerce(Coercion::AdministrativeSanctions(
+                        AdministrativeSanctions::Unspecified,
+                    )),
                 },
                 Some('3') => Verb::Coerce(Coercion::ArrestDetainOrCharge),
                 Some('4') => Verb::Coerce(Coercion::ExpelDeport),
                 Some('5') => Verb::Coerce(Coercion::ViolentRepression),
+                None | Some(_) => Verb::Coerce(Coercion::Unspecified),
             },
             "18" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Assault(Assault::Unspecified),
                 Some('1') => Verb::Assault(Assault::AbductHijackTakeHostage),
                 Some('2') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Assault(Assault::Physically(())),
-                    Some('1') => Verb::Assault(Assault::Physically(())),
-                    Some('2') => Verb::Assault(Assault::Physically(())),
-                    Some('3') => Verb::Assault(Assault::Physically(())),
-                    Some('4') => Verb::Assault(Assault::Physically(())),
-                    Some('5') => Verb::Assault(Assault::Physically(())),
-                    Some('6') => Verb::Assault(Assault::Physically(())),
-                    Some('7') => Verb::Assault(Assault::Physically(())),
-                    Some('8') => Verb::Assault(Assault::Physically(())),
-                    Some('9') => Verb::Assault(Assault::Physically(())),
+                    Some('1') => Verb::Assault(Assault::Physically(PhysicalAssault::Sexual)),
+                    Some('2') => Verb::Assault(Assault::Physically(PhysicalAssault::Torture)),
+                    Some('3') => Verb::Assault(Assault::Physically(PhysicalAssault::Kill)),
+                    None | Some(_) => {
+                        Verb::Assault(Assault::Physically(PhysicalAssault::Unspecified))
+                    }
                 },
                 Some('3') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Assault(Assault::Bombing(())),
-                    Some('1') => Verb::Assault(Assault::Bombing(())),
-                    Some('2') => Verb::Assault(Assault::Bombing(())),
-                    Some('3') => Verb::Assault(Assault::Bombing(())),
-                    Some('4') => Verb::Assault(Assault::Bombing(())),
-                    Some('5') => Verb::Assault(Assault::Bombing(())),
-                    Some('6') => Verb::Assault(Assault::Bombing(())),
-                    Some('7') => Verb::Assault(Assault::Bombing(())),
-                    Some('8') => Verb::Assault(Assault::Bombing(())),
-                    Some('9') => Verb::Assault(Assault::Bombing(())),
+                    Some('1') => Verb::Assault(Assault::Bombing(Bombing::Suicide)),
+                    Some('2') => Verb::Assault(Assault::Bombing(Bombing::Vehicular)),
+                    Some('3') => Verb::Assault(Assault::Bombing(Bombing::Roadside)),
+                    None | Some(_) => Verb::Assault(Assault::Bombing(Bombing::Unspecified)),
                 },
                 Some('4') => Verb::Assault(Assault::UseAsHumanShield),
                 Some('5') => Verb::Assault(Assault::AttemptToAssasinate),
                 Some('6') => Verb::Assault(Assault::Assasinate),
+                None | Some(_) => Verb::Assault(Assault::Unspecified),
             },
             "19" => match str_value.chars().nth(2) {
-                Some('0') => Verb::Fight(Fight::Unspecified),
                 Some('1') => Verb::Fight(Fight::ImposeBlockade),
                 Some('2') => Verb::Fight(Fight::OccupyTerritory),
                 Some('3') => Verb::Fight(Fight::SmallArmsLightWeapons),
                 Some('4') => Verb::Fight(Fight::ArtilleryAndTanks),
-                Some('5') => match str_value.chars().nth(3) {
-                    Some('0') => Verb::Fight(Fight::Arial(())),
-                    Some('1') => Verb::Fight(Fight::Arial(())),
-                    Some('2') => Verb::Fight(Fight::Arial(())),
-                    Some('3') => Verb::Fight(Fight::Arial(())),
-                    Some('4') => Verb::Fight(Fight::Arial(())),
-                    Some('5') => Verb::Fight(Fight::Arial(())),
-                    Some('6') => Verb::Fight(Fight::Arial(())),
-                    Some('7') => Verb::Fight(Fight::Arial(())),
-                    Some('8') => Verb::Fight(Fight::Arial(())),
-                    Some('9') => Verb::Fight(Fight::Arial(())),
-                },
+                Some('5') => Verb::Fight(Fight::Arial(ArialWeapons::Unspecified)),
                 Some('6') => Verb::Fight(Fight::ViolateCeasefire),
+                None | Some(_) => Verb::Fight(Fight::Unspecified),
             },
             "20" => match str_value.chars().nth(2) {
-                Some('0') => Verb::UseUnconventionalMassViolence(MassViolence::Unspecified),
                 Some('1') => Verb::UseUnconventionalMassViolence(MassViolence::MassExpulsions),
                 Some('2') => Verb::UseUnconventionalMassViolence(MassViolence::MassKillings),
                 Some('3') => Verb::UseUnconventionalMassViolence(MassViolence::EthnicCleansing),
-                Some('4') => {
-                    Verb::UseUnconventionalMassViolence(MassViolence::WeaponsOfMassDistruction(()))
-                }
+                Some('4') => match str_value.chars().nth(3) {
+                    Some('1') => {
+                        Verb::UseUnconventionalMassViolence(MassViolence::WeaponsOfMassDistruction(
+                            subcategories::WMD::ChemicalBiologicalRadiological,
+                        ))
+                    }
+                    Some('2') => Verb::UseUnconventionalMassViolence(
+                        MassViolence::WeaponsOfMassDistruction(subcategories::WMD::Nuclear),
+                    ),
+                    None | Some(_) => Verb::UseUnconventionalMassViolence(
+                        MassViolence::WeaponsOfMassDistruction(WMD::Unspecified),
+                    ),
+                },
+                None | Some(_) => Verb::UseUnconventionalMassViolence(MassViolence::Unspecified),
             },
+
+            _ => Verb::Unspecified,
         }
     }
 }

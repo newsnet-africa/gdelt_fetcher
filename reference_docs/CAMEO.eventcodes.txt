@@ -153,7 +153,8 @@ CAMEOEVENTCODE	EVENTDESCRIPTION
 1053	Demand release of persons or property
 1054	Demand easing of economic sanctions, boycott, or embargo
 1055	Demand that target allows international involvement (non-mediation)
-1056	Demand de-escalation of military engagement106:[-5.0] Demand withdrawal
+1056	Demand de-escalation of military engagement
+106:[-5.0] Demand withdrawal
 107	Demand ceasefire
 108	Demand meeting, negotiation
 11	DISAPPROVE
