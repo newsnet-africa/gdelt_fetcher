@@ -1,13 +1,12 @@
-pub mod administration;
-pub mod geo_feature;
-pub mod geo_type;
+pub mod country;
+pub mod location_type;
 
-use administration::{PrimaryAdministration, SecondaryAdministration};
+use super::raw_types::location::RawV1Location;
 
-use super::actor::country::CountryZone;
+pub type RawGeography<'a> = RawV1Location<'a>;
 
-pub struct GeoFullname(String);
-pub struct GeoCountry(CountryZone);
-pub struct Administration1(PrimaryAdministration);
-pub struct Administration2(SecondaryAdministration);
-pub struct Coord(f64, f64);
+pub struct RawEventGeography<'a> {
+    actor_1: RawGeography<'a>,
+    actor_2: RawGeography<'a>,
+    action: RawGeography<'a>,
+}

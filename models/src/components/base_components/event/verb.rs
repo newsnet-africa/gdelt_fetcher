@@ -7,7 +7,7 @@ use subcategories::{
 };
 use top_level_actions::Verb;
 
-use crate::components::codes::verb::CAMEOVerbCode;
+use crate::components::base_components::raw_types::RawCAMEOEventCode;
 
 pub mod top_level_actions {
     use super::subcategories::{
@@ -321,8 +321,8 @@ pub mod subcategories {
     }
 }
 
-impl From<CAMEOVerbCode> for Verb {
-    fn from(value: CAMEOVerbCode) -> Self {
+impl From<RawCAMEOEventCode> for Verb {
+    fn from(value: RawCAMEOEventCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
         match &str_value[..2] {
             "01" => match str_value.chars().nth(2) {

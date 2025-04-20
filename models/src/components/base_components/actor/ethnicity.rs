@@ -1,4 +1,4 @@
-use crate::components::codes::actor::EthnicGroupCode;
+use crate::components::base_components::raw_types::RawCAMEOEthnicCode;
 
 pub enum Ethnicity {
     Unspecified,
@@ -637,8 +637,8 @@ pub enum Ethnicity {
     Zaza,
 }
 
-impl From<EthnicGroupCode> for Ethnicity {
-    fn from(value: EthnicGroupCode) -> Self {
+impl From<RawCAMEOEthnicCode> for Ethnicity {
+    fn from(value: RawCAMEOEthnicCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid Ethnicity Code format");
         match str_value {
             "aar" => Self::Afar,

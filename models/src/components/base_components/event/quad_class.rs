@@ -1,5 +1,4 @@
-#[repr(transparent)]
-pub struct QuadClassCode(u8);
+use crate::components::base_components::raw_types::RawQuadClass;
 
 pub enum QuadClass {
     Invalid,
@@ -12,8 +11,8 @@ pub enum Manner {
     Material,
 }
 
-impl From<QuadClassCode> for QuadClass {
-    fn from(value: QuadClassCode) -> Self {
+impl From<RawQuadClass> for QuadClass {
+    fn from(value: RawQuadClass) -> Self {
         match value.0 {
             1 => QuadClass::Cooperation(Manner::Verbal),
             2 => QuadClass::Cooperation(Manner::Material),

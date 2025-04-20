@@ -1,6 +1,8 @@
 use std::str;
 
-use crate::components::codes::actor::{CAMEOCountryCode, FIPS};
+use crate::components::base_components::raw_types::{
+    RawCAMEOCountryCode, location::RawFIPSCountryCode,
+};
 
 pub enum CountryZone {
     Unspecified,
@@ -327,8 +329,8 @@ pub enum CountryZone {
     WallisandFutuna,
 }
 
-impl From<FIPS> for CountryZone {
-    fn from(value: FIPS) -> Self {
+impl From<RawFIPSCountryCode> for CountryZone {
+    fn from(value: RawFIPSCountryCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid FIPS Code format");
         match str_value {
             "AF" => CountryZone::Afghanistan,
@@ -610,8 +612,8 @@ impl From<FIPS> for CountryZone {
     }
 }
 
-impl From<CAMEOCountryCode> for CountryZone {
-    fn from(value: CAMEOCountryCode) -> Self {
+impl From<RawCAMEOCountryCode> for CountryZone {
+    fn from(value: RawCAMEOCountryCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
         match str_value {
             "WSB" => CountryZone::WestBank,

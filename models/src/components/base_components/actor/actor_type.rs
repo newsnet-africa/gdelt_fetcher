@@ -1,4 +1,4 @@
-use crate::components::codes::actor::ActorTypeCode;
+use crate::components::base_components::raw_types::RawCAMEOActorTypeCode;
 
 pub enum ActorType {
     Unspecified,
@@ -43,8 +43,8 @@ pub enum ActorType {
     Settler,
 }
 
-impl From<ActorTypeCode> for ActorType {
-    fn from(value: ActorTypeCode) -> Self {
+impl From<RawCAMEOActorTypeCode> for ActorType {
+    fn from(value: RawCAMEOActorTypeCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid FIPS Code format");
         match str_value {
             "COP" => Self::Policeforces,

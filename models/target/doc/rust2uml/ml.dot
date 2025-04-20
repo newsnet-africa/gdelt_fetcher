@@ -1,0 +1,1403 @@
+digraph ml {
+    ndCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/mod.rs#:~:text=trait%20Code"><tr><td bgcolor="lightgreen"><b>Code</b></td></tr><tr><td align="left" bgcolor="white"><br align="left"/></td></tr></table></font>>][shape="none"];
+    ndMentionTypeCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/mention.rs#:~:text=struct%20MentionTypeCode"><tr><td bgcolor="lightblue"><b>MentionTypeCode</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCAMEOVerbCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/verb.rs#:~:text=struct%20CAMEOVerbCode"><tr><td bgcolor="lightblue"><b>CAMEOVerbCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 4]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoTypeCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/location.rs#:~:text=struct%20GeoTypeCode"><tr><td bgcolor="lightblue"><b>GeoTypeCode</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAdministrationCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/location.rs#:~:text=struct%20AdministrationCode"><tr><td bgcolor="lightblue"><b>AdministrationCode</b></td></tr><tr><td align="left" bgcolor="white">- [u8; 2]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoFeatureID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/location.rs#:~:text=struct%20GeoFeatureID"><tr><td bgcolor="lightblue"><b>GeoFeatureID</b></td></tr><tr><td align="left" bgcolor="white">- &amp;'a str<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCAMEOActorCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20CAMEOActorCode"><tr><td bgcolor="lightblue"><b>CAMEOActorCode</b></td></tr><tr><td align="left" bgcolor="white">+ [[u8; 3]; 5]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCAMEOCountryCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20CAMEOCountryCode"><tr><td bgcolor="lightblue"><b>CAMEOCountryCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEthnicGroupCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20EthnicGroupCode"><tr><td bgcolor="lightblue"><b>EthnicGroupCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndFIPS[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20FIPS"><tr><td bgcolor="lightblue"><b>FIPS</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 2]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndKnownGroupCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20KnownGroupCode"><tr><td bgcolor="lightblue"><b>KnownGroupCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndReligionCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20ReligionCode"><tr><td bgcolor="lightblue"><b>ReligionCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActorTypeCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20ActorTypeCode"><tr><td bgcolor="lightblue"><b>ActorTypeCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeography[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20Geography"><tr><td bgcolor="lightblue"><b>Geography</b></td></tr><tr><td align="left" bgcolor="white">+ geo_type: GeoType<br align="left"/>
++ geo_name: GeoFullname<br align="left"/>
++ country: GeoCountry<br align="left"/>
++ admin_1: Administration1<br align="left"/>
++ admin_2: Administration2<br align="left"/>
++ coord: Coord<br align="left"/>
++ feature: GeoFeature<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEventGeography[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20EventGeography"><tr><td bgcolor="lightblue"><b>EventGeography</b></td></tr><tr><td align="left" bgcolor="white">+ actor_1: Geography<br align="left"/>
++ actor_2: Geography<br align="left"/>
++ action: Geography<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActor[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/actor.rs#:~:text=struct%20Actor"><tr><td bgcolor="lightblue"><b>Actor</b></td></tr><tr><td align="left" bgcolor="white">+ name: ActorName<br align="left"/>
++ country: ActorCountry<br align="left"/>
++ known_group: KnownGroup<br align="left"/>
++ ethnicity: Ethnicity<br align="left"/>
++ religion: Religion<br align="left"/>
++ actor_type: ActorType<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEventAction[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/event_action.rs#:~:text=struct%20EventAction"><tr><td bgcolor="lightblue"><b>EventAction</b></td></tr><tr><td align="left" bgcolor="white">+ is_root_event: bool<br align="left"/>
++ verb: Verb<br align="left"/>
++ quad_class: QuadClass<br align="left"/>
++ goldstein: GoldsteinScale<br align="left"/>
++ num_mentions: NumberOfMention<br align="left"/>
++ num_articles: NumberOfArticles<br align="left"/>
++ average_tone: AverageTone<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActorName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/mod.rs#:~:text=struct%20ActorName"><tr><td bgcolor="lightblue"><b>ActorName</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActorCountry[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/mod.rs#:~:text=struct%20ActorCountry"><tr><td bgcolor="lightblue"><b>ActorCountry</b></td></tr><tr><td align="left" bgcolor="white">- CountryZone<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndReligion[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/religion.rs#:~:text=enum%20Religion"><tr><td bgcolor="yellow"><b>Religion</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+AfricanDiasporicReligion<br align="left"/>
+Alewi<br align="left"/>
+Agnostic<br align="left"/>
+BahaiFaith<br align="left"/>
+Buddhism<br align="left"/>
+Christianity<br align="left"/>
+Confucianism<br align="left"/>
+Coptic<br align="left"/>
+Catholic<br align="left"/>
+Orthodox<br align="left"/>
+Druze<br align="left"/>
+Hinduism<br align="left"/>
+Hasidic<br align="left"/>
+IndigenousTribalReligion<br align="left"/>
+Jainism<br align="left"/>
+Judaism<br align="left"/>
+JehovahsWitness<br align="left"/>
+LatterDaySaints<br align="left"/>
+Muslim<br align="left"/>
+Maronite<br align="left"/>
+NewReligiousMovement<br align="left"/>
+Pagan<br align="left"/>
+Protestant<br align="left"/>
+Sufi<br align="left"/>
+Shia<br align="left"/>
+OldShintoSchool<br align="left"/>
+Sikh<br align="left"/>
+Sunni<br align="left"/>
+Taoist<br align="left"/>
+UltraOrthodox<br align="left"/>
+Zoroastrianism<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEthnicity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/ethnicity.rs#:~:text=enum%20Ethnicity"><tr><td bgcolor="yellow"><b>Ethnicity</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+Afar<br align="left"/>
+Abkhaz<br align="left"/>
+AboriginalAustralians<br align="left"/>
+Acehnese<br align="left"/>
+Achang<br align="left"/>
+Acholi<br align="left"/>
+Ga<br align="left"/>
+Adivasi<br align="left"/>
+Adjarians<br align="left"/>
+Adyghe<br align="left"/>
+BlackAfrican<br align="left"/>
+Afrikaners<br align="left"/>
+Ahmadis<br align="left"/>
+Ainu<br align="left"/>
+Aja<br align="left"/>
+Akan<br align="left"/>
+Aku<br align="left"/>
+Alawi<br align="left"/>
+Albanian<br align="left"/>
+Aleut<br align="left"/>
+Algonquian<br align="left"/>
+Altay<br align="left"/>
+Alur<br align="left"/>
+Ambonese<br align="left"/>
+AmericoLiberians<br align="left"/>
+Amhara<br align="left"/>
+AngikaSpeakers<br align="left"/>
+Apache<br align="left"/>
+Arab<br align="left"/>
+Aragonese<br align="left"/>
+Armenian<br align="left"/>
+Mapuche<br align="left"/>
+Arapaho<br align="left"/>
+Arawak<br align="left"/>
+Asian<br align="left"/>
+AshkenaziJews<br align="left"/>
+Assamese<br align="left"/>
+Asturian<br align="left"/>
+Assyrian<br align="left"/>
+Atacamenos<br align="left"/>
+Argentinians<br align="left"/>
+Athabaskan<br align="left"/>
+AgnosticAthiest<br align="left"/>
+Australians<br align="left"/>
+Austrians<br align="left"/>
+CaucasianAvars<br align="left"/>
+Awadhi<br align="left"/>
+Aymara<br align="left"/>
+Azerbaijani<br align="left"/>
+Baganda<br align="left"/>
+Bahais<br align="left"/>
+Bamileke<br align="left"/>
+Bashkirs<br align="left"/>
+Baloch<br align="left"/>
+Bambara<br align="left"/>
+Balinese<br align="left"/>
+Basque<br align="left"/>
+Bari<br align="left"/>
+Basoga<br align="left"/>
+Gbaya<br align="left"/>
+Rakhine<br align="left"/>
+Beja<br align="left"/>
+Belarusians<br align="left"/>
+Bemba<br align="left"/>
+BengaliHindu<br align="left"/>
+Berber<br align="left"/>
+Beydan<br align="left"/>
+Bhojpuri<br align="left"/>
+Bihari<br align="left"/>
+Bai<br align="left"/>
+Bicolano<br align="left"/>
+Edo<br align="left"/>
+UrbanniVanautu<br align="left"/>
+Bateke<br align="left"/>
+Bakongo<br align="left"/>
+Bakweri<br align="left"/>
+Siksikawa<br align="left"/>
+Blang<br align="left"/>
+Balkars<br align="left"/>
+Balanta<br align="left"/>
+Bamar<br align="left"/>
+BeniShugalGumez<br align="left"/>
+Bantu<br align="left"/>
+Banyarwanda<br align="left"/>
+Bodo<br align="left"/>
+Tibetan<br align="left"/>
+Bolivia<br align="left"/>
+Bonan<br align="left"/>
+Bosniaks<br align="left"/>
+Buyei<br align="left"/>
+Brijwasi<br align="left"/>
+Bariba<br align="left"/>
+Breton<br align="left"/>
+Brahui<br align="left"/>
+Burakumin<br align="left"/>
+Kurichiya<br align="left"/>
+Bushmen<br align="left"/>
+Baster<br align="left"/>
+Subiya<br align="left"/>
+BetiPahuin<br align="left"/>
+Batak<br align="left"/>
+Buryat<br align="left"/>
+Buddhist<br align="left"/>
+Bugis<br align="left"/>
+Bulgarian<br align="left"/>
+Bilen<br align="left"/>
+CabindanMayombe<br align="left"/>
+Caddo<br align="left"/>
+CapeVerdean<br align="left"/>
+Kalina<br align="left"/>
+Catalan<br align="left"/>
+Cebuano<br align="left"/>
+Chamorro<br align="left"/>
+Chukchi<br align="left"/>
+Chechen<br align="left"/>
+Chagatai<br align="left"/>
+Chinese<br align="left"/>
+Chuukese<br align="left"/>
+Chileans<br align="left"/>
+Mari<br align="left"/>
+Chinook<br align="left"/>
+Choctaw<br align="left"/>
+Chipewyan<br align="left"/>
+Cherokee<br align="left"/>
+Chorti<br align="left"/>
+Chuvash<br align="left"/>
+Chewa<br align="left"/>
+Cheyenne<br align="left"/>
+Cham<br align="left"/>
+Colombian<br align="left"/>
+Confusian<br align="left"/>
+CopticChristians<br align="left"/>
+Cornish<br align="left"/>
+Corsican<br align="left"/>
+Cotiers<br align="left"/>
+EnglishCreole<br align="left"/>
+FrenchCreole<br align="left"/>
+PortugueseCreole<br align="left"/>
+Cree<br align="left"/>
+CrimeanTatar<br align="left"/>
+Christian<br align="left"/>
+OrthodoxChristian<br align="left"/>
+Creole<br align="left"/>
+Kashubian<br align="left"/>
+CostaRicans<br align="left"/>
+Catholics<br align="left"/>
+Cushitic<br align="left"/>
+Czech<br align="left"/>
+Dai<br align="left"/>
+Sioux<br align="left"/>
+Dalit<br align="left"/>
+Damara<br align="left"/>
+Danes<br align="left"/>
+YaoAsia<br align="left"/>
+Dargwa<br align="left"/>
+Daur<br align="left"/>
+Dayak<br align="left"/>
+Lenape<br align="left"/>
+Slavey<br align="left"/>
+Dogrib<br align="left"/>
+Dinka<br align="left"/>
+Maldivian<br align="left"/>
+DjermaSonghai<br align="left"/>
+Dogras<br align="left"/>
+Dominicans<br align="left"/>
+Dong<br align="left"/>
+Dongxiang<br align="left"/>
+Dravidian<br align="left"/>
+Druze<br align="left"/>
+LowerSorbian<br align="left"/>
+Duala<br align="left"/>
+Dutch<br align="left"/>
+Dyula<br align="left"/>
+Ngalop<br align="left"/>
+EastTimorese<br align="left"/>
+Ecuadorians<br align="left"/>
+Efik<br align="left"/>
+EastIndian<br align="left"/>
+Ekajuk<br align="left"/>
+English<br align="left"/>
+Eshira<br align="left"/>
+Estonian<br align="left"/>
+EthiopianJews<br align="left"/>
+Europeans<br align="left"/>
+Evenks<br align="left"/>
+Ewe<br align="left"/>
+Ewondo<br align="left"/>
+Fang<br align="left"/>
+Faroese<br align="left"/>
+Fante<br align="left"/>
+Fijian<br align="left"/>
+Filipino<br align="left"/>
+Finns<br align="left"/>
+FinnoUgric<br align="left"/>
+Fon<br align="left"/>
+French<br align="left"/>
+Santals<br align="left"/>
+Frisians<br align="left"/>
+Fur<br align="left"/>
+Fula<br align="left"/>
+Friulan<br align="left"/>
+Garifuna<br align="left"/>
+Gayo<br align="left"/>
+Gelao<br align="left"/>
+Georgian<br align="left"/>
+German<br align="left"/>
+GiaRai<br align="left"/>
+Kiribati<br align="left"/>
+Gin<br align="left"/>
+Gio<br align="left"/>
+Gaels<br align="left"/>
+Irish<br align="left"/>
+Galician<br align="left"/>
+Manx<br align="left"/>
+Gondi<br align="left"/>
+Gorontalonese<br align="left"/>
+Grassfielders<br align="left"/>
+Grebo<br align="left"/>
+Greek<br align="left"/>
+Guarani<br align="left"/>
+SwissGermans<br align="left"/>
+Guatemalan<br align="left"/>
+Gujarati<br align="left"/>
+Guan<br align="left"/>
+Gwichin<br align="left"/>
+Hadjerai<br align="left"/>
+Haida<br align="left"/>
+Harari<br align="left"/>
+Haitian<br align="left"/>
+Hausa<br align="left"/>
+Hawaiian<br align="left"/>
+Hazara<br align="left"/>
+Herero<br align="left"/>
+HillTribes<br align="left"/>
+Hiligayon<br align="left"/>
+Himachali<br align="left"/>
+Hindu<br align="left"/>
+Hasidic<br align="left"/>
+Hmong<br align="left"/>
+HiriMotu<br align="left"/>
+Hani<br align="left"/>
+Hoa<br align="left"/>
+Hondurans<br align="left"/>
+Haratin<br align="left"/>
+Croats<br align="left"/>
+UpperSorbian<br align="left"/>
+Hui<br align="left"/>
+Hungarian<br align="left"/>
+Hupa<br align="left"/>
+Hutu<br align="left"/>
+Iban<br align="left"/>
+Igbo<br align="left"/>
+Icelanders<br align="left"/>
+Indigenous<br align="left"/>
+Indian<br align="left"/>
+Yi<br align="left"/>
+Ijaw<br align="left"/>
+Inuit<br align="left"/>
+Ilocono<br align="left"/>
+Indonesian<br align="left"/>
+Ingush<br align="left"/>
+Inupiat<br align="left"/>
+Iranian<br align="left"/>
+Iroquois<br align="left"/>
+Itallian<br align="left"/>
+Jain<br align="left"/>
+Javanese<br align="left"/>
+Jewish<br align="left"/>
+JehovahsWitnesses<br align="left"/>
+Jino<br align="left"/>
+Jola<br align="left"/>
+Japanese<br align="left"/>
+Karakalpak<br align="left"/>
+Kabyle<br align="left"/>
+Kachin<br align="left"/>
+Kadazan<br align="left"/>
+KakwaNubian<br align="left"/>
+Kalaallit<br align="left"/>
+Kamba<br align="left"/>
+Kannada<br align="left"/>
+Kaonde<br align="left"/>
+Karen<br align="left"/>
+Kashmiri<br align="left"/>
+Kanuri<br align="left"/>
+Kavango<br align="left"/>
+Kazakhs<br align="left"/>
+Kabarday<br align="left"/>
+Kabye<br align="left"/>
+Karachays<br align="left"/>
+Khasi<br align="left"/>
+Khoikhoi<br align="left"/>
+Khakas<br align="left"/>
+Khmer<br align="left"/>
+Khmu<br align="left"/>
+Kikuyu<br align="left"/>
+KinyarwandaSpeakers<br align="left"/>
+Kyrgyz<br align="left"/>
+Kisii<br align="left"/>
+Kalmyk<br align="left"/>
+NorthMbundu<br align="left"/>
+Kono<br align="left"/>
+Kokani<br align="left"/>
+Komi<br align="left"/>
+Kongo<br align="left"/>
+Korean<br align="left"/>
+Kosraean<br align="left"/>
+Kouyou<br align="left"/>
+Kpelle<br align="left"/>
+Krahn<br align="left"/>
+Karelians<br align="left"/>
+Karamojong<br align="left"/>
+Kru<br align="left"/>
+Kurukh<br align="left"/>
+Kwanyama<br align="left"/>
+Kumyks<br align="left"/>
+Kurd<br align="left"/>
+Ktunaxa<br align="left"/>
+SephardicJew<br align="left"/>
+LakRussia<br align="left"/>
+Lamba<br align="left"/>
+Lao<br align="left"/>
+Lari<br align="left"/>
+Latvian<br align="left"/>
+Limba<br align="left"/>
+LatterDaySaints<br align="left"/>
+Lenca<br align="left"/>
+Lezgian<br align="left"/>
+Lugbara<br align="left"/>
+Lahu<br align="left"/>
+Li<br align="left"/>
+Limburgian<br align="left"/>
+Lingala<br align="left"/>
+Lithuanian<br align="left"/>
+Mongo<br align="left"/>
+Lomwe<br align="left"/>
+Lovale<br align="left"/>
+Lozi<br align="left"/>
+Lisu<br align="left"/>
+Latoka<br align="left"/>
+Latinos<br align="left"/>
+Luxembourgers<br align="left"/>
+LubaKasai<br align="left"/>
+LubaKatanga<br align="left"/>
+Luhya<br align="left"/>
+Luiseno<br align="left"/>
+Lulua<br align="left"/>
+Lunda<br align="left"/>
+Luo<br align="left"/>
+Lusei<br align="left"/>
+Macedonian<br align="left"/>
+Madurese<br align="left"/>
+Mafwe<br align="left"/>
+Magahi<br align="left"/>
+Marshallese<br align="left"/>
+Maithili<br align="left"/>
+Makassarese<br align="left"/>
+Malayalam<br align="left"/>
+Mandinka<br align="left"/>
+Maori<br align="left"/>
+Marathi<br align="left"/>
+Maasai<br align="left"/>
+Malays<br align="left"/>
+Mbandja<br align="left"/>
+Mbere<br align="left"/>
+MBaka<br align="left"/>
+Mbochi<br align="left"/>
+MbunduMestico<br align="left"/>
+Mokshas<br align="left"/>
+Madhesi<br align="left"/>
+Madi<br align="left"/>
+Mandar<br align="left"/>
+Mende<br align="left"/>
+Miao<br align="left"/>
+Mikmaq<br align="left"/>
+Mijikenda<br align="left"/>
+Minangkabau<br align="left"/>
+Mizo<br align="left"/>
+Mulatto<br align="left"/>
+MoleDagbani<br align="left"/>
+Malagasy<br align="left"/>
+Mulao<br align="left"/>
+Maltese<br align="left"/>
+Manchu<br align="left"/>
+Mande<br align="left"/>
+MananjaNayanja<br align="left"/>
+Minahasa<br align="left"/>
+Manipuri<br align="left"/>
+Manjack<br align="left"/>
+Mano<br align="left"/>
+Lumad<br align="left"/>
+Mon<br align="left"/>
+Manyika<br align="left"/>
+Mohajirs<br align="left"/>
+Mohawk<br align="left"/>
+Makonde<br align="left"/>
+Maonan<br align="left"/>
+Mongol<br align="left"/>
+Mossi<br align="left"/>
+Maronites<br align="left"/>
+Moro<br align="left"/>
+Miskito<br align="left"/>
+Muslim<br align="left"/>
+Montenegrins<br align="left"/>
+Mestizo<br align="left"/>
+Munda<br align="left"/>
+Muong<br align="left"/>
+Muscogee<br align="left"/>
+Mirandese<br align="left"/>
+Marwaris<br align="left"/>
+Mayangnas<br align="left"/>
+Myene<br align="left"/>
+Maya<br align="left"/>
+Mordvins<br align="left"/>
+Naga<br align="left"/>
+Nahua<br align="left"/>
+NativeAmerican<br align="left"/>
+Nama<br align="left"/>
+Neapolitan<br align="left"/>
+Nauruan<br align="left"/>
+Navajo<br align="left"/>
+Nakhi<br align="left"/>
+Nuba<br align="left"/>
+SouthNdebele<br align="left"/>
+Nicaraguan<br align="left"/>
+NorthernNdebele<br align="left"/>
+Ndonga<br align="left"/>
+Nepali<br align="left"/>
+Nuer<br align="left"/>
+Newars<br align="left"/>
+Ngbandi<br align="left"/>
+Ngoni<br align="left"/>
+Niasans<br align="left"/>
+Nibolek<br align="left"/>
+Niari<br align="left"/>
+Niuean<br align="left"/>
+Nkomi<br align="left"/>
+Nung<br align="left"/>
+Nogais<br align="left"/>
+Norwegians<br align="left"/>
+NorthernSotho<br align="left"/>
+Nubian<br align="left"/>
+Nuristani<br align="left"/>
+Nu<br align="left"/>
+Nyakyusa<br align="left"/>
+Nyamwezi<br align="left"/>
+Ankole<br align="left"/>
+Nyoro<br align="left"/>
+NewZealanders<br align="left"/>
+Nzema<br align="left"/>
+Occitanians<br align="left"/>
+Ogoni<br align="left"/>
+Ojibwe<br align="left"/>
+OrthodoxUltraOrthodoxJew<br align="left"/>
+Okinawan<br align="left"/>
+Oriya<br align="left"/>
+Oromo<br align="left"/>
+Orgunu<br align="left"/>
+Osage<br align="left"/>
+Ossetians<br align="left"/>
+Otomi<br align="left"/>
+Ovambo<br align="left"/>
+Papuan<br align="left"/>
+PacificIslanders<br align="left"/>
+Pangasinan<br align="left"/>
+Palestinian<br align="left"/>
+Kapampangan<br align="left"/>
+Punjabi<br align="left"/>
+PapiamentoCreole<br align="left"/>
+Paraguayan<br align="left"/>
+Palauan<br align="left"/>
+Persian<br align="left"/>
+AnimistPagan<br align="left"/>
+Puthai<br align="left"/>
+Panamanians<br align="left"/>
+Poles<br align="left"/>
+Pomaks<br align="left"/>
+Pehnpeian<br align="left"/>
+Portuguese<br align="left"/>
+Papel<br align="left"/>
+Protestant<br align="left"/>
+Peruvian<br align="left"/>
+Pashayi<br align="left"/>
+Pumi<br align="left"/>
+Pashtun<br align="left"/>
+Qiang<br align="left"/>
+Qizilbash<br align="left"/>
+Quechua<br align="left"/>
+Rajasthani<br align="left"/>
+PahariRajput<br align="left"/>
+RapaNui<br align="left"/>
+CookIslandsMaori<br align="left"/>
+UnspecifiedReligion<br align="left"/>
+Romansh<br align="left"/>
+Romani<br align="left"/>
+Romanian<br align="left"/>
+Rundi<br align="left"/>
+Aromanians<br align="left"/>
+Russian<br align="left"/>
+Sandawe<br align="left"/>
+Sango<br align="left"/>
+Yakuts<br align="left"/>
+Salish<br align="left"/>
+Sara<br align="left"/>
+Sasak<br align="left"/>
+Sudanese<br align="left"/>
+Sicilian<br align="left"/>
+Scottish<br align="left"/>
+Selkup<br align="left"/>
+Sena<br align="left"/>
+Sufi<br align="left"/>
+Shafii<br align="left"/>
+She<br align="left"/>
+Shiites<br align="left"/>
+Shilluk<br align="left"/>
+Shan<br align="left"/>
+Shaigiya<br align="left"/>
+Sidama<br align="left"/>
+Sinhalese<br align="left"/>
+Siouan<br align="left"/>
+Slavic<br align="left"/>
+Slovaks<br align="left"/>
+Salar<br align="left"/>
+Slovenes<br align="left"/>
+Sami<br align="left"/>
+Samoans<br align="left"/>
+Shona<br align="left"/>
+Sindhi<br align="left"/>
+Soninke<br align="left"/>
+Somali<br align="left"/>
+Songhai<br align="left"/>
+Sotho<br align="left"/>
+Spanish<br align="left"/>
+Sardinian<br align="left"/>
+SrananTongo<br align="left"/>
+Serbs<br align="left"/>
+Serer<br align="left"/>
+Swazi<br align="left"/>
+Sui<br align="left"/>
+Sukama<br align="left"/>
+Sunni<br align="left"/>
+Susu<br align="left"/>
+Swahili<br align="left"/>
+Swedes<br align="left"/>
+SwissFrench<br align="left"/>
+SwissItalian<br align="left"/>
+Tabasaran<br align="left"/>
+Tahitian<br align="left"/>
+Tai<br align="left"/>
+Tamil<br align="left"/>
+Taoist<br align="left"/>
+Tatars<br align="left"/>
+Tawahka<br align="left"/>
+Tay<br align="left"/>
+Telugu<br align="left"/>
+Temne<br align="left"/>
+Terenan<br align="left"/>
+Teso<br align="left"/>
+Tetum<br align="left"/>
+Tajik<br align="left"/>
+Tagalog<br align="left"/>
+Thai<br align="left"/>
+Tigre<br align="left"/>
+TigrayTigrinya<br align="left"/>
+Tiv<br align="left"/>
+Tokelauan<br align="left"/>
+Tlingit<br align="left"/>
+Tuareg<br align="left"/>
+Tama<br align="left"/>
+TongaAfrica<br align="left"/>
+TongaPacific<br align="left"/>
+Tooro<br align="left"/>
+Toubou<br align="left"/>
+TokPisin<br align="left"/>
+Transnistrians<br align="left"/>
+Tripuri<br align="left"/>
+Ternate<br align="left"/>
+Tsimshian<br align="left"/>
+Tswana<br align="left"/>
+Tsonga<br align="left"/>
+Tutsi<br align="left"/>
+Tujia<br align="left"/>
+Turkmen<br align="left"/>
+Tumbuka<br align="left"/>
+Tupi<br align="left"/>
+Turkish<br align="left"/>
+Mongour<br align="left"/>
+Tuvaluans<br align="left"/>
+Ashanti<br align="left"/>
+Taiwanese<br align="left"/>
+Tuvans<br align="left"/>
+Udmurt<br align="left"/>
+Uyghur<br align="left"/>
+Ukranian<br align="left"/>
+SouthernMbundu<br align="left"/>
+Undetermined<br align="left"/>
+Urdu<br align="left"/>
+Uzbeks<br align="left"/>
+Va<br align="left"/>
+Vai<br align="left"/>
+Venda<br align="left"/>
+Vietnamese<br align="left"/>
+Vili<br align="left"/>
+Venezuelan<br align="left"/>
+Votes<br align="left"/>
+Wakashan<br align="left"/>
+Welayta<br align="left"/>
+Waray<br align="left"/>
+Washoe<br align="left"/>
+Welsch<br align="left"/>
+Welsh<br align="left"/>
+Sorbs<br align="left"/>
+Whites<br align="left"/>
+Walloons<br align="left"/>
+Wolof<br align="left"/>
+Xhosa<br align="left"/>
+Xibe<br align="left"/>
+Xinca<br align="left"/>
+Yao<br align="left"/>
+Yapese<br align="left"/>
+Yoruba<br align="left"/>
+Yupik<br align="left"/>
+Yugur<br align="left"/>
+Zaghawa<br align="left"/>
+Zapotec<br align="left"/>
+Zaidiyya<br align="left"/>
+Zenaga<br align="left"/>
+Zhuang<br align="left"/>
+Azande<br align="left"/>
+Zomi<br align="left"/>
+Zoroastrians<br align="left"/>
+Zulu<br align="left"/>
+Zuni<br align="left"/>
+Zaza<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActorType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/actor_type.rs#:~:text=enum%20ActorType"><tr><td bgcolor="yellow"><b>ActorType</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+Policeforces<br align="left"/>
+Government<br align="left"/>
+Insurgents<br align="left"/>
+Judiciary<br align="left"/>
+Military<br align="left"/>
+PoliticalOpposition<br align="left"/>
+Rebels<br align="left"/>
+SeparatistRebels<br align="left"/>
+StateIntelligence<br align="left"/>
+UnalignedArmedForces<br align="left"/>
+Agriculture<br align="left"/>
+Business<br align="left"/>
+Criminal<br align="left"/>
+Civilian<br align="left"/>
+Development<br align="left"/>
+Education<br align="left"/>
+Elites<br align="left"/>
+Environmental<br align="left"/>
+Health<br align="left"/>
+HumanRights<br align="left"/>
+Labor<br align="left"/>
+Legislature<br align="left"/>
+Media<br align="left"/>
+Refugees<br align="left"/>
+Moderate<br align="left"/>
+Radical<br align="left"/>
+AmnestyInternational<br align="left"/>
+RedCross<br align="left"/>
+Greenpeace<br align="left"/>
+UnitedNations<br align="left"/>
+Peacekeepers<br align="left"/>
+UnidentifiedStateActor<br align="left"/>
+InterGovernmentalOrganization<br align="left"/>
+InternationalMilitarizedGroup<br align="left"/>
+InternationalTransnationalGeneric<br align="left"/>
+MultinationalCorporation<br align="left"/>
+NonGovernmentalMovement<br align="left"/>
+NonGovernmentalOrganization<br align="left"/>
+Settler<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCountryZone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/country.rs#:~:text=enum%20CountryZone"><tr><td bgcolor="yellow"><b>CountryZone</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+WestBank<br align="left"/>
+Baghdad<br align="left"/>
+GazaStrip<br align="left"/>
+Africa<br align="left"/>
+Asia<br align="left"/>
+Balkans<br align="left"/>
+Caribbean<br align="left"/>
+Caucasus<br align="left"/>
+CentralAfrica<br align="left"/>
+CentralAsia<br align="left"/>
+CentralEurope<br align="left"/>
+EastIndies<br align="left"/>
+EasternAfrica<br align="left"/>
+EasternEurope<br align="left"/>
+Europe<br align="left"/>
+LatinAmerica<br align="left"/>
+MiddleEast<br align="left"/>
+Mediterranean<br align="left"/>
+NorthAfrica<br align="left"/>
+NorthAmerica<br align="left"/>
+PersianGulf<br align="left"/>
+Scandinavia<br align="left"/>
+SouthAmerica<br align="left"/>
+SouthAsia<br align="left"/>
+SoutheastAsia<br align="left"/>
+SouthernAfrica<br align="left"/>
+WestAfrica<br align="left"/>
+TheWest<br align="left"/>
+Afghanistan<br align="left"/>
+AlandIslands<br align="left"/>
+Albania<br align="left"/>
+Algeria<br align="left"/>
+AmericanSamoa<br align="left"/>
+Andorra<br align="left"/>
+Angola<br align="left"/>
+Anguilla<br align="left"/>
+AntiguaandBarbuda<br align="left"/>
+Argentina<br align="left"/>
+Armenia<br align="left"/>
+Aruba<br align="left"/>
+Australia<br align="left"/>
+Austria<br align="left"/>
+Azerbaijan<br align="left"/>
+Bahamas<br align="left"/>
+Bahrain<br align="left"/>
+Bangladesh<br align="left"/>
+Barbados<br align="left"/>
+Belarus<br align="left"/>
+Belgium<br align="left"/>
+Belize<br align="left"/>
+Benin<br align="left"/>
+Bermuda<br align="left"/>
+Bhutan<br align="left"/>
+Bolivia<br align="left"/>
+BosniaandHerzegovina<br align="left"/>
+Botswana<br align="left"/>
+Brazil<br align="left"/>
+BritishVirginIslands<br align="left"/>
+BruneiDarussalam<br align="left"/>
+Bulgaria<br align="left"/>
+BurkinaFaso<br align="left"/>
+Burundi<br align="left"/>
+Cambodia<br align="left"/>
+Cameroon<br align="left"/>
+Canada<br align="left"/>
+CapeVerde<br align="left"/>
+CaymanIslands<br align="left"/>
+CentralAfricanRepublic<br align="left"/>
+Chad<br align="left"/>
+Chile<br align="left"/>
+China<br align="left"/>
+Columbia<br align="left"/>
+Comoros<br align="left"/>
+DemocraticRepublicoftheCongo<br align="left"/>
+PeoplesRepublicoftheCongo<br align="left"/>
+CookIslands<br align="left"/>
+CostaRica<br align="left"/>
+IvoryCoast<br align="left"/>
+Croatia<br align="left"/>
+Cuba<br align="left"/>
+Cyprus<br align="left"/>
+CzechRepublic<br align="left"/>
+Denmark<br align="left"/>
+Djibouti<br align="left"/>
+Dominica<br align="left"/>
+DominicanRepublic<br align="left"/>
+EastTimor<br align="left"/>
+Ecuador<br align="left"/>
+Egypt<br align="left"/>
+ElSalvador<br align="left"/>
+EquatorialGuinea<br align="left"/>
+Eritrea<br align="left"/>
+Estonia<br align="left"/>
+Ethiopia<br align="left"/>
+FaeroeIslands<br align="left"/>
+FalklandIslands<br align="left"/>
+Fiji<br align="left"/>
+Finland<br align="left"/>
+France<br align="left"/>
+FrenchGuiana<br align="left"/>
+FrenchPolynesia<br align="left"/>
+Gabon<br align="left"/>
+Gambia<br align="left"/>
+Georgia<br align="left"/>
+Germany<br align="left"/>
+Ghana<br align="left"/>
+Gibraltar<br align="left"/>
+Greece<br align="left"/>
+Greenland<br align="left"/>
+Grenada<br align="left"/>
+Guadeloupe<br align="left"/>
+Guam<br align="left"/>
+Guatemala<br align="left"/>
+Guinea<br align="left"/>
+GuineaBissau<br align="left"/>
+Guyana<br align="left"/>
+Haiti<br align="left"/>
+VaticanCity<br align="left"/>
+Honduras<br align="left"/>
+HongKong<br align="left"/>
+Hungary<br align="left"/>
+Iceland<br align="left"/>
+India<br align="left"/>
+Indonesia<br align="left"/>
+Iran<br align="left"/>
+Iraq<br align="left"/>
+Ireland<br align="left"/>
+IsleofMan<br align="left"/>
+Israel<br align="left"/>
+Italy<br align="left"/>
+Jamaica<br align="left"/>
+Japan<br align="left"/>
+Jordan<br align="left"/>
+Kazakhstan<br align="left"/>
+Kenya<br align="left"/>
+Kiribati<br align="left"/>
+NorthKorea<br align="left"/>
+SouthKorea<br align="left"/>
+Kuwait<br align="left"/>
+Kyrgyzstan<br align="left"/>
+Laos<br align="left"/>
+Latvia<br align="left"/>
+Lebanon<br align="left"/>
+Lesotho<br align="left"/>
+Liberia<br align="left"/>
+Libya<br align="left"/>
+Liechtenstein<br align="left"/>
+Lithuania<br align="left"/>
+Luxembourg<br align="left"/>
+Macao<br align="left"/>
+Macedonia<br align="left"/>
+Madagascar<br align="left"/>
+Malawi<br align="left"/>
+Malaysia<br align="left"/>
+Maldives<br align="left"/>
+Mali<br align="left"/>
+Malta<br align="left"/>
+MarshallIslands<br align="left"/>
+Martinique<br align="left"/>
+Mauritania<br align="left"/>
+Mauritius<br align="left"/>
+Mayotte<br align="left"/>
+Mexico<br align="left"/>
+Micronesia<br align="left"/>
+Moldova<br align="left"/>
+Monaco<br align="left"/>
+Mongolia<br align="left"/>
+Montenegro<br align="left"/>
+Montserrat<br align="left"/>
+Morocco<br align="left"/>
+Mozambique<br align="left"/>
+Myanmar<br align="left"/>
+Namibia<br align="left"/>
+Nauru<br align="left"/>
+Nepal<br align="left"/>
+Netherlands<br align="left"/>
+NetherlandsAntilles<br align="left"/>
+NewCaledonia<br align="left"/>
+NewZealand<br align="left"/>
+Nicaragua<br align="left"/>
+Niger<br align="left"/>
+Nigeria<br align="left"/>
+Niue<br align="left"/>
+NorfolkIsland<br align="left"/>
+NorthernMarianaIslands<br align="left"/>
+Norway<br align="left"/>
+OccupiedPalestinianTerritory<br align="left"/>
+Oman<br align="left"/>
+Pakistan<br align="left"/>
+Palau<br align="left"/>
+Panama<br align="left"/>
+PapuaNewGuinea<br align="left"/>
+Paraguay<br align="left"/>
+Peru<br align="left"/>
+Philippines<br align="left"/>
+Pitcairn<br align="left"/>
+Poland<br align="left"/>
+Portugal<br align="left"/>
+PuertoRico<br align="left"/>
+Qatar<br align="left"/>
+Runion<br align="left"/>
+Romania<br align="left"/>
+Russia<br align="left"/>
+Rwanda<br align="left"/>
+SaintHelena<br align="left"/>
+SaintKittsNevis<br align="left"/>
+SaintLucia<br align="left"/>
+SaintPierreandMiquelon<br align="left"/>
+SaintVincentandtheGrenadines<br align="left"/>
+Samoa<br align="left"/>
+SanMarino<br align="left"/>
+SaoTomeandPrincipe<br align="left"/>
+SaudiArabia<br align="left"/>
+Senegal<br align="left"/>
+Serbia<br align="left"/>
+Seychelles<br align="left"/>
+SierraLeone<br align="left"/>
+Singapore<br align="left"/>
+Slovakia<br align="left"/>
+Slovenia<br align="left"/>
+SolomonIslands<br align="left"/>
+Somalia<br align="left"/>
+SouthAfrica<br align="left"/>
+Spain<br align="left"/>
+SriLanka<br align="left"/>
+Sudan<br align="left"/>
+Suriname<br align="left"/>
+SvalbardandJanMayenIslands<br align="left"/>
+Swaziland<br align="left"/>
+Sweden<br align="left"/>
+Switzerland<br align="left"/>
+Syria<br align="left"/>
+Taiwan<br align="left"/>
+Tajikistan<br align="left"/>
+Tanzania<br align="left"/>
+Thailand<br align="left"/>
+Togo<br align="left"/>
+Tokelau<br align="left"/>
+Tonga<br align="left"/>
+TrinidadandTobago<br align="left"/>
+Tunisia<br align="left"/>
+Turkey<br align="left"/>
+Turkmenistan<br align="left"/>
+TurksandCaicosIslands<br align="left"/>
+Tuvalu<br align="left"/>
+Uganda<br align="left"/>
+Ukraine<br align="left"/>
+UnitedArabEmirates<br align="left"/>
+UnitedKingdom<br align="left"/>
+UnitedStates<br align="left"/>
+UnitedStatesVirginIslands<br align="left"/>
+Uruguay<br align="left"/>
+Uzbekistan<br align="left"/>
+Vanuatu<br align="left"/>
+Venezuela<br align="left"/>
+Vietnam<br align="left"/>
+WallisandFutunaIslands<br align="left"/>
+WesternSahara<br align="left"/>
+Yemen<br align="left"/>
+Zambia<br align="left"/>
+Zimbabwe<br align="left"/>
+AkrotiriSovereignBaseArea<br align="left"/>
+Antarctica<br align="left"/>
+AshmoreandCartierIslands<br align="left"/>
+BahamasThe<br align="left"/>
+BakerIsland<br align="left"/>
+BassasdaIndia<br align="left"/>
+BosniaHerzegovina<br align="left"/>
+BouvetIsland<br align="left"/>
+BritishIndianOceanTerritory<br align="left"/>
+Brunei<br align="left"/>
+ChristmasIsland<br align="left"/>
+ClippertonIsland<br align="left"/>
+CocosKeelingIslands<br align="left"/>
+Colombia<br align="left"/>
+Congo<br align="left"/>
+CoralSeaIslands<br align="left"/>
+CotedIvoire<br align="left"/>
+Czechoslovakia<br align="left"/>
+DhekeliaSovereignBaseArea<br align="left"/>
+EtorofuHabomaiKunashiriandShikotanIslands<br align="left"/>
+EuropaIsland<br align="left"/>
+FalklandIslandsIslasMalvinas<br align="left"/>
+FaroeIslands<br align="left"/>
+FrenchSouthernandAntarcticLands<br align="left"/>
+GloriosoIslands<br align="left"/>
+Guernsey<br align="left"/>
+HeardIslandandMcDonaldIslands<br align="left"/>
+HowlandIsland<br align="left"/>
+JanMayen<br align="left"/>
+JarvisIsland<br align="left"/>
+Jersey<br align="left"/>
+JohnstonAtoll<br align="left"/>
+JuandeNovaIsland<br align="left"/>
+KingmanReef<br align="left"/>
+Kosovo<br align="left"/>
+Macau<br align="left"/>
+MidwayIslands<br align="left"/>
+NavassaIsland<br align="left"/>
+NoMansLand<br align="left"/>
+Oceans<br align="left"/>
+PalmyraAtoll<br align="left"/>
+ParacelIslands<br align="left"/>
+PitcairnIslands<br align="left"/>
+Reunion<br align="left"/>
+SaintKittsandNevis<br align="left"/>
+SaintMartin<br align="left"/>
+SaintBarthelemyIsland<br align="left"/>
+SouthGeorgiaandtheSouthSandwichIslands<br align="left"/>
+SouthSudan<br align="left"/>
+SpratlyIslands<br align="left"/>
+Svalbard<br align="left"/>
+TromelinIsland<br align="left"/>
+UnderseaFeatures<br align="left"/>
+UndesignatedSovereignty<br align="left"/>
+VietnamDemocraticRepublicof<br align="left"/>
+VirginIslands<br align="left"/>
+WakeIsland<br align="left"/>
+WallisandFutuna<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/>
+- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndKnownGroup[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/known_group.rs#:~:text=enum%20KnownGroup"><tr><td bgcolor="yellow"><b>KnownGroup</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+AlAqsaMartyrsBrigade<br align="left"/>
+ArabBankforEconomicDevelopmentinAfrica<br align="left"/>
+ArabCooperationCouncil<br align="left"/>
+AsianDevelopmentBank<br align="left"/>
+ArabEconomicUnityCouncil<br align="left"/>
+AfricanDevelopmentBank<br align="left"/>
+AlQaeda<br align="left"/>
+ArabMonetaryFundforEconomicandSocialDevelopment<br align="left"/>
+AmalMilitia<br align="left"/>
+AmnestyInternational<br align="left"/>
+ArabMaghrebUnion<br align="left"/>
+AbuNidalOrganization<br align="left"/>
+OrgofArabPetroleumExportingCountriesOAPEC<br align="left"/>
+ArabLeague<br align="left"/>
+SouthLebanonArmy<br align="left"/>
+AssociationofSoutheastAsianNationsASEAN<br align="left"/>
+EasternandSouthernAfricanTradeandDevelopmentBank<br align="left"/>
+BankofCentralAfricanStatesBEAC<br align="left"/>
+BankforInternationalSettlements<br align="left"/>
+BaathParty<br align="left"/>
+CommonMarketforEasternandSouthernAfrica<br align="left"/>
+MonetaryandEconomicCommunityofCentralAfrica<br align="left"/>
+FrancZoneFinancialCommunityofAfrica<br align="left"/>
+CommonwealthofIndependentStates<br align="left"/>
+Communist<br align="left"/>
+CouncilofEurope<br align="left"/>
+CocoaProducersAlliance<br align="left"/>
+AssociationofCoffeeProducingCountries<br align="left"/>
+InternationalFedofRedCrossandRedCrescentICRC<br align="left"/>
+CommunityofSahelSaharanStatesCENSAD<br align="left"/>
+CommonwealthofNations<br align="left"/>
+DemocraticFrontfortheLibofPalestineDFLP<br align="left"/>
+EuropeanBankforReconstructionandDevelopment<br align="left"/>
+EconomicCommunityofCentralAfricanStates<br align="left"/>
+EuropeanUnion<br align="left"/>
+EuropeanFreeTradeAssociation<br align="left"/>
+EnnahdaMovement<br align="left"/>
+UnitedNationsFoodandAgricultureOrganization<br align="left"/>
+InternationalFederationofHumanRightsFIDH<br align="left"/>
+IslamicSalvationArmy<br align="left"/>
+NationalLiberationFrontFLN<br align="left"/>
+Fatah<br align="left"/>
+GulfCooperationCouncil<br align="left"/>
+ArmedIslamicGroupGIA<br align="left"/>
+GroupofEightG8G7plusRussia<br align="left"/>
+GroupofSevenG7<br align="left"/>
+SalafistGroup<br align="left"/>
+GroupofSeventySevenG77<br align="left"/>
+UNHighCommissionforHumanRights<br align="left"/>
+UNHighCommissionforRefugees<br align="left"/>
+Hezbullah<br align="left"/>
+HighlyIndebtedPoorCountriesHIPC<br align="left"/>
+Hamas<br align="left"/>
+HumanRightsWatch<br align="left"/>
+InterAfricanCoffeeOrganizationIACO<br align="left"/>
+IntergovernmentalAuthorityonDevelopmentIGAD<br align="left"/>
+InternationalAtomicEnergyAgencyIAEA<br align="left"/>
+IslamicActionFront<br align="left"/>
+InternationalCriminalCourt<br align="left"/>
+InternationalCrisisGroup<br align="left"/>
+InternationalCourtofJusticeICJ<br align="left"/>
+InternationalCocoaOrganizationICCO<br align="left"/>
+IslamicDevelopmentBank<br align="left"/>
+InternationalGrainsCouncil<br align="left"/>
+InternationalHelsinkiFederationforHumanRights<br align="left"/>
+InternationalLaborOrganization<br align="left"/>
+InternationalMonetaryFundIMF<br align="left"/>
+InternationalOrganizationforMigration<br align="left"/>
+InterParliamentaryUnion<br align="left"/>
+RedCross<br align="left"/>
+PalestinianIslamicJihad<br align="left"/>
+Interpol<br align="left"/>
+InternationalCommissionofJurists<br align="left"/>
+KurdishDemocraticPartyKDP<br align="left"/>
+UnitedNationsChildrensFundUNICEF<br align="left"/>
+IsraeliLaborParty<br align="left"/>
+LikudParty<br align="left"/>
+MuslimBrotherhood<br align="left"/>
+MeretzParty<br align="left"/>
+MedecinsSansFrontieresDoctorsWithoutBorders<br align="left"/>
+MovementoftheSocietyforPeace<br align="left"/>
+NorthAtlanticTreatyOrganizationNATO<br align="left"/>
+NewEconomicPartnershipforAfricasDevelopment<br align="left"/>
+OrganizationofNonAlignedCountries<br align="left"/>
+OrganizationofAmericanStates<br align="left"/>
+OrganizationofAfricanUnityOAU<br align="left"/>
+OrganizationofIslamicConferencesOIC<br align="left"/>
+OrganizationofPetroleumExportingCountriesOPEC<br align="left"/>
+PanAfricanParliament<br align="left"/>
+PeoplesFrontfortheLiberationofPalestinePFLP<br align="left"/>
+PalestineLiberationFront<br align="left"/>
+PalestineLiberationOrganization<br align="left"/>
+PolisarioGuerillas<br align="left"/>
+PeoplesMujahedeen<br align="left"/>
+ParisClub<br align="left"/>
+OccupiedPalestinianTerritories<br align="left"/>
+RedCrescent<br align="left"/>
+DemocraticNationalRally<br align="left"/>
+SouthAsianAssociation<br align="left"/>
+SouthernAfricanDevelopmentCommunity<br align="left"/>
+CouncilofSecurityandCooperationinEuropeOSCE<br align="left"/>
+ShasParty<br align="left"/>
+SoutheastAsiaCollectiveDefenseTreatySEATO<br align="left"/>
+Taliban<br align="left"/>
+EconomicandMonetaryUnionofWestAfricaUEMOA<br align="left"/>
+UnitedNations<br align="left"/>
+WestAfricaDevelopmentBank<br align="left"/>
+WestAfricaMonetaryandEconomicUnion<br align="left"/>
+EconomicCommunityofWestAfricanStatesECOWAS<br align="left"/>
+WorldBank<br align="left"/>
+InternationalWarCrimesTribunals<br align="left"/>
+WorldEconomicForum<br align="left"/>
+WorldFoodProgram<br align="left"/>
+WorldHealthOrganization<br align="left"/>
+WorldTradeOrganization<br align="left"/>
+WorldTradeOrganizationWTO<br align="left"/>
+Oxfam<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoFullname[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20GeoFullname"><tr><td bgcolor="lightblue"><b>GeoFullname</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoCountry[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20GeoCountry"><tr><td bgcolor="lightblue"><b>GeoCountry</b></td></tr><tr><td align="left" bgcolor="white">- CountryZone<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAdministration1[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20Administration1"><tr><td bgcolor="lightblue"><b>Administration1</b></td></tr><tr><td align="left" bgcolor="white">- PrimaryAdministration<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAdministration2[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20Administration2"><tr><td bgcolor="lightblue"><b>Administration2</b></td></tr><tr><td align="left" bgcolor="white">- SecondaryAdministration<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCoord[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20Coord"><tr><td bgcolor="lightblue"><b>Coord</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/>
+- f64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoFeature[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_feature.rs#:~:text=struct%20GeoFeature"><tr><td bgcolor="lightblue"><b>GeoFeature</b></td></tr></table></font>>][shape="none"];
+    ndRawLocationType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_type.rs#:~:text=struct%20RawLocationType"><tr><td bgcolor="lightblue"><b>RawLocationType</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRawLocationName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_type.rs#:~:text=struct%20RawLocationName"><tr><td bgcolor="lightblue"><b>RawLocationName</b></td></tr><tr><td align="left" bgcolor="white">- &amp;'a str<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_type.rs#:~:text=enum%20GeoType"><tr><td bgcolor="yellow"><b>GeoType</b></td></tr><tr><td align="left" bgcolor="white">Country<br align="left"/>
+City<br align="left"/>
+Province<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPrimaryAdministration[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/administration.rs#:~:text=enum%20PrimaryAdministration"><tr><td bgcolor="yellow"><b>PrimaryAdministration</b></td></tr></table></font>>][shape="none"];
+    ndSecondaryAdministration[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/administration.rs#:~:text=enum%20SecondaryAdministration"><tr><td bgcolor="yellow"><b>SecondaryAdministration</b></td></tr></table></font>>][shape="none"];
+    ndGoldsteinScale[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20GoldsteinScale"><tr><td bgcolor="lightblue"><b>GoldsteinScale</b></td></tr><tr><td align="left" bgcolor="white">- f32<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndNumberOfMention[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20NumberOfMention"><tr><td bgcolor="lightblue"><b>NumberOfMention</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndNumberOfSources[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20NumberOfSources"><tr><td bgcolor="lightblue"><b>NumberOfSources</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndNumberOfArticles[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20NumberOfArticles"><tr><td bgcolor="lightblue"><b>NumberOfArticles</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAverageTone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20AverageTone"><tr><td bgcolor="lightblue"><b>AverageTone</b></td></tr><tr><td align="left" bgcolor="white">- i32<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndQuadClassCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/quad_class.rs#:~:text=struct%20QuadClassCode"><tr><td bgcolor="lightblue"><b>QuadClassCode</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndQuadClass[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/quad_class.rs#:~:text=enum%20QuadClass"><tr><td bgcolor="yellow"><b>QuadClass</b></td></tr><tr><td align="left" bgcolor="white">Invalid<br align="left"/>
+Cooperation(Manner)<br align="left"/>
+Conflict(Manner)<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndManner[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/quad_class.rs#:~:text=enum%20Manner"><tr><td bgcolor="yellow"><b>Manner</b></td></tr><tr><td align="left" bgcolor="white">Verbal<br align="left"/>
+Material<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCategory[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/gdelt_category.rs#:~:text=enum%20Category"><tr><td bgcolor="yellow"><b>Category</b></td></tr></table></font>>][shape="none"];
+    ndGKGSourceCommonName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20GKGSourceCommonName"><tr><td bgcolor="lightblue"><b>GKGSourceCommonName</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCountValue[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20CountValue"><tr><td bgcolor="lightblue"><b>CountValue</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndObjectType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20ObjectType"><tr><td bgcolor="lightblue"><b>ObjectType</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAmountValue[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20AmountValue"><tr><td bgcolor="lightblue"><b>AmountValue</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndQuotation[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20Quotation"><tr><td bgcolor="lightblue"><b>Quotation</b></td></tr><tr><td align="left" bgcolor="white">+ offset: CharOffset<br align="left"/>
++ length: u64<br align="left"/>
++ verb: String<br align="left"/>
++ quote: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAmount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20Amount"><tr><td bgcolor="lightblue"><b>Amount</b></td></tr><tr><td align="left" bgcolor="white">+ amount: AmountValue<br align="left"/>
++ object: ObjectType<br align="left"/>
++ offset: CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndToneValue[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20ToneValue"><tr><td bgcolor="lightblue"><b>ToneValue</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndToneScore[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=enum%20ToneScore"><tr><td bgcolor="yellow"><b>ToneScore</b></td></tr><tr><td align="left" bgcolor="white">Positive(f32)<br align="left"/>
+Negative(f32)<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPolarity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20Polarity"><tr><td bgcolor="lightblue"><b>Polarity</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActivityReferenceDensity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20ActivityReferenceDensity"><tr><td bgcolor="lightblue"><b>ActivityReferenceDensity</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndSelfGroupReferenceDensity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20SelfGroupReferenceDensity"><tr><td bgcolor="lightblue"><b>SelfGroupReferenceDensity</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndWordCount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20WordCount"><tr><td bgcolor="lightblue"><b>WordCount</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndTone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20Tone"><tr><td bgcolor="lightblue"><b>Tone</b></td></tr><tr><td align="left" bgcolor="white">+ tone: ToneValue<br align="left"/>
++ tone_score: ToneScore<br align="left"/>
++ polarity: Polarity<br align="left"/>
++ activity_reference_density: ActivityReferenceDensity<br align="left"/>
++ self_group_reference_density: SelfGroupReferenceDensity<br align="left"/>
++ word_count: WordCount<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/counts.rs#:~:text=struct%20Count"><tr><td bgcolor="lightblue"><b>Count</b></td></tr><tr><td align="left" bgcolor="white">+ count_type: Category<br align="left"/>
++ count: CountValue<br align="left"/>
++ object_type: ObjectType<br align="left"/>
++ location: Geography<br align="left"/>
++ offset: Option&lt;CharOffset&gt;<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGlobalEventID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/primary_keys.rs#:~:text=struct%20GlobalEventID"><tr><td bgcolor="lightblue"><b>GlobalEventID</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndMentionID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/primary_keys.rs#:~:text=struct%20MentionID"><tr><td bgcolor="lightblue"><b>MentionID</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGlobalKnowledgeGraphRecordID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/primary_keys.rs#:~:text=struct%20GlobalKnowledgeGraphRecordID"><tr><td bgcolor="lightblue"><b>GlobalKnowledgeGraphRecordID</b></td></tr><tr><td align="left" bgcolor="white">- DateTime&lt;Utc&gt;<br align="left"/>
+- bool<br align="left"/>
+- u64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEntity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_entity_graph_table.rs#:~:text=struct%20Entity"><tr><td bgcolor="lightblue"><b>Entity</b></td></tr><tr><td align="left" bgcolor="white">+ name: String<br align="left"/>
++ entity_type: String<br align="left"/>
++ mid: Option&lt;String&gt;<br align="left"/>
++ wikipedia_url: Option&lt;String&gt;<br align="left"/>
++ num_mentions: u32<br align="left"/>
++ avg_salience: f64<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGlobalEntityGraphTable[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_entity_graph_table.rs#:~:text=struct%20GlobalEntityGraphTable"><tr><td bgcolor="lightblue"><b>GlobalEntityGraphTable</b></td></tr><tr><td align="left" bgcolor="white">+ date: String<br align="left"/>
++ url: String<br align="left"/>
++ lang: String<br align="left"/>
++ polarity: Option&lt;f64&gt;<br align="left"/>
++ magnitude: Option&lt;f64&gt;<br align="left"/>
++ score: Option&lt;f64&gt;<br align="left"/>
++ entities: Vec&lt;Entity&gt;<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageTitle[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_difference_graph_table.rs#:~:text=struct%20PageTitle"><tr><td bgcolor="lightblue"><b>PageTitle</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageDomain[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_difference_graph_table.rs#:~:text=struct%20PageDomain"><tr><td bgcolor="lightblue"><b>PageDomain</b></td></tr><tr><td align="left" bgcolor="white">+ root: Url<br align="left"/>
++ subdomain: Vec&lt;String&gt;<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGDGMetaData[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_difference_graph_table.rs#:~:text=struct%20GDGMetaData"><tr><td bgcolor="lightblue"><b>GDGMetaData</b></td></tr><tr><td align="left" bgcolor="white">+ page_url: Url<br align="left"/>
++ page_title: PageTitle<br align="left"/>
++ page_domain: PageDomain<br align="left"/>
++ page_lang: IndividualLanguages<br align="left"/>
++ fetchdate: (DateTime&lt;Utc&gt;, DateTime&lt;Utc&gt;)<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndChangeUnit[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_difference_graph_table.rs#:~:text=enum%20ChangeUnit"><tr><td bgcolor="yellow"><b>ChangeUnit</b></td></tr><tr><td align="left" bgcolor="white">Word<br align="left"/>
+Char<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCharChange[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_difference_graph_table.rs#:~:text=struct%20CharChange"><tr><td bgcolor="lightblue"><b>CharChange</b></td></tr><tr><td align="left" bgcolor="white">- from: u128<br align="left"/>
+- to: u128<br align="left"/>
+- total: u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGlobalDifferenceGraph[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_difference_graph_table.rs#:~:text=enum%20GlobalDifferenceGraph"><tr><td bgcolor="yellow"><b>GlobalDifferenceGraph</b></td></tr><tr><td align="left" bgcolor="white">HTTPError<br align="left"/>
+HTTPRedirect<br align="left"/>
+UnchangedHTML<br align="left"/>
+UnchangedContent<br align="left"/>
+PageTitleChange<br align="left"/>
+PageTextChange<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGlobalKnowledgeGraphTable[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_knowledge_graph_table.rs#:~:text=struct%20GlobalKnowledgeGraphTable"><tr><td bgcolor="lightblue"><b>GlobalKnowledgeGraphTable</b></td></tr><tr><td align="left" bgcolor="white">+ gkgrecordid: GlobalKnowledgeGraphRecordID<br align="left"/>
++ date: DateTime&lt;Utc&gt;<br align="left"/>
++ source_collection_identifier: MentionType<br align="left"/>
++ source_common_name: GKGSourceCommonName<br align="left"/>
++ counts: Vec&lt;Count&gt;<br align="left"/>
++ themes: Vec&lt;Category&gt;<br align="left"/>
++ locations: Vec&lt;(Geography, Option&lt;CharOffset&gt;)&gt;<br align="left"/>
++ persons: Vec&lt;(String, CharOffset)&gt;<br align="left"/>
++ organisations: Vec&lt;(String, CharOffset)&gt;<br align="left"/>
++ tone: Tone<br align="left"/>
++ dates: Vec&lt;(NaiveDate, CharOffset)&gt;<br align="left"/>
++ gcam: String<br align="left"/>
++ sharing_url: Url<br align="left"/>
++ related_images: Vec&lt;Url&gt;<br align="left"/>
++ social_image_embeds: Vec&lt;Url&gt;<br align="left"/>
++ social_video_embeds: Vec&lt;Url&gt;<br align="left"/>
++ quotations: Vec&lt;Quotation&gt;<br align="left"/>
++ all_names: Vec&lt;(String, CharOffset)&gt;<br align="left"/>
++ amounts: Vec&lt;Amount&gt;<br align="left"/>
++ translation_info: TranslationInfo<br align="left"/>
++ extra_xml: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndQuote[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_quotation_graph_table.rs#:~:text=struct%20Quote"><tr><td bgcolor="lightblue"><b>Quote</b></td></tr><tr><td align="left" bgcolor="white">+ pre: String<br align="left"/>
++ quote: String<br align="left"/>
++ post: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndArticle[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_quotation_graph_table.rs#:~:text=struct%20Article"><tr><td bgcolor="lightblue"><b>Article</b></td></tr><tr><td align="left" bgcolor="white">+ date: String<br align="left"/>
++ url: String<br align="left"/>
++ title: String<br align="left"/>
++ lang: String<br align="left"/>
++ quotes: Vec&lt;Quote&gt;<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndMentionType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=enum%20MentionType"><tr><td bgcolor="yellow"><b>MentionType</b></td></tr><tr><td align="left" bgcolor="white">Web(Url)<br align="left"/>
+CitationOnly(String)<br align="left"/>
+Core(String)<br align="left"/>
+DTIC(String)<br align="left"/>
+JSTOR(String)<br align="left"/>
+NonTextualSource(String)<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndSentenceID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20SentenceID"><tr><td bgcolor="lightblue"><b>SentenceID</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCharOffset[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20CharOffset"><tr><td bgcolor="lightblue"><b>CharOffset</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndConfidence[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20Confidence"><tr><td bgcolor="lightblue"><b>Confidence</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndTranslationInfo[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20TranslationInfo"><tr><td bgcolor="lightblue"><b>TranslationInfo</b></td></tr><tr><td align="left" bgcolor="white">+ source_lang: IndividualLanguages<br align="left"/>
++ engine: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndMentionTable[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20MentionTable"><tr><td bgcolor="lightblue"><b>MentionTable</b></td></tr><tr><td align="left" bgcolor="white">+ global_event_id: GlobalEventID<br align="left"/>
++ event_time: DateTime&lt;Utc&gt;<br align="left"/>
++ time: DateTime&lt;Utc&gt;<br align="left"/>
++ mention_type: MentionType<br align="left"/>
++ mention_source_name: String<br align="left"/>
++ actor_1_offset: CharOffset<br align="left"/>
++ actor_2_offset: CharOffset<br align="left"/>
++ action_offset: CharOffset<br align="left"/>
++ in_raw_text: bool<br align="left"/>
++ confidence: Confidence<br align="left"/>
++ doc_len: u128<br align="left"/>
++ average_tone: AverageTone<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEventSource[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/event_table.rs#:~:text=enum%20EventSource"><tr><td bgcolor="yellow"><b>EventSource</b></td></tr><tr><td align="left" bgcolor="white">URL(Url)<br align="left"/>
+Citation(String)<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEventTable[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/event_table.rs#:~:text=struct%20EventTable"><tr><td bgcolor="lightblue"><b>EventTable</b></td></tr><tr><td align="left" bgcolor="white">+ global_event_id: GlobalEventID<br align="left"/>
++ day: DateTime&lt;Utc&gt;<br align="left"/>
++ actor_1: Actor<br align="left"/>
++ actor_2: Actor<br align="left"/>
++ event: EventAction<br align="left"/>
++ geography: EventGeography<br align="left"/>
++ date_added: DateTime&lt;Utc&gt;<br align="left"/>
++ source: EventSource<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeography -> ndEventGeography[label=""][color="black"][arrowhead="diamond"];
+    ndGeography -> ndCount[label=""][color="black"][arrowhead="diamond"];
+    ndGeography -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndEventGeography -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
+    ndActor -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
+    ndEventAction -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
+    ndActorName -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndActorCountry -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndReligion -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndEthnicity -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndActorType -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndCountryZone -> ndActorCountry[label=""][color="black"][arrowhead="diamond"];
+    ndCountryZone -> ndGeoCountry[label=""][color="black"][arrowhead="diamond"];
+    ndKnownGroup -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndGeoFullname -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndGeoCountry -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndAdministration1 -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndAdministration2 -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndCoord -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndGeoFeature -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndGeoType -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndPrimaryAdministration -> ndAdministration1[label=""][color="black"][arrowhead="diamond"];
+    ndSecondaryAdministration -> ndAdministration2[label=""][color="black"][arrowhead="diamond"];
+    ndGoldsteinScale -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
+    ndNumberOfMention -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
+    ndNumberOfArticles -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
+    ndAverageTone -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
+    ndAverageTone -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndQuadClass -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
+    ndManner -> ndQuadClass[label=""][color="black"][arrowhead="diamond"];
+    ndCategory -> ndCount[label=""][color="black"][arrowhead="diamond"];
+    ndCategory -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndGKGSourceCommonName -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndCountValue -> ndCount[label=""][color="black"][arrowhead="diamond"];
+    ndObjectType -> ndAmount[label=""][color="black"][arrowhead="diamond"];
+    ndObjectType -> ndCount[label=""][color="black"][arrowhead="diamond"];
+    ndAmountValue -> ndAmount[label=""][color="black"][arrowhead="diamond"];
+    ndQuotation -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndAmount -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndToneValue -> ndTone[label=""][color="black"][arrowhead="diamond"];
+    ndToneScore -> ndTone[label=""][color="black"][arrowhead="diamond"];
+    ndPolarity -> ndTone[label=""][color="black"][arrowhead="diamond"];
+    ndActivityReferenceDensity -> ndTone[label=""][color="black"][arrowhead="diamond"];
+    ndSelfGroupReferenceDensity -> ndTone[label=""][color="black"][arrowhead="diamond"];
+    ndWordCount -> ndTone[label=""][color="black"][arrowhead="diamond"];
+    ndTone -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndCount -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndGlobalEventID -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndGlobalEventID -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
+    ndGlobalKnowledgeGraphRecordID -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndEntity -> ndGlobalEntityGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndPageTitle -> ndGDGMetaData[label=""][color="black"][arrowhead="diamond"];
+    ndPageDomain -> ndGDGMetaData[label=""][color="black"][arrowhead="diamond"];
+    ndQuote -> ndArticle[label=""][color="black"][arrowhead="diamond"];
+    ndMentionType -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndMentionType -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndQuotation[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndAmount[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndCount[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndConfidence -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndTranslationInfo -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndEventSource -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
+}

@@ -25,7 +25,7 @@ pub struct GlobalKnowledgeGraphTable {
     pub organisations: Vec<(String, CharOffset)>,
     pub tone: Tone,
     pub dates: Vec<(NaiveDate, CharOffset)>,
-    pub gcam: GCAM,
+    pub gcam: String, // GCAM,
     pub sharing_url: Url,
     pub related_images: Vec<Url>,
     pub social_image_embeds: Vec<Url>,

@@ -1,4 +1,4 @@
-use crate::components::codes::actor::ReligionCode;
+use crate::components::base_components::raw_types::RawCAMEOReligionCode;
 
 pub enum Religion {
     Unspecified,
@@ -35,8 +35,8 @@ pub enum Religion {
     Zoroastrianism,
 }
 
-impl From<ReligionCode> for Religion {
-    fn from(value: ReligionCode) -> Self {
+impl From<RawCAMEOReligionCode> for Religion {
+    fn from(value: RawCAMEOReligionCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
         match str_value {
             "ADR" => Self::AfricanDiasporicReligion,
