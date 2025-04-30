@@ -23,12 +23,24 @@
             "id": "d96aa1aaf28a16cf",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "markdown",
               "state": {
-                "file": "reference_docs/event_mention/GDELT-Event_Codebook-V2.0.pdf"
+                "file": "README/SuperComponent/Event.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
               },
-              "icon": "lucide-file-text",
-              "title": "GDELT-Event_Codebook-V2.0"
+              "icon": "lucide-file",
+              "title": "Event"
             }
           },
           {
@@ -458,18 +470,19 @@
   },
   "active": "d96aa1aaf28a16cf",
   "lastOpenFiles": [
-    "target/debug/incremental/models-2efeqzbbt1j06/s-h6islxjc8p-1n4h66e-working/dep-graph.part.bin",
-    "target/debug/incremental/models-2efeqzbbt1j06/s-h6islxjc8p-1n4h66e-working",
-    "target/debug/incremental/models-2efeqzbbt1j06/s-h6islxjc8p-1n4h66e.lock",
-    "target/debug/incremental/models-1rzikudw5cjsb/s-h6islxj8zt-12cqyty-working/dep-graph.part.bin",
-    "target/debug/incremental/models-1rzikudw5cjsb/s-h6islxj8zt-12cqyty-working",
-    "target/debug/incremental/models-1rzikudw5cjsb/s-h6islxj8zt-12cqyty.lock",
-    "models/src/components/base_components/event/verb.rsrBOACX.bck",
-    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isl3abnc-0n0r5yv-working/dep-graph.part.bin",
-    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isl3abnc-0n0r5yv-working",
-    "target/debug/incremental/models-2efeqzbbt1j06/s-h6isl3abnc-0n0r5yv.lock",
-    "target/debug/incremental/models-1rzikudw5cjsb/s-h6isl3a9pp-1m58rj0-working/dep-graph.part.bin",
+    "README/StandardCode/ActorCodes/EthnicCode.md",
     "README/README.md",
+    "target/debug/deps/gdelt_fetcher-a646f671e381b8d3",
+    "target/debug/deps/gdelt_fetcher-a646f671e381b8d3.tmp3ae6b42",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/work-products.bin",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/query-cache.bin",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/egee3ykgt2fw0c5r7lfhoscsi.o",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/dep-graph.bin",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/7aq1vr7q0ralmtdgk6vz8zu3b.o",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/75zvv3831iixnwxfho6w52ge2.o",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/6swxszxb2oa4hnonsiiclc7ny.o",
+    "target/debug/incremental/gdelt_fetcher-04j4n4gqax2sn/s-h6wzb3q0r3-13ooq7w-3orlop7rqoz12a35pvzg6ee9i/37zltjs1tqldcicmqip25j5yw.o",
+    "README/StandardCode/ActorCodes/CAMEOCountry.md",
     "README/SubComponents/LocationSubComponents/Administration.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/InvestigationAndDemands.md",
     "README/SubComponents/ActorSubComponents/ActorTypes.md",
@@ -492,7 +505,6 @@
     "README/SubComponents/EventSubComponents/Top Level Actions/PublicStatement.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/Protest.md",
     "README/SubComponents/EventSubComponents/Top Level Actions/MaterialAidProvision.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/MassViolence.md",
-    "README/SubComponents/EventSubComponents/Top Level Actions/ForcePosture.md"
+    "README/SubComponents/EventSubComponents/Top Level Actions/MassViolence.md"
   ]
 }
