@@ -1,42 +1,112 @@
 digraph ml {
-    ndCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/mod.rs#:~:text=trait%20Code"><tr><td bgcolor="lightgreen"><b>Code</b></td></tr><tr><td align="left" bgcolor="white"><br align="left"/></td></tr></table></font>>][shape="none"];
-    ndMentionTypeCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/mention.rs#:~:text=struct%20MentionTypeCode"><tr><td bgcolor="lightblue"><b>MentionTypeCode</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCAMEOVerbCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/verb.rs#:~:text=struct%20CAMEOVerbCode"><tr><td bgcolor="lightblue"><b>CAMEOVerbCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 4]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeoTypeCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/location.rs#:~:text=struct%20GeoTypeCode"><tr><td bgcolor="lightblue"><b>GeoTypeCode</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndAdministrationCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/location.rs#:~:text=struct%20AdministrationCode"><tr><td bgcolor="lightblue"><b>AdministrationCode</b></td></tr><tr><td align="left" bgcolor="white">- [u8; 2]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeoFeatureID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/location.rs#:~:text=struct%20GeoFeatureID"><tr><td bgcolor="lightblue"><b>GeoFeatureID</b></td></tr><tr><td align="left" bgcolor="white">- &amp;'a str<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCAMEOActorCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20CAMEOActorCode"><tr><td bgcolor="lightblue"><b>CAMEOActorCode</b></td></tr><tr><td align="left" bgcolor="white">+ [[u8; 3]; 5]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCAMEOCountryCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20CAMEOCountryCode"><tr><td bgcolor="lightblue"><b>CAMEOCountryCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndEthnicGroupCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20EthnicGroupCode"><tr><td bgcolor="lightblue"><b>EthnicGroupCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndFIPS[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20FIPS"><tr><td bgcolor="lightblue"><b>FIPS</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 2]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndKnownGroupCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20KnownGroupCode"><tr><td bgcolor="lightblue"><b>KnownGroupCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndReligionCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20ReligionCode"><tr><td bgcolor="lightblue"><b>ReligionCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndActorTypeCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/codes/actor.rs#:~:text=struct%20ActorTypeCode"><tr><td bgcolor="lightblue"><b>ActorTypeCode</b></td></tr><tr><td align="left" bgcolor="white">+ [u8; 3]<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeography[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20Geography"><tr><td bgcolor="lightblue"><b>Geography</b></td></tr><tr><td align="left" bgcolor="white">+ geo_type: GeoType<br align="left"/>
-+ geo_name: GeoFullname<br align="left"/>
-+ country: GeoCountry<br align="left"/>
-+ admin_1: Administration1<br align="left"/>
-+ admin_2: Administration2<br align="left"/>
-+ coord: Coord<br align="left"/>
+    ndActorName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20ActorName"><tr><td bgcolor="lightblue"><b>ActorName</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/>
+- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGlobalKnowledgeGraphRecordID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20GlobalKnowledgeGraphRecordID"><tr><td bgcolor="lightblue"><b>GlobalKnowledgeGraphRecordID</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2SourceCommonName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2SourceCommonName"><tr><td bgcolor="lightblue"><b>V2SourceCommonName</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2DocumentIdentifier[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2DocumentIdentifier"><tr><td bgcolor="lightblue"><b>V2DocumentIdentifier</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV1Theme[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V1Theme"><tr><td bgcolor="lightblue"><b>V1Theme</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV1Person[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V1Person"><tr><td bgcolor="lightblue"><b>V1Person</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV1Organisation[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V1Organisation"><tr><td bgcolor="lightblue"><b>V1Organisation</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2SharingImage[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2SharingImage"><tr><td bgcolor="lightblue"><b>V2SharingImage</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2RelatedImage[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2RelatedImage"><tr><td bgcolor="lightblue"><b>V2RelatedImage</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2SocialMediaEmbed[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2SocialMediaEmbed"><tr><td bgcolor="lightblue"><b>V2SocialMediaEmbed</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2SocialVideoEmbed[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2SocialVideoEmbed"><tr><td bgcolor="lightblue"><b>V2SocialVideoEmbed</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageURL[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20PageURL"><tr><td bgcolor="lightblue"><b>PageURL</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageTitle[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20PageTitle"><tr><td bgcolor="lightblue"><b>PageTitle</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageDomainFull[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20PageDomainFull"><tr><td bgcolor="lightblue"><b>PageDomainFull</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageDomainRoot[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20PageDomainRoot"><tr><td bgcolor="lightblue"><b>PageDomainRoot</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndPageLanguage[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20PageLanguage"><tr><td bgcolor="lightblue"><b>PageLanguage</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndFetchDateOriginal[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20FetchDateOriginal"><tr><td bgcolor="lightblue"><b>FetchDateOriginal</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndFetchDateCheck[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20FetchDateCheck"><tr><td bgcolor="lightblue"><b>FetchDateCheck</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndHTTPCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20HTTPCode"><tr><td bgcolor="lightblue"><b>HTTPCode</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRedirectURL[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20RedirectURL"><tr><td bgcolor="lightblue"><b>RedirectURL</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndTitleNew[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20TitleNew"><tr><td bgcolor="lightblue"><b>TitleNew</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(raw) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2Theme[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2Theme"><tr><td bgcolor="lightblue"><b>V2Theme</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/>
++ CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2Person[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2Person"><tr><td bgcolor="lightblue"><b>V2Person</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/>
++ CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2Organisation[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2Organisation"><tr><td bgcolor="lightblue"><b>V2Organisation</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/>
++ CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2AllName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2AllName"><tr><td bgcolor="lightblue"><b>V2AllName</b></td></tr><tr><td align="left" bgcolor="white">+ String<br align="left"/>
++ CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2Amount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2Amount"><tr><td bgcolor="lightblue"><b>V2Amount</b></td></tr><tr><td align="left" bgcolor="white">+ u128<br align="left"/>
++ String<br align="left"/>
++ CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2Quotation[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2Quotation"><tr><td bgcolor="lightblue"><b>V2Quotation</b></td></tr><tr><td align="left" bgcolor="white">+ char_offset: CharOffset<br align="left"/>
++ quotation_length: u128<br align="left"/>
++ quotation_verb: String<br align="left"/>
++ quote_value: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndTranslationInfo[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20TranslationInfo"><tr><td bgcolor="lightblue"><b>TranslationInfo</b></td></tr><tr><td align="left" bgcolor="white">+ source_language_code: [u8; 3]<br align="left"/>
++ engine: String<br align="left"/>
++ model: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCitedReference[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20CitedReference"><tr><td bgcolor="lightblue"><b>CitedReference</b></td></tr><tr><td align="left" bgcolor="white">+ author: String<br align="left"/>
++ title: String<br align="left"/>
++ book_title: String<br align="left"/>
++ date: String<br align="left"/>
++ journal: String<br align="left"/>
++ volume: String<br align="left"/>
++ issue: String<br align="left"/>
++ pages: String<br align="left"/>
++ institution: String<br align="left"/>
++ publisher: String<br align="left"/>
++ location: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV1Count[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V1Count"><tr><td bgcolor="lightblue"><b>V1Count</b></td></tr><tr><td align="left" bgcolor="white">+ count_type: String<br align="left"/>
++ count_value: u128<br align="left"/>
++ count_object: String<br align="left"/>
++ location_type: u8<br align="left"/>
++ location_name: String<br align="left"/>
++ fips_country_code: [u8; 2]<br align="left"/>
++ fips_administration_code: [u8; 3]<br align="left"/>
++ longitude: f64<br align="left"/>
++ latitude: f64<br align="left"/>
++ feature_id: String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndV2Count[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/mod.rs#:~:text=struct%20V2Count"><tr><td bgcolor="lightblue"><b>V2Count</b></td></tr><tr><td align="left" bgcolor="white">+ count_type: String<br align="left"/>
++ count_value: u128<br align="left"/>
++ count_object: String<br align="left"/>
++ location_type: u8<br align="left"/>
++ location_name: String<br align="left"/>
++ fips_country_code: [u8; 2]<br align="left"/>
++ fips_administration_code: [u8; 3]<br align="left"/>
++ longitude: f64<br align="left"/>
++ latitude: f64<br align="left"/>
++ feature_id: String<br align="left"/>
++ char_offset: CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActorName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/mod.rs#:~:text=struct%20ActorName"><tr><td bgcolor="lightblue"><b>ActorName</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeography[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20Geography"><tr><td bgcolor="lightblue"><b>Geography</b></td></tr><tr><td align="left" bgcolor="white">+ geo_type: LocationType<br align="left"/>
++ geo_name: LocationName<br align="left"/>
++ country: CountryZone<br align="left"/>
++ coord: Coordinates<br align="left"/>
 + feature: GeoFeature<br align="left"/></td></tr></table></font>>][shape="none"];
     ndEventGeography[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20EventGeography"><tr><td bgcolor="lightblue"><b>EventGeography</b></td></tr><tr><td align="left" bgcolor="white">+ actor_1: Geography<br align="left"/>
 + actor_2: Geography<br align="left"/>
 + action: Geography<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndLocationName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20LocationName"><tr><td bgcolor="lightblue"><b>LocationName</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCoordinates[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20Coordinates"><tr><td bgcolor="lightblue"><b>Coordinates</b></td></tr><tr><td align="left" bgcolor="white">- Latitude<br align="left"/>
+- Longitude<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndGeoFeature[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/geography.rs#:~:text=struct%20GeoFeature"><tr><td bgcolor="lightblue"><b>GeoFeature</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
     ndActor[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/actor.rs#:~:text=struct%20Actor"><tr><td bgcolor="lightblue"><b>Actor</b></td></tr><tr><td align="left" bgcolor="white">+ name: ActorName<br align="left"/>
-+ country: ActorCountry<br align="left"/>
++ country: CountryZone<br align="left"/>
 + known_group: KnownGroup<br align="left"/>
 + ethnicity: Ethnicity<br align="left"/>
-+ religion: Religion<br align="left"/>
-+ actor_type: ActorType<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndEventAction[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/event_action.rs#:~:text=struct%20EventAction"><tr><td bgcolor="lightblue"><b>EventAction</b></td></tr><tr><td align="left" bgcolor="white">+ is_root_event: bool<br align="left"/>
++ religion: (Religion, Religion)<br align="left"/>
++ actor_type: (ActorType, ActorType, ActorType)<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndEventAction[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/super_components/event_action.rs#:~:text=struct%20EventAction"><tr><td bgcolor="lightblue"><b>EventAction</b></td></tr><tr><td align="left" bgcolor="white">+ is_root_event: IsRootEvent<br align="left"/>
 + verb: Verb<br align="left"/>
 + quad_class: QuadClass<br align="left"/>
 + goldstein: GoldsteinScale<br align="left"/>
-+ num_mentions: NumberOfMention<br align="left"/>
++ num_mentions: NumberOfMentions<br align="left"/>
 + num_articles: NumberOfArticles<br align="left"/>
-+ average_tone: AverageTone<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndActorName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/mod.rs#:~:text=struct%20ActorName"><tr><td bgcolor="lightblue"><b>ActorName</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndActorCountry[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/mod.rs#:~:text=struct%20ActorCountry"><tr><td bgcolor="lightblue"><b>ActorCountry</b></td></tr><tr><td align="left" bgcolor="white">- CountryZone<br align="left"/></td></tr></table></font>>][shape="none"];
++ average_tone: ToneValue<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRawActor[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/mod.rs#:~:text=struct%20RawActor"><tr><td bgcolor="lightblue"><b>RawActor</b></td></tr><tr><td align="left" bgcolor="white">+ code: CAMEOActorTypeCode<br align="left"/>
++ name: RawActorName&lt;'a&gt;<br align="left"/>
++ country_code: CAMEOCountryCode<br align="left"/>
++ known_group_code: CAMEOKnownGroupCode<br align="left"/>
++ ethnic_code: CAMEOEthnicCode<br align="left"/>
++ religion_1_code: CAMEOReligionCode<br align="left"/>
++ religion_2_code: CAMEOReligionCode<br align="left"/>
++ type_1_code: CAMEOActorTypeCode<br align="left"/>
++ type_2_code: CAMEOActorTypeCode<br align="left"/>
++ type_3_code: CAMEOActorTypeCode<br align="left"/></td></tr></table></font>>][shape="none"];
     ndReligion[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/religion.rs#:~:text=enum%20Religion"><tr><td bgcolor="yellow"><b>Religion</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
 AfricanDiasporicReligion<br align="left"/>
 Alewi<br align="left"/>
@@ -743,7 +813,143 @@ MultinationalCorporation<br align="left"/>
 NonGovernmentalMovement<br align="left"/>
 NonGovernmentalOrganization<br align="left"/>
 Settler<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCountryZone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/country.rs#:~:text=enum%20CountryZone"><tr><td bgcolor="yellow"><b>CountryZone</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+    ndKnownGroup[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/known_group.rs#:~:text=enum%20KnownGroup"><tr><td bgcolor="yellow"><b>KnownGroup</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
+AlAqsaMartyrsBrigade<br align="left"/>
+ArabBankforEconomicDevelopmentinAfrica<br align="left"/>
+ArabCooperationCouncil<br align="left"/>
+AsianDevelopmentBank<br align="left"/>
+ArabEconomicUnityCouncil<br align="left"/>
+AfricanDevelopmentBank<br align="left"/>
+AlQaeda<br align="left"/>
+ArabMonetaryFundforEconomicandSocialDevelopment<br align="left"/>
+AmalMilitia<br align="left"/>
+AmnestyInternational<br align="left"/>
+ArabMaghrebUnion<br align="left"/>
+AbuNidalOrganization<br align="left"/>
+OrgofArabPetroleumExportingCountriesOAPEC<br align="left"/>
+ArabLeague<br align="left"/>
+SouthLebanonArmy<br align="left"/>
+AssociationofSoutheastAsianNationsASEAN<br align="left"/>
+EasternandSouthernAfricanTradeandDevelopmentBank<br align="left"/>
+BankofCentralAfricanStatesBEAC<br align="left"/>
+BankforInternationalSettlements<br align="left"/>
+BaathParty<br align="left"/>
+CommonMarketforEasternandSouthernAfrica<br align="left"/>
+MonetaryandEconomicCommunityofCentralAfrica<br align="left"/>
+FrancZoneFinancialCommunityofAfrica<br align="left"/>
+CommonwealthofIndependentStates<br align="left"/>
+Communist<br align="left"/>
+CouncilofEurope<br align="left"/>
+CocoaProducersAlliance<br align="left"/>
+AssociationofCoffeeProducingCountries<br align="left"/>
+InternationalFedofRedCrossandRedCrescentICRC<br align="left"/>
+CommunityofSahelSaharanStatesCENSAD<br align="left"/>
+CommonwealthofNations<br align="left"/>
+DemocraticFrontfortheLibofPalestineDFLP<br align="left"/>
+EuropeanBankforReconstructionandDevelopment<br align="left"/>
+EconomicCommunityofCentralAfricanStates<br align="left"/>
+EuropeanUnion<br align="left"/>
+EuropeanFreeTradeAssociation<br align="left"/>
+EnnahdaMovement<br align="left"/>
+UnitedNationsFoodandAgricultureOrganization<br align="left"/>
+InternationalFederationofHumanRightsFIDH<br align="left"/>
+IslamicSalvationArmy<br align="left"/>
+NationalLiberationFrontFLN<br align="left"/>
+Fatah<br align="left"/>
+GulfCooperationCouncil<br align="left"/>
+ArmedIslamicGroupGIA<br align="left"/>
+GroupofEightG8G7plusRussia<br align="left"/>
+GroupofSevenG7<br align="left"/>
+SalafistGroup<br align="left"/>
+GroupofSeventySevenG77<br align="left"/>
+UNHighCommissionforHumanRights<br align="left"/>
+UNHighCommissionforRefugees<br align="left"/>
+Hezbullah<br align="left"/>
+HighlyIndebtedPoorCountriesHIPC<br align="left"/>
+Hamas<br align="left"/>
+HumanRightsWatch<br align="left"/>
+InterAfricanCoffeeOrganizationIACO<br align="left"/>
+IntergovernmentalAuthorityonDevelopmentIGAD<br align="left"/>
+InternationalAtomicEnergyAgencyIAEA<br align="left"/>
+IslamicActionFront<br align="left"/>
+InternationalCriminalCourt<br align="left"/>
+InternationalCrisisGroup<br align="left"/>
+InternationalCourtofJusticeICJ<br align="left"/>
+InternationalCocoaOrganizationICCO<br align="left"/>
+IslamicDevelopmentBank<br align="left"/>
+InternationalGrainsCouncil<br align="left"/>
+InternationalHelsinkiFederationforHumanRights<br align="left"/>
+InternationalLaborOrganization<br align="left"/>
+InternationalMonetaryFundIMF<br align="left"/>
+InternationalOrganizationforMigration<br align="left"/>
+InterParliamentaryUnion<br align="left"/>
+RedCross<br align="left"/>
+PalestinianIslamicJihad<br align="left"/>
+Interpol<br align="left"/>
+InternationalCommissionofJurists<br align="left"/>
+KurdishDemocraticPartyKDP<br align="left"/>
+UnitedNationsChildrensFundUNICEF<br align="left"/>
+IsraeliLaborParty<br align="left"/>
+LikudParty<br align="left"/>
+MuslimBrotherhood<br align="left"/>
+MeretzParty<br align="left"/>
+MedecinsSansFrontieresDoctorsWithoutBorders<br align="left"/>
+MovementoftheSocietyforPeace<br align="left"/>
+NorthAtlanticTreatyOrganizationNATO<br align="left"/>
+NewEconomicPartnershipforAfricasDevelopment<br align="left"/>
+OrganizationofNonAlignedCountries<br align="left"/>
+OrganizationofAmericanStates<br align="left"/>
+OrganizationofAfricanUnityOAU<br align="left"/>
+OrganizationofIslamicConferencesOIC<br align="left"/>
+OrganizationofPetroleumExportingCountriesOPEC<br align="left"/>
+PanAfricanParliament<br align="left"/>
+PeoplesFrontfortheLiberationofPalestinePFLP<br align="left"/>
+PalestineLiberationFront<br align="left"/>
+PalestineLiberationOrganization<br align="left"/>
+PolisarioGuerillas<br align="left"/>
+PeoplesMujahedeen<br align="left"/>
+ParisClub<br align="left"/>
+OccupiedPalestinianTerritories<br align="left"/>
+RedCrescent<br align="left"/>
+DemocraticNationalRally<br align="left"/>
+SouthAsianAssociation<br align="left"/>
+SouthernAfricanDevelopmentCommunity<br align="left"/>
+CouncilofSecurityandCooperationinEuropeOSCE<br align="left"/>
+ShasParty<br align="left"/>
+SoutheastAsiaCollectiveDefenseTreatySEATO<br align="left"/>
+Taliban<br align="left"/>
+EconomicandMonetaryUnionofWestAfricaUEMOA<br align="left"/>
+UnitedNations<br align="left"/>
+WestAfricaDevelopmentBank<br align="left"/>
+WestAfricaMonetaryandEconomicUnion<br align="left"/>
+EconomicCommunityofWestAfricanStatesECOWAS<br align="left"/>
+WorldBank<br align="left"/>
+InternationalWarCrimesTribunals<br align="left"/>
+WorldEconomicForum<br align="left"/>
+WorldFoodProgram<br align="left"/>
+WorldHealthOrganization<br align="left"/>
+WorldTradeOrganization<br align="left"/>
+WorldTradeOrganizationWTO<br align="left"/>
+Oxfam<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRawMention[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/mention.rs#:~:text=struct%20RawMention"><tr><td bgcolor="lightblue"><b>RawMention</b></td></tr><tr><td align="left" bgcolor="white">- global_event_id: GlobalEventID<br align="left"/>
+- event_time_date: RawEventTimeDate<br align="left"/>
+- mention_time_date: RawMentionTimeDate<br align="left"/>
+- mention_type: RawMentionType<br align="left"/>
+- mention_source_name: RawMentionSourceName&lt;'a&gt;<br align="left"/>
+- mention_identifier: V2SourceCollectionIdentifier<br align="left"/>
+- sentence_id: SentenceID<br align="left"/>
+- actor_1_char_offset: CharOffset<br align="left"/>
+- actor_2_char_offset: CharOffset<br align="left"/>
+- action_char_offset: CharOffset<br align="left"/>
+- in_raw_text: InRawText<br align="left"/>
+- confidence: Confidence<br align="left"/>
+- mention_doc_len: DocLength<br align="left"/>
+- mention_doc_tone: ToneValue<br align="left"/>
+- mention_doc_translation_info: RawTranslationInfo&lt;'a&gt;<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(mut iter) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRawEventGeography[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20RawEventGeography"><tr><td bgcolor="lightblue"><b>RawEventGeography</b></td></tr><tr><td align="left" bgcolor="white">- actor_1: RawGeography&lt;'a&gt;<br align="left"/>
+- actor_2: RawGeography&lt;'a&gt;<br align="left"/>
+- action: RawGeography&lt;'a&gt;<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndCountryZone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/country.rs#:~:text=enum%20CountryZone"><tr><td bgcolor="yellow"><b>CountryZone</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
 WestBank<br align="left"/>
 Baghdad<br align="left"/>
 GazaStrip<br align="left"/>
@@ -1064,179 +1270,52 @@ VirginIslands<br align="left"/>
 WakeIsland<br align="left"/>
 WallisandFutuna<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/>
 - from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndKnownGroup[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/actor/known_group.rs#:~:text=enum%20KnownGroup"><tr><td bgcolor="yellow"><b>KnownGroup</b></td></tr><tr><td align="left" bgcolor="white">Unspecified<br align="left"/>
-AlAqsaMartyrsBrigade<br align="left"/>
-ArabBankforEconomicDevelopmentinAfrica<br align="left"/>
-ArabCooperationCouncil<br align="left"/>
-AsianDevelopmentBank<br align="left"/>
-ArabEconomicUnityCouncil<br align="left"/>
-AfricanDevelopmentBank<br align="left"/>
-AlQaeda<br align="left"/>
-ArabMonetaryFundforEconomicandSocialDevelopment<br align="left"/>
-AmalMilitia<br align="left"/>
-AmnestyInternational<br align="left"/>
-ArabMaghrebUnion<br align="left"/>
-AbuNidalOrganization<br align="left"/>
-OrgofArabPetroleumExportingCountriesOAPEC<br align="left"/>
-ArabLeague<br align="left"/>
-SouthLebanonArmy<br align="left"/>
-AssociationofSoutheastAsianNationsASEAN<br align="left"/>
-EasternandSouthernAfricanTradeandDevelopmentBank<br align="left"/>
-BankofCentralAfricanStatesBEAC<br align="left"/>
-BankforInternationalSettlements<br align="left"/>
-BaathParty<br align="left"/>
-CommonMarketforEasternandSouthernAfrica<br align="left"/>
-MonetaryandEconomicCommunityofCentralAfrica<br align="left"/>
-FrancZoneFinancialCommunityofAfrica<br align="left"/>
-CommonwealthofIndependentStates<br align="left"/>
-Communist<br align="left"/>
-CouncilofEurope<br align="left"/>
-CocoaProducersAlliance<br align="left"/>
-AssociationofCoffeeProducingCountries<br align="left"/>
-InternationalFedofRedCrossandRedCrescentICRC<br align="left"/>
-CommunityofSahelSaharanStatesCENSAD<br align="left"/>
-CommonwealthofNations<br align="left"/>
-DemocraticFrontfortheLibofPalestineDFLP<br align="left"/>
-EuropeanBankforReconstructionandDevelopment<br align="left"/>
-EconomicCommunityofCentralAfricanStates<br align="left"/>
-EuropeanUnion<br align="left"/>
-EuropeanFreeTradeAssociation<br align="left"/>
-EnnahdaMovement<br align="left"/>
-UnitedNationsFoodandAgricultureOrganization<br align="left"/>
-InternationalFederationofHumanRightsFIDH<br align="left"/>
-IslamicSalvationArmy<br align="left"/>
-NationalLiberationFrontFLN<br align="left"/>
-Fatah<br align="left"/>
-GulfCooperationCouncil<br align="left"/>
-ArmedIslamicGroupGIA<br align="left"/>
-GroupofEightG8G7plusRussia<br align="left"/>
-GroupofSevenG7<br align="left"/>
-SalafistGroup<br align="left"/>
-GroupofSeventySevenG77<br align="left"/>
-UNHighCommissionforHumanRights<br align="left"/>
-UNHighCommissionforRefugees<br align="left"/>
-Hezbullah<br align="left"/>
-HighlyIndebtedPoorCountriesHIPC<br align="left"/>
-Hamas<br align="left"/>
-HumanRightsWatch<br align="left"/>
-InterAfricanCoffeeOrganizationIACO<br align="left"/>
-IntergovernmentalAuthorityonDevelopmentIGAD<br align="left"/>
-InternationalAtomicEnergyAgencyIAEA<br align="left"/>
-IslamicActionFront<br align="left"/>
-InternationalCriminalCourt<br align="left"/>
-InternationalCrisisGroup<br align="left"/>
-InternationalCourtofJusticeICJ<br align="left"/>
-InternationalCocoaOrganizationICCO<br align="left"/>
-IslamicDevelopmentBank<br align="left"/>
-InternationalGrainsCouncil<br align="left"/>
-InternationalHelsinkiFederationforHumanRights<br align="left"/>
-InternationalLaborOrganization<br align="left"/>
-InternationalMonetaryFundIMF<br align="left"/>
-InternationalOrganizationforMigration<br align="left"/>
-InterParliamentaryUnion<br align="left"/>
-RedCross<br align="left"/>
-PalestinianIslamicJihad<br align="left"/>
-Interpol<br align="left"/>
-InternationalCommissionofJurists<br align="left"/>
-KurdishDemocraticPartyKDP<br align="left"/>
-UnitedNationsChildrensFundUNICEF<br align="left"/>
-IsraeliLaborParty<br align="left"/>
-LikudParty<br align="left"/>
-MuslimBrotherhood<br align="left"/>
-MeretzParty<br align="left"/>
-MedecinsSansFrontieresDoctorsWithoutBorders<br align="left"/>
-MovementoftheSocietyforPeace<br align="left"/>
-NorthAtlanticTreatyOrganizationNATO<br align="left"/>
-NewEconomicPartnershipforAfricasDevelopment<br align="left"/>
-OrganizationofNonAlignedCountries<br align="left"/>
-OrganizationofAmericanStates<br align="left"/>
-OrganizationofAfricanUnityOAU<br align="left"/>
-OrganizationofIslamicConferencesOIC<br align="left"/>
-OrganizationofPetroleumExportingCountriesOPEC<br align="left"/>
-PanAfricanParliament<br align="left"/>
-PeoplesFrontfortheLiberationofPalestinePFLP<br align="left"/>
-PalestineLiberationFront<br align="left"/>
-PalestineLiberationOrganization<br align="left"/>
-PolisarioGuerillas<br align="left"/>
-PeoplesMujahedeen<br align="left"/>
-ParisClub<br align="left"/>
-OccupiedPalestinianTerritories<br align="left"/>
-RedCrescent<br align="left"/>
-DemocraticNationalRally<br align="left"/>
-SouthAsianAssociation<br align="left"/>
-SouthernAfricanDevelopmentCommunity<br align="left"/>
-CouncilofSecurityandCooperationinEuropeOSCE<br align="left"/>
-ShasParty<br align="left"/>
-SoutheastAsiaCollectiveDefenseTreatySEATO<br align="left"/>
-Taliban<br align="left"/>
-EconomicandMonetaryUnionofWestAfricaUEMOA<br align="left"/>
-UnitedNations<br align="left"/>
-WestAfricaDevelopmentBank<br align="left"/>
-WestAfricaMonetaryandEconomicUnion<br align="left"/>
-EconomicCommunityofWestAfricanStatesECOWAS<br align="left"/>
-WorldBank<br align="left"/>
-InternationalWarCrimesTribunals<br align="left"/>
-WorldEconomicForum<br align="left"/>
-WorldFoodProgram<br align="left"/>
-WorldHealthOrganization<br align="left"/>
-WorldTradeOrganization<br align="left"/>
-WorldTradeOrganizationWTO<br align="left"/>
-Oxfam<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeoFullname[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20GeoFullname"><tr><td bgcolor="lightblue"><b>GeoFullname</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeoCountry[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20GeoCountry"><tr><td bgcolor="lightblue"><b>GeoCountry</b></td></tr><tr><td align="left" bgcolor="white">- CountryZone<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndAdministration1[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20Administration1"><tr><td bgcolor="lightblue"><b>Administration1</b></td></tr><tr><td align="left" bgcolor="white">- PrimaryAdministration<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndAdministration2[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20Administration2"><tr><td bgcolor="lightblue"><b>Administration2</b></td></tr><tr><td align="left" bgcolor="white">- SecondaryAdministration<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCoord[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/mod.rs#:~:text=struct%20Coord"><tr><td bgcolor="lightblue"><b>Coord</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/>
-- f64<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeoFeature[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_feature.rs#:~:text=struct%20GeoFeature"><tr><td bgcolor="lightblue"><b>GeoFeature</b></td></tr></table></font>>][shape="none"];
-    ndRawLocationType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_type.rs#:~:text=struct%20RawLocationType"><tr><td bgcolor="lightblue"><b>RawLocationType</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndRawLocationName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_type.rs#:~:text=struct%20RawLocationName"><tr><td bgcolor="lightblue"><b>RawLocationName</b></td></tr><tr><td align="left" bgcolor="white">- &amp;'a str<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndGeoType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/geo_type.rs#:~:text=enum%20GeoType"><tr><td bgcolor="yellow"><b>GeoType</b></td></tr><tr><td align="left" bgcolor="white">Country<br align="left"/>
-City<br align="left"/>
-Province<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndPrimaryAdministration[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/administration.rs#:~:text=enum%20PrimaryAdministration"><tr><td bgcolor="yellow"><b>PrimaryAdministration</b></td></tr></table></font>>][shape="none"];
-    ndSecondaryAdministration[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/administration.rs#:~:text=enum%20SecondaryAdministration"><tr><td bgcolor="yellow"><b>SecondaryAdministration</b></td></tr></table></font>>][shape="none"];
-    ndGoldsteinScale[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20GoldsteinScale"><tr><td bgcolor="lightblue"><b>GoldsteinScale</b></td></tr><tr><td align="left" bgcolor="white">- f32<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndNumberOfMention[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20NumberOfMention"><tr><td bgcolor="lightblue"><b>NumberOfMention</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndNumberOfSources[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20NumberOfSources"><tr><td bgcolor="lightblue"><b>NumberOfSources</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndNumberOfArticles[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20NumberOfArticles"><tr><td bgcolor="lightblue"><b>NumberOfArticles</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndAverageTone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20AverageTone"><tr><td bgcolor="lightblue"><b>AverageTone</b></td></tr><tr><td align="left" bgcolor="white">- i32<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndQuadClassCode[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/quad_class.rs#:~:text=struct%20QuadClassCode"><tr><td bgcolor="lightblue"><b>QuadClassCode</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndLocationType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/location/location_type.rs#:~:text=enum%20LocationType"><tr><td bgcolor="yellow"><b>LocationType</b></td></tr><tr><td align="left" bgcolor="white">Unspecifed<br align="left"/>
+Country<br align="left"/>
+State<br align="left"/>
+City<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRawEventAction[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/mod.rs#:~:text=struct%20RawEventAction"><tr><td bgcolor="lightblue"><b>RawEventAction</b></td></tr><tr><td align="left" bgcolor="white">+ is_root_event: IsRootEvent<br align="left"/>
++ event_code: CAMEOEventCode<br align="left"/>
++ event_base_code: CAMEOEventBaseCode<br align="left"/>
++ event_root_code: CAMEOEventRootCode<br align="left"/>
++ quad_class: RawQuadClass<br align="left"/>
++ goldstein_scale: GoldsteinScale<br align="left"/>
++ number_of_mentions: NumberOfMentions<br align="left"/>
++ number_of_sources: NumberOfSources<br align="left"/>
++ number_of_articles: NumberOfArticles<br align="left"/>
++ average_tone: ToneValue<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(mut iter) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
     ndQuadClass[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/quad_class.rs#:~:text=enum%20QuadClass"><tr><td bgcolor="yellow"><b>QuadClass</b></td></tr><tr><td align="left" bgcolor="white">Invalid<br align="left"/>
 Cooperation(Manner)<br align="left"/>
 Conflict(Manner)<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(value) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
     ndManner[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/event/quad_class.rs#:~:text=enum%20Manner"><tr><td bgcolor="yellow"><b>Manner</b></td></tr><tr><td align="left" bgcolor="white">Verbal<br align="left"/>
 Material<br align="left"/></td></tr></table></font>>][shape="none"];
     ndCategory[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/gdelt_category.rs#:~:text=enum%20Category"><tr><td bgcolor="yellow"><b>Category</b></td></tr></table></font>>][shape="none"];
-    ndGKGSourceCommonName[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20GKGSourceCommonName"><tr><td bgcolor="lightblue"><b>GKGSourceCommonName</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCountValue[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20CountValue"><tr><td bgcolor="lightblue"><b>CountValue</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndObjectType[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20ObjectType"><tr><td bgcolor="lightblue"><b>ObjectType</b></td></tr><tr><td align="left" bgcolor="white">- String<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndAmountValue[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20AmountValue"><tr><td bgcolor="lightblue"><b>AmountValue</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndQuotation[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20Quotation"><tr><td bgcolor="lightblue"><b>Quotation</b></td></tr><tr><td align="left" bgcolor="white">+ offset: CharOffset<br align="left"/>
-+ length: u64<br align="left"/>
-+ verb: String<br align="left"/>
-+ quote: String<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndAmount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20Amount"><tr><td bgcolor="lightblue"><b>Amount</b></td></tr><tr><td align="left" bgcolor="white">+ amount: AmountValue<br align="left"/>
-+ object: ObjectType<br align="left"/>
-+ offset: CharOffset<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndToneValue[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20ToneValue"><tr><td bgcolor="lightblue"><b>ToneValue</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndToneScore[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=enum%20ToneScore"><tr><td bgcolor="yellow"><b>ToneScore</b></td></tr><tr><td align="left" bgcolor="white">Positive(f32)<br align="left"/>
-Negative(f32)<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndPolarity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20Polarity"><tr><td bgcolor="lightblue"><b>Polarity</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndActivityReferenceDensity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20ActivityReferenceDensity"><tr><td bgcolor="lightblue"><b>ActivityReferenceDensity</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndSelfGroupReferenceDensity[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20SelfGroupReferenceDensity"><tr><td bgcolor="lightblue"><b>SelfGroupReferenceDensity</b></td></tr><tr><td align="left" bgcolor="white">- f64<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndWordCount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20WordCount"><tr><td bgcolor="lightblue"><b>WordCount</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndTone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/tone.rs#:~:text=struct%20Tone"><tr><td bgcolor="lightblue"><b>Tone</b></td></tr><tr><td align="left" bgcolor="white">+ tone: ToneValue<br align="left"/>
-+ tone_score: ToneScore<br align="left"/>
-+ polarity: Polarity<br align="left"/>
-+ activity_reference_density: ActivityReferenceDensity<br align="left"/>
-+ self_group_reference_density: SelfGroupReferenceDensity<br align="left"/>
-+ word_count: WordCount<br align="left"/></td></tr></table></font>>][shape="none"];
-    ndCount[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/counts.rs#:~:text=struct%20Count"><tr><td bgcolor="lightblue"><b>Count</b></td></tr><tr><td align="left" bgcolor="white">+ count_type: Category<br align="left"/>
-+ count: CountValue<br align="left"/>
-+ object_type: ObjectType<br align="left"/>
-+ location: Geography<br align="left"/>
-+ offset: Option&lt;CharOffset&gt;<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndRawGlobalKnowledgeGraph[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/components/base_components/global_knowledge_graph/mod.rs#:~:text=struct%20RawGlobalKnowledgeGraph"><tr><td bgcolor="lightblue"><b>RawGlobalKnowledgeGraph</b></td></tr><tr><td align="left" bgcolor="white">- gkg_record: RawGlobalKnowledgeGraphRecordID&lt;'a&gt;<br align="left"/>
+- v2_date: RawDate&lt;'a&gt;<br align="left"/>
+- v2_source_collection_identifier: V2SourceCollectionIdentifier<br align="left"/>
+- v2_source_common_name: RawV2SourceCommonName&lt;'a&gt;<br align="left"/>
+- v2_document_identifier: RawV2DocumentIdentifier&lt;'a&gt;<br align="left"/>
+- v1_counts: RawV1Count&lt;'a&gt;<br align="left"/>
+- v2_counts: RawV2Count&lt;'a&gt;<br align="left"/>
+- v1_themes: RawV1Theme&lt;'a&gt;<br align="left"/>
+- v2_themes: RawV2Theme&lt;'a&gt;<br align="left"/>
+- v1_locations: RawV1Location&lt;'a&gt;<br align="left"/>
+- v2_locations: RawV2Location&lt;'a&gt;<br align="left"/>
+- v1_persons: RawV1Person&lt;'a&gt;<br align="left"/>
+- v2_persons: RawV2Person&lt;'a&gt;<br align="left"/>
+- v1_organisations: RawV1Organisation&lt;'a&gt;<br align="left"/>
+- v2_organisations: RawV2Organisation&lt;'a&gt;<br align="left"/>
+- v15_tone: RawV1Count&lt;'a&gt;<br align="left"/>
+- v2_dates: V2EnhancedDate<br align="left"/>
+- v2_sharing_image: RawV2SharingImage&lt;'a&gt;<br align="left"/>
+- v2_related_images: RawV2RelatedImage&lt;'a&gt;<br align="left"/>
+- v2_social_media_embeds: RawV2SocialMediaEmbed&lt;'a&gt;<br align="left"/>
+- v2_social_video_embeds: RawV2SocialVideoEmbed&lt;'a&gt;<br align="left"/>
+- v2_quotations: RawV2Quotation&lt;'a&gt;<br align="left"/>
+- v2_all_names: RawV2AllName&lt;'a&gt;<br align="left"/>
+- v2_amounts: RawV2Amount&lt;'a&gt;<br align="left"/>
+- v2_translation_info: RawTranslationInfo&lt;'a&gt;<br align="left"/>
+- v2_extra_xml: RawCitedReference&lt;'a&gt;<br align="left"/></td></tr><tr><td align="left" bgcolor="white">- from(mut iter) -&gt; Self<br align="left"/></td></tr></table></font>>][shape="none"];
     ndGlobalEventID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/primary_keys.rs#:~:text=struct%20GlobalEventID"><tr><td bgcolor="lightblue"><b>GlobalEventID</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
     ndMentionID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/primary_keys.rs#:~:text=struct%20MentionID"><tr><td bgcolor="lightblue"><b>MentionID</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
     ndGlobalKnowledgeGraphRecordID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/primary_keys.rs#:~:text=struct%20GlobalKnowledgeGraphRecordID"><tr><td bgcolor="lightblue"><b>GlobalKnowledgeGraphRecordID</b></td></tr><tr><td align="left" bgcolor="white">- DateTime&lt;Utc&gt;<br align="left"/>
@@ -1277,22 +1356,22 @@ PageTextChange<br align="left"/></td></tr></table></font>>][shape="none"];
     ndGlobalKnowledgeGraphTable[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_knowledge_graph_table.rs#:~:text=struct%20GlobalKnowledgeGraphTable"><tr><td bgcolor="lightblue"><b>GlobalKnowledgeGraphTable</b></td></tr><tr><td align="left" bgcolor="white">+ gkgrecordid: GlobalKnowledgeGraphRecordID<br align="left"/>
 + date: DateTime&lt;Utc&gt;<br align="left"/>
 + source_collection_identifier: MentionType<br align="left"/>
-+ source_common_name: GKGSourceCommonName<br align="left"/>
-+ counts: Vec&lt;Count&gt;<br align="left"/>
++ source_common_name: V2SourceCommonName<br align="left"/>
++ counts: (Vec&lt;V1Count&gt;, Vec&lt;V2Count&gt;)<br align="left"/>
 + themes: Vec&lt;Category&gt;<br align="left"/>
 + locations: Vec&lt;(Geography, Option&lt;CharOffset&gt;)&gt;<br align="left"/>
 + persons: Vec&lt;(String, CharOffset)&gt;<br align="left"/>
 + organisations: Vec&lt;(String, CharOffset)&gt;<br align="left"/>
-+ tone: Tone<br align="left"/>
++ tone: V1Tone<br align="left"/>
 + dates: Vec&lt;(NaiveDate, CharOffset)&gt;<br align="left"/>
 + gcam: String<br align="left"/>
 + sharing_url: Url<br align="left"/>
 + related_images: Vec&lt;Url&gt;<br align="left"/>
 + social_image_embeds: Vec&lt;Url&gt;<br align="left"/>
 + social_video_embeds: Vec&lt;Url&gt;<br align="left"/>
-+ quotations: Vec&lt;Quotation&gt;<br align="left"/>
++ quotations: Vec&lt;V2Quotation&gt;<br align="left"/>
 + all_names: Vec&lt;(String, CharOffset)&gt;<br align="left"/>
-+ amounts: Vec&lt;Amount&gt;<br align="left"/>
++ amounts: Vec&lt;V2Amount&gt;<br align="left"/>
 + translation_info: TranslationInfo<br align="left"/>
 + extra_xml: String<br align="left"/></td></tr></table></font>>][shape="none"];
     ndQuote[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/global_quotation_graph_table.rs#:~:text=struct%20Quote"><tr><td bgcolor="lightblue"><b>Quote</b></td></tr><tr><td align="left" bgcolor="white">+ pre: String<br align="left"/>
@@ -1312,6 +1391,7 @@ NonTextualSource(String)<br align="left"/></td></tr></table></font>>][shape="non
     ndSentenceID[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20SentenceID"><tr><td bgcolor="lightblue"><b>SentenceID</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
     ndCharOffset[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20CharOffset"><tr><td bgcolor="lightblue"><b>CharOffset</b></td></tr><tr><td align="left" bgcolor="white">- u128<br align="left"/></td></tr></table></font>>][shape="none"];
     ndConfidence[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20Confidence"><tr><td bgcolor="lightblue"><b>Confidence</b></td></tr><tr><td align="left" bgcolor="white">- u8<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndAverageTone[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20AverageTone"><tr><td bgcolor="lightblue"><b>AverageTone</b></td></tr><tr><td align="left" bgcolor="white">- f32<br align="left"/></td></tr></table></font>>][shape="none"];
     ndTranslationInfo[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20TranslationInfo"><tr><td bgcolor="lightblue"><b>TranslationInfo</b></td></tr><tr><td align="left" bgcolor="white">+ source_lang: IndividualLanguages<br align="left"/>
 + engine: String<br align="left"/></td></tr></table></font>>][shape="none"];
     ndMentionTable[label=<<font face="Arial"><table border="1" cellspacing="0" cellpadding="10" href="file:///home/lilguy/Projects/NewsNet/gdelt_fetcher/models/src/schema/mention_table.rs#:~:text=struct%20MentionTable"><tr><td bgcolor="lightblue"><b>MentionTable</b></td></tr><tr><td align="left" bgcolor="white">+ global_event_id: GlobalEventID<br align="left"/>
@@ -1336,68 +1416,54 @@ Citation(String)<br align="left"/></td></tr></table></font>>][shape="none"];
 + geography: EventGeography<br align="left"/>
 + date_added: DateTime&lt;Utc&gt;<br align="left"/>
 + source: EventSource<br align="left"/></td></tr></table></font>>][shape="none"];
+    ndActorName -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndGlobalKnowledgeGraphRecordID -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndV2SourceCommonName -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndPageTitle -> ndGDGMetaData[label=""][color="black"][arrowhead="diamond"];
+    ndV2Amount -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndV2Quotation -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndTranslationInfo -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndV1Count -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndV2Count -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
     ndGeography -> ndEventGeography[label=""][color="black"][arrowhead="diamond"];
-    ndGeography -> ndCount[label=""][color="black"][arrowhead="diamond"];
     ndGeography -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
     ndEventGeography -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
+    ndLocationName -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndCoordinates -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndGeoFeature -> ndGeography[label=""][color="black"][arrowhead="diamond"];
     ndActor -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
     ndEventAction -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
-    ndActorName -> ndActor[label=""][color="black"][arrowhead="diamond"];
-    ndActorCountry -> ndActor[label=""][color="black"][arrowhead="diamond"];
     ndReligion -> ndActor[label=""][color="black"][arrowhead="diamond"];
     ndEthnicity -> ndActor[label=""][color="black"][arrowhead="diamond"];
     ndActorType -> ndActor[label=""][color="black"][arrowhead="diamond"];
-    ndCountryZone -> ndActorCountry[label=""][color="black"][arrowhead="diamond"];
-    ndCountryZone -> ndGeoCountry[label=""][color="black"][arrowhead="diamond"];
     ndKnownGroup -> ndActor[label=""][color="black"][arrowhead="diamond"];
-    ndGeoFullname -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndGeoCountry -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndAdministration1 -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndAdministration2 -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndCoord -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndGeoFeature -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndGeoType -> ndGeography[label=""][color="black"][arrowhead="diamond"];
-    ndPrimaryAdministration -> ndAdministration1[label=""][color="black"][arrowhead="diamond"];
-    ndSecondaryAdministration -> ndAdministration2[label=""][color="black"][arrowhead="diamond"];
-    ndGoldsteinScale -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
-    ndNumberOfMention -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
-    ndNumberOfArticles -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
-    ndAverageTone -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
-    ndAverageTone -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndCountryZone -> ndGeography[label=""][color="black"][arrowhead="diamond"];
+    ndCountryZone -> ndActor[label=""][color="black"][arrowhead="diamond"];
+    ndLocationType -> ndGeography[label=""][color="black"][arrowhead="diamond"];
     ndQuadClass -> ndEventAction[label=""][color="black"][arrowhead="diamond"];
     ndManner -> ndQuadClass[label=""][color="black"][arrowhead="diamond"];
-    ndCategory -> ndCount[label=""][color="black"][arrowhead="diamond"];
     ndCategory -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
-    ndGKGSourceCommonName -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
-    ndCountValue -> ndCount[label=""][color="black"][arrowhead="diamond"];
-    ndObjectType -> ndAmount[label=""][color="black"][arrowhead="diamond"];
-    ndObjectType -> ndCount[label=""][color="black"][arrowhead="diamond"];
-    ndAmountValue -> ndAmount[label=""][color="black"][arrowhead="diamond"];
-    ndQuotation -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
-    ndAmount -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
-    ndToneValue -> ndTone[label=""][color="black"][arrowhead="diamond"];
-    ndToneScore -> ndTone[label=""][color="black"][arrowhead="diamond"];
-    ndPolarity -> ndTone[label=""][color="black"][arrowhead="diamond"];
-    ndActivityReferenceDensity -> ndTone[label=""][color="black"][arrowhead="diamond"];
-    ndSelfGroupReferenceDensity -> ndTone[label=""][color="black"][arrowhead="diamond"];
-    ndWordCount -> ndTone[label=""][color="black"][arrowhead="diamond"];
-    ndTone -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
-    ndCount -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndGlobalEventID -> ndRawMention[label=""][color="black"][arrowhead="diamond"];
     ndGlobalEventID -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
     ndGlobalEventID -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
-    ndGlobalKnowledgeGraphRecordID -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
     ndEntity -> ndGlobalEntityGraphTable[label=""][color="black"][arrowhead="diamond"];
-    ndPageTitle -> ndGDGMetaData[label=""][color="black"][arrowhead="diamond"];
     ndPageDomain -> ndGDGMetaData[label=""][color="black"][arrowhead="diamond"];
     ndQuote -> ndArticle[label=""][color="black"][arrowhead="diamond"];
     ndMentionType -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
     ndMentionType -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
-    ndCharOffset -> ndQuotation[label=""][color="black"][arrowhead="diamond"];
-    ndCharOffset -> ndAmount[label=""][color="black"][arrowhead="diamond"];
-    ndCharOffset -> ndCount[label=""][color="black"][arrowhead="diamond"];
+    ndSentenceID -> ndRawMention[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2Theme[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2Person[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2Organisation[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2AllName[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2Amount[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2Quotation[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndV2Count[label=""][color="black"][arrowhead="diamond"];
+    ndCharOffset -> ndRawMention[label=""][color="black"][arrowhead="diamond"];
     ndCharOffset -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
     ndCharOffset -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
+    ndConfidence -> ndRawMention[label=""][color="black"][arrowhead="diamond"];
     ndConfidence -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
-    ndTranslationInfo -> ndGlobalKnowledgeGraphTable[label=""][color="black"][arrowhead="diamond"];
+    ndAverageTone -> ndMentionTable[label=""][color="black"][arrowhead="diamond"];
     ndEventSource -> ndEventTable[label=""][color="black"][arrowhead="diamond"];
 }

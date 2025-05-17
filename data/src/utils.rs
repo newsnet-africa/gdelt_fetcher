@@ -3,7 +3,7 @@ use chrono::NaiveDateTime;
 use log::info;
 use regex::Regex;
 
-pub fn extract_date<'a>(url: &'a str) -> Result<NaiveDateTime> {
+pub fn extract_date(url: &str) -> Result<NaiveDateTime> {
     let re = Regex::new(r"/(\d{14})\.\w+\.(csv|CSV)\.zip$")?;
     if let Some(captures) = re.captures(url) {
         if let Some(date_str) = captures.get(1) {
@@ -14,7 +14,7 @@ pub fn extract_date<'a>(url: &'a str) -> Result<NaiveDateTime> {
     Err(Error::msg("Failed to extract date"))
 }
 
-pub fn extract_db_type<'a>(url: &'a str) -> Result<String> {
+pub fn extract_db_type(url: &str) -> Result<String> {
     let re = Regex::new(r"/\d{14}\.(?P<variant>[^.]+)\.(csv|CSV)\.zip$")?;
     if let Some(caps) = re.captures(url) {
         let variant = &caps["variant"];
@@ -64,7 +64,6 @@ mod test {
 
     #[test]
     fn extract_db_type_test() {
-        env_logger::init();
         let url = "http://data.gdeltproject.org/gdeltv2/20250321184500.gkg.CSV.zip";
 
         let db_type = extract_db_type(url);

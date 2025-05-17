@@ -1,18 +1,16 @@
 use crate::components::base_components::{
     event::{RawEventAction, quad_class::QuadClass, verb::top_level_actions::Verb},
-    raw_types::{
-        RawAverageTone, RawGoldsteinScale, RawIsRootEvent, RawNumberOfArticles, RawNumberOfMentions,
-    },
+    raw_types::{tone::ToneValue, *},
 };
 
 pub struct EventAction {
-    pub is_root_event: RawIsRootEvent,
+    pub is_root_event: IsRootEvent,
     pub verb: Verb,
     pub quad_class: QuadClass,
-    pub goldstein: RawGoldsteinScale,
-    pub num_mentions: RawNumberOfMentions,
-    pub num_articles: RawNumberOfArticles,
-    pub average_tone: RawAverageTone,
+    pub goldstein: GoldsteinScale,
+    pub num_mentions: NumberOfMentions,
+    pub num_articles: NumberOfArticles,
+    pub average_tone: ToneValue,
 }
 
 impl From<RawEventAction> for EventAction {

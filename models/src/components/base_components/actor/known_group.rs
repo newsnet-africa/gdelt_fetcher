@@ -1,4 +1,4 @@
-use crate::components::base_components::raw_types::RawCAMEOKnownGroupCode;
+use crate::components::base_components::raw_types::CAMEOKnownGroupCode;
 
 pub enum KnownGroup {
     Unspecified,
@@ -121,8 +121,8 @@ pub enum KnownGroup {
     Oxfam,
 }
 
-impl From<RawCAMEOKnownGroupCode> for KnownGroup {
-    fn from(value: RawCAMEOKnownGroupCode) -> Self {
+impl From<CAMEOKnownGroupCode> for KnownGroup {
+    fn from(value: CAMEOKnownGroupCode) -> Self {
         let str_value = std::str::from_utf8(&value.0).expect("Invalid FIPS Code format");
         match str_value {
             "AAM" => Self::AlAqsaMartyrsBrigade,

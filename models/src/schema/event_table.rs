@@ -1,4 +1,5 @@
 use chrono::{DateTime, NaiveDateTime, Utc};
+use csv::StringRecord;
 use url::Url;
 
 use crate::components::super_components::{
@@ -21,4 +22,8 @@ pub struct EventTable {
     pub geography: EventGeography,
     pub date_added: DateTime<Utc>,
     pub source: EventSource,
+}
+
+impl From<StringRecord> for EventTable {
+    fn from(value: StringRecord) -> Self {}
 }

@@ -1,3 +1,4 @@
+pub mod administration;
 pub mod country;
 pub mod location_type;
 
