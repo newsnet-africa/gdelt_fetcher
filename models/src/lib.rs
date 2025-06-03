@@ -1,2 +1,2 @@
-pub mod components;
-pub mod schema;
+pub mod raw_types;
+pub mod types;

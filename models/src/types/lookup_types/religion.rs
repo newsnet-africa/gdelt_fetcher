@@ -1,0 +1,78 @@
+use crate::types::event_table::actor::CAMEOReligionCode;
+
+pub enum Religion {
+    Unspecified,
+    AfricanDiasporicReligion,
+    Alewi,
+    Agnostic,
+    BahaiFaith,
+    Buddhism,
+    Christianity,
+    Confucianism,
+    Coptic,
+    Catholic,
+    Orthodox,
+    Druze,
+    Hinduism,
+    Hasidic,
+    IndigenousTribalReligion,
+    Jainism,
+    Judaism,
+    JehovahsWitness,
+    LatterDaySaints,
+    Muslim,
+    Maronite,
+    NewReligiousMovement,
+    Pagan,
+    Protestant,
+    Sufi,
+    Shia,
+    OldShintoSchool,
+    Sikh,
+    Sunni,
+    Taoist,
+    UltraOrthodox,
+    Zoroastrianism,
+}
+
+impl TryFrom<CAMEOReligionCode> for Religion {
+    type Error = anyhow::Error;
+
+    fn try_from(value: CAMEOReligionCode) -> Result<Self, Self::Error> {
+        let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
+        match std::str::from_utf8(&value.0)? {
+            "ADR" => Ok(Self::AfricanDiasporicReligion),
+            "ALE" => Ok(Self::Alewi),
+            "ATH" => Ok(Self::Agnostic),
+            "BAH" => Ok(Self::BahaiFaith),
+            "BUD" => Ok(Self::Buddhism),
+            "CHR" => Ok(Self::Christianity),
+            "CON" => Ok(Self::Confucianism),
+            "CPT" => Ok(Self::Coptic),
+            "CTH" => Ok(Self::Catholic),
+            "DOX" => Ok(Self::Orthodox),
+            "DRZ" => Ok(Self::Druze),
+            "HIN" => Ok(Self::Hinduism),
+            "HSD" => Ok(Self::Hasidic),
+            "ITR" => Ok(Self::IndigenousTribalReligion),
+            "JAN" => Ok(Self::Jainism),
+            "JEW" => Ok(Self::Judaism),
+            "JHW" => Ok(Self::JehovahsWitness),
+            "LDS" => Ok(Self::LatterDaySaints),
+            "MOS" => Ok(Self::Muslim),
+            "MRN" => Ok(Self::Maronite),
+            "NRM" => Ok(Self::NewReligiousMovement),
+            "PAG" => Ok(Self::Pagan),
+            "PRO" => Ok(Self::Protestant),
+            "SFI" => Ok(Self::Sufi),
+            "SHI" => Ok(Self::Shia),
+            "SHN" => Ok(Self::OldShintoSchool),
+            "SIK" => Ok(Self::Sikh),
+            "SUN" => Ok(Self::Sunni),
+            "TAO" => Ok(Self::Taoist),
+            "UDX" => Ok(Self::UltraOrthodox),
+            "ZRO" => Ok(Self::Zoroastrianism),
+            _ => Err(anyhow!("Invalid Religion Code")),
+        }
+    }
+}
