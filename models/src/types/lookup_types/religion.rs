@@ -37,10 +37,11 @@ pub enum Religion {
     Zoroastrianism,
 }
 
-impl TryFrom<CAMEOReligionCode> for Religion {
+impl TryFrom<Option<CAMEOReligionCode>> for Religion {
     type Error = anyhow::Error;
 
-    fn try_from(value: CAMEOReligionCode) -> Result<Self, Self::Error> {
+    fn try_from(value: Option<CAMEOReligionCode>) -> Result<Self, Self::Error> {
+        let value = value.ok_or_else(|| anyhow!("CAMEOReligionCode is None"))?;
         let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
         match std::str::from_utf8(&value.0)? {
             "ADR" => Ok(Self::AfricanDiasporicReligion),
@@ -92,7 +93,7 @@ mod tests {
 
     #[test]
     fn test_cameo_religion_code_try_from_valid_codes() {
-        init_logger();
+        // init_logger();
 
         let valid_code_str = "CHR"; // Christianity
         info!("Testing valid CAMEOReligionCode: {:?}", valid_code_str);
@@ -103,7 +104,7 @@ mod tests {
 
     #[test]
     fn test_cameo_religion_code_try_from_invalid_codes() {
-        init_logger();
+        // init_logger();
 
         let invalid_code_str = "XXXX"; // Invalid code
         info!("Testing invalid CAMEOReligionCode: {:?}", invalid_code_str);
@@ -113,9 +114,9 @@ mod tests {
 
     #[test]
     fn test_religion_try_from_valid_codes() {
-        init_logger();
+        // init_logger();
 
-        let valid_code = CAMEOReligionCode(*b"CHR"); // Christianity
+        let valid_code = Some(CAMEOReligionCode(*b"CHR")); // Christianity
         info!("Testing valid Religion code: {:?}", valid_code);
         let religion = Religion::try_from(valid_code);
         assert!(religion.is_ok());
@@ -124,9 +125,9 @@ mod tests {
 
     #[test]
     fn test_religion_try_from_invalid_codes() {
-        init_logger();
+        // init_logger();
 
-        let invalid_code = CAMEOReligionCode(*b"XXX"); // Invalid code
+        let invalid_code = Some(CAMEOReligionCode(*b"XXX")); // Invalid code
         info!("Testing invalid Religion code: {:?}", invalid_code);
         let religion = Religion::try_from(invalid_code);
         assert!(religion.is_err());

@@ -640,10 +640,11 @@ pub enum Ethnicity {
     Zaza,
 }
 
-impl TryFrom<CAMEOEthnicityCode> for Ethnicity {
+impl TryFrom<Option<CAMEOEthnicityCode>> for Ethnicity {
     type Error = anyhow::Error;
 
-    fn try_from(value: CAMEOEthnicityCode) -> anyhow::Result<Self> {
+    fn try_from(value: Option<CAMEOEthnicityCode>) -> anyhow::Result<Self> {
+        let value = value.ok_or_else(|| anyhow!("CAMEOEthnicityCode is None"))?;
         match std::str::from_utf8(&value.0)? {
             "aar" => Ok(Self::Afar),
             "abk" => Ok(Self::Abkhaz),
@@ -1304,28 +1305,28 @@ mod tests {
 
     #[test]
     fn test_ethnicity_try_from_valid_codes() {
-        init_logger();
+        // init_logger();
 
         let valid_code = Some("pol"); // Poles
         info!("Testing valid ethnicity code: {:?}", valid_code);
-        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(valid_code).unwrap());
+        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(valid_code).ok());
         assert!(ethnicity.is_ok());
         assert_eq!(ethnicity.unwrap(), Ethnicity::Poles);
     }
 
     #[test]
     fn test_ethnicity_try_from_invalid_codes() {
-        init_logger();
+        // init_logger();
 
         let invalid_code = Some("xxx"); // Invalid code
         info!("Testing invalid ethnicity code: {:?}", invalid_code);
-        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(invalid_code).unwrap());
+        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(invalid_code).ok());
         assert!(ethnicity.is_err());
     }
 
     #[test]
     fn test_ethnicity_try_from_edge_cases() {
-        init_logger();
+        // init_logger();
 
         let empty_code = Some(""); // Empty code
         info!("Testing empty ethnicity code: {:?}", empty_code);

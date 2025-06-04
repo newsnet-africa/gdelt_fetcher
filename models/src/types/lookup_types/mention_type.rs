@@ -13,10 +13,11 @@ pub enum MentionType {
     NonTextualSource(Url),
 }
 
-impl TryFrom<(MentionTypeCode, MentionIdentifier)> for MentionType {
+impl TryFrom<Option<(MentionTypeCode, MentionIdentifier)>> for MentionType {
     type Error = anyhow::Error;
 
-    fn try_from(value: (MentionTypeCode, MentionIdentifier)) -> anyhow::Result<Self> {
+    fn try_from(value: Option<(MentionTypeCode, MentionIdentifier)>) -> anyhow::Result<Self> {
+        let value = value.ok_or_else(|| anyhow!("MentionTypeCode is None"))?;
         match value.0.0 {
             1 => Ok(Self::Web(Url::parse(&value.1.0)?)),
             2 => Ok(Self::CitationOnly(value.1)),
@@ -42,55 +43,58 @@ mod tests {
 
     #[test]
     fn test_mention_type_try_from_valid_cases() {
-        init_logger();
+        // init_logger();
 
         let web_code = MentionTypeCode(1);
         let web_identifier = MentionIdentifier("https://example.com".to_string());
         info!("Testing valid MentionType: Web");
-        let mention_type = MentionType::try_from((web_code, web_identifier));
+        let mention_type = MentionType::try_from(Some((web_code, web_identifier)));
         assert!(mention_type.is_ok());
         assert!(matches!(mention_type.unwrap(), MentionType::Web(_)));
 
         let citation_code = MentionTypeCode(2);
         let citation_identifier = MentionIdentifier("citation_id".to_string());
         info!("Testing valid MentionType: CitationOnly");
-        let mention_type = MentionType::try_from((citation_code, citation_identifier));
+        let mention_type = MentionType::try_from(Some((citation_code, citation_identifier)));
         assert!(mention_type.is_ok());
-        assert!(matches!(mention_type.unwrap(), MentionType::CitationOnly(_)));
+        assert!(matches!(
+            mention_type.unwrap(),
+            MentionType::CitationOnly(_)
+        ));
 
         let core_code = MentionTypeCode(3);
         let core_identifier = MentionIdentifier("core_id".to_string());
         info!("Testing valid MentionType: Core");
-        let mention_type = MentionType::try_from((core_code, core_identifier));
+        let mention_type = MentionType::try_from(Some((core_code, core_identifier)));
         assert!(mention_type.is_ok());
         assert!(matches!(mention_type.unwrap(), MentionType::Core(_)));
     }
 
     #[test]
     fn test_mention_type_try_from_invalid_cases() {
-        init_logger();
+        // init_logger();
 
         let invalid_code = MentionTypeCode(99);
         let identifier = MentionIdentifier("invalid_id".to_string());
         info!("Testing invalid MentionTypeCode");
-        let mention_type = MentionType::try_from((invalid_code, identifier));
+        let mention_type = MentionType::try_from(Some((invalid_code, identifier)));
         assert!(mention_type.is_err());
     }
 
     #[test]
     fn test_mention_type_try_from_edge_cases() {
-        init_logger();
+        // init_logger();
 
         let web_code = MentionTypeCode(1);
         let empty_identifier = MentionIdentifier("".to_string());
         info!("Testing edge case: Empty MentionIdentifier");
-        let mention_type = MentionType::try_from((web_code, empty_identifier));
+        let mention_type = MentionType::try_from(Some((web_code, empty_identifier)));
         assert!(mention_type.is_err());
 
         let malformed_code = MentionTypeCode(1);
         let malformed_identifier = MentionIdentifier("not_a_url".to_string());
         info!("Testing edge case: Malformed MentionIdentifier for Web");
-        let mention_type = MentionType::try_from((malformed_code, malformed_identifier));
+        let mention_type = MentionType::try_from(Some((malformed_code, malformed_identifier)));
         assert!(mention_type.is_err());
     }
 }

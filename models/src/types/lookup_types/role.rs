@@ -46,10 +46,11 @@ pub enum ActorRole {
     Settler,
 }
 
-impl TryFrom<CAMEORoleCode> for ActorRole {
+impl TryFrom<Option<CAMEORoleCode>> for ActorRole {
     type Error = anyhow::Error;
 
-    fn try_from(value: CAMEORoleCode) -> anyhow::Result<Self> {
+    fn try_from(value: Option<CAMEORoleCode>) -> anyhow::Result<Self> {
+        let value = value.ok_or_else(|| anyhow!("CAMEORoleCode is None"))?;
         let str_value = std::str::from_utf8(&value.0)?;
         match str_value {
             "COP" => Ok(Self::Policeforces),
@@ -109,7 +110,7 @@ mod tests {
 
     #[test]
     fn test_cameo_role_code_try_from_valid_codes() {
-        init_logger();
+        // init_logger();
 
         let valid_code_str = "COP"; // Policeforces
         info!("Testing valid CAMEORoleCode: {:?}", valid_code_str);
@@ -118,12 +119,11 @@ mod tests {
         assert_eq!(std::str::from_utf8(&code.unwrap().0).unwrap(), "COP");
     }
 
-
     #[test]
     fn test_actor_role_try_from_valid_codes() {
-        init_logger();
+        // init_logger();
 
-        let valid_code = CAMEORoleCode(*b"COP"); // Policeforces
+        let valid_code = Some(CAMEORoleCode(*b"COP")); // Policeforces
         info!("Testing valid ActorRole: {:?}", valid_code);
         let actor_role = ActorRole::try_from(valid_code);
         assert!(actor_role.is_ok());
@@ -132,9 +132,9 @@ mod tests {
 
     #[test]
     fn test_actor_role_try_from_invalid_codes() {
-        init_logger();
+        // init_logger();
 
-        let invalid_code = CAMEORoleCode(*b"XXX"); // Invalid code
+        let invalid_code = Some(CAMEORoleCode(*b"XXX")); // Invalid code
         info!("Testing invalid ActorRole: {:?}", invalid_code);
         let actor_role = ActorRole::try_from(invalid_code);
         assert!(actor_role.is_err());

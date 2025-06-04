@@ -328,11 +328,15 @@ pub enum CountryZone {
     WallisandFutuna,
 }
 
-impl TryFrom<FIPSCountryCode> for CountryZone {
+impl TryFrom<Option<FIPSCountryCode>> for CountryZone {
     type Error = anyhow::Error;
 
-    fn try_from(value: FIPSCountryCode) -> Result<Self, Self::Error> {
-       log::info!("Attempting to convert FIPSCountryCode to CountryZone: {:?}", value);
+    fn try_from(value: Option<FIPSCountryCode>) -> Result<Self, Self::Error> {
+        let value = value.ok_or_else(|| anyhow!("CAMEOCountryCode is None"))?;
+        log::info!(
+            "Attempting to convert FIPSCountryCode to CountryZone: {:?}",
+            value
+        );
         match std::str::from_utf8(&value.0)? {
             "AF" => Ok(CountryZone::Afghanistan),
             "AX" => Ok(CountryZone::AkrotiriSovereignBaseArea),
@@ -613,10 +617,11 @@ impl TryFrom<FIPSCountryCode> for CountryZone {
     }
 }
 
-impl TryFrom<CAMEOCountryCode> for CountryZone {
+impl TryFrom<Option<CAMEOCountryCode>> for CountryZone {
     type Error = anyhow::Error;
 
-    fn try_from(value: CAMEOCountryCode) -> Result<Self, Self::Error> {
+    fn try_from(value: Option<CAMEOCountryCode>) -> Result<Self, Self::Error> {
+        let value = value.ok_or_else(|| anyhow!("CAMEOCountryCode is None"))?;
         match std::str::from_utf8(&value.0)? {
             "WSB" => Ok(CountryZone::WestBank),
             "BAG" => Ok(CountryZone::Baghdad),
@@ -884,24 +889,23 @@ impl TryFrom<CAMEOCountryCode> for CountryZone {
     }
 }
 
-use std::sync::Once;
-
-static INIT: Once = Once::new();
-
-fn init_logger() {
-    INIT.call_once(|| {
-        env_logger::init();
-    });
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use log::info;
+    use std::sync::Once;
+
+    static INIT: Once = Once::new();
+
+    fn init_logger() {
+        INIT.call_once(|| {
+            env_logger::init();
+        });
+    }
 
     #[test]
     fn test_cameo_country_code_try_from() {
-        init_logger();
+        // init_logger();
 
         let valid_code = "USA";
         let invalid_code = "XX";
@@ -928,7 +932,7 @@ mod tests {
 
     #[test]
     fn test_fips_country_code_try_from() {
-        init_logger();
+        // init_logger();
 
         let valid_code = "US";
         let invalid_code = "XX";
