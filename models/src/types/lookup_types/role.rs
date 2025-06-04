@@ -2,6 +2,7 @@ use anyhow::anyhow;
 
 use crate::types::event_table::actor::CAMEORoleCode;
 
+#[derive(Debug, PartialOrd, PartialEq)]
 pub enum ActorRole {
     Unspecified,
     Policeforces,
@@ -92,5 +93,50 @@ impl TryFrom<CAMEORoleCode> for ActorRole {
             "SET" => Ok(Self::Settler),
             _ => Err(anyhow!("Invalid CAMEO Country Code")),
         }
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use log::info;
+
+    fn init_logger() {
+        static INIT: std::sync::Once = std::sync::Once::new();
+        INIT.call_once(|| {
+            env_logger::init();
+        });
+    }
+
+    #[test]
+    fn test_cameo_role_code_try_from_valid_codes() {
+        init_logger();
+
+        let valid_code_str = "COP"; // Policeforces
+        info!("Testing valid CAMEORoleCode: {:?}", valid_code_str);
+        let code = CAMEORoleCode::try_from(Some(valid_code_str));
+        assert!(code.is_ok());
+        assert_eq!(std::str::from_utf8(&code.unwrap().0).unwrap(), "COP");
+    }
+
+
+    #[test]
+    fn test_actor_role_try_from_valid_codes() {
+        init_logger();
+
+        let valid_code = CAMEORoleCode(*b"COP"); // Policeforces
+        info!("Testing valid ActorRole: {:?}", valid_code);
+        let actor_role = ActorRole::try_from(valid_code);
+        assert!(actor_role.is_ok());
+        assert_eq!(actor_role.unwrap(), ActorRole::Policeforces);
+    }
+
+    #[test]
+    fn test_actor_role_try_from_invalid_codes() {
+        init_logger();
+
+        let invalid_code = CAMEORoleCode(*b"XXX"); // Invalid code
+        info!("Testing invalid ActorRole: {:?}", invalid_code);
+        let actor_role = ActorRole::try_from(invalid_code);
+        assert!(actor_role.is_err());
     }
 }

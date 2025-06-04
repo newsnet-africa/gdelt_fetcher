@@ -2,6 +2,7 @@ use anyhow::anyhow;
 
 use crate::types::event_table::{actor::CAMEOCountryCode, event_geography::FIPSCountryCode};
 
+#[derive(Debug, PartialOrd, PartialEq)]
 pub enum CountryZone {
     Unspecified,
     WestBank,
@@ -331,6 +332,7 @@ impl TryFrom<FIPSCountryCode> for CountryZone {
     type Error = anyhow::Error;
 
     fn try_from(value: FIPSCountryCode) -> Result<Self, Self::Error> {
+       log::info!("Attempting to convert FIPSCountryCode to CountryZone: {:?}", value);
         match std::str::from_utf8(&value.0)? {
             "AF" => Ok(CountryZone::Afghanistan),
             "AX" => Ok(CountryZone::AkrotiriSovereignBaseArea),
@@ -879,5 +881,75 @@ impl TryFrom<CAMEOCountryCode> for CountryZone {
             "ZWE" => Ok(CountryZone::Zimbabwe),
             _ => Err(anyhow!("Invalid CAMEO Country Code")),
         }
+    }
+}
+
+use std::sync::Once;
+
+static INIT: Once = Once::new();
+
+fn init_logger() {
+    INIT.call_once(|| {
+        env_logger::init();
+    });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use log::info;
+
+    #[test]
+    fn test_cameo_country_code_try_from() {
+        init_logger();
+
+        let valid_code = "USA";
+        let invalid_code = "XX";
+        let empty_code = "";
+        let short_code = "US";
+
+        info!("Testing valid CAMEO country code: {:?}", valid_code);
+        let valid_result = CAMEOCountryCode::try_from(Some(valid_code));
+        assert!(valid_result.is_ok());
+        assert_eq!(valid_result.unwrap().0, [b'U', b'S', b'A']);
+
+        info!("Testing invalid CAMEO country code: {:?}", invalid_code);
+        let invalid_result = CAMEOCountryCode::try_from(Some(invalid_code));
+        assert!(invalid_result.is_err());
+
+        info!("Testing empty CAMEO country code: {:?}", empty_code);
+        let empty_result = CAMEOCountryCode::try_from(Some(empty_code));
+        assert!(empty_result.is_err());
+
+        info!("Testing short CAMEO country code: {:?}", short_code);
+        let short_result = CAMEOCountryCode::try_from(Some(short_code));
+        assert!(short_result.is_err());
+    }
+
+    #[test]
+    fn test_fips_country_code_try_from() {
+        init_logger();
+
+        let valid_code = "US";
+        let invalid_code = "XX";
+        let empty_code = "";
+        let long_code = "USA";
+
+        info!("Testing valid FIPS country code: {:?}", valid_code);
+        let valid_result = FIPSCountryCode::try_from(Some(valid_code));
+        assert!(valid_result.is_ok());
+        assert_eq!(valid_result.unwrap().0, [b'U', b'S']);
+
+        info!("Testing invalid FIPS country code: {:?}", invalid_code);
+        let invalid_result = FIPSCountryCode::try_from(Some(invalid_code));
+        assert!(invalid_result.is_ok()); // Still valid as it matches the size
+
+        info!("Testing empty FIPS country code: {:?}", empty_code);
+        let empty_result = FIPSCountryCode::try_from(Some(empty_code));
+        assert!(empty_result.is_err());
+
+        info!("Testing long FIPS country code: {:?}", long_code);
+        let long_result = FIPSCountryCode::try_from(Some(long_code));
+        assert!(long_result.is_err());
     }
 }

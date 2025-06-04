@@ -197,6 +197,8 @@ impl GDELTDatabase {
 
 #[cfg(test)]
 mod tests {
+    use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
+
     use super::*;
 
     #[test]
@@ -287,6 +289,6 @@ mod tests {
         let result = db.update_latest().await;
         assert!(result.is_ok());
         assert!(db.link.as_str().contains("gdeltv2"));
-        assert!(db.date > chrono::NaiveDateTime::from_timestamp(0, 0));
+        assert!(db.date > NaiveDateTime::new(NaiveDate::default(), NaiveTime::default()));
     }
 }

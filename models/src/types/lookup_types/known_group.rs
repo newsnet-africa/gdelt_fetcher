@@ -1,6 +1,7 @@
 use crate::types::event_table::actor::CAMEOKnownGroupCode;
 use anyhow::anyhow;
 
+#[derive(Debug, PartialOrd, PartialEq)]
 pub enum KnownGroup {
     Unspecified,
     AlAqsaMartyrsBrigade,
@@ -245,5 +246,59 @@ impl TryFrom<CAMEOKnownGroupCode> for KnownGroup {
             "XFM" => Ok(Self::Oxfam),
             _ => Err(anyhow!("Invalid Known Group Code")),
         }
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use log::info;
+
+    fn init_logger() {
+        static INIT: std::sync::Once = std::sync::Once::new();
+        INIT.call_once(|| {
+            env_logger::init();
+        });
+    }
+
+    #[test]
+    fn test_cameo_known_group_code_try_from_valid_codes() {
+        init_logger();
+
+        let valid_code_str = "AAM"; // AlAqsaMartyrsBrigade
+        info!("Testing valid CAMEOKnownGroupCode: {:?}", valid_code_str);
+        let code = CAMEOKnownGroupCode::try_from(Some(valid_code_str));
+        assert!(code.is_ok());
+        assert_eq!(code.unwrap().0, *b"AAM");
+    }
+
+    #[test]
+    fn test_cameo_known_group_code_try_from_invalid_codes() {
+        init_logger();
+
+        let invalid_code_str = "XXXX"; // Invalid code
+        info!("Testing invalid CAMEOKnownGroupCode: {:?}", invalid_code_str);
+        let code = CAMEOKnownGroupCode::try_from(Some(invalid_code_str));
+        assert!(code.is_err());
+    }
+
+    #[test]
+    fn test_known_group_try_from_valid_codes() {
+        init_logger();
+
+        let valid_code = CAMEOKnownGroupCode(*b"AAM"); // AlAqsaMartyrsBrigade
+        info!("Testing valid KnownGroup code: {:?}", valid_code);
+        let known_group = KnownGroup::try_from(valid_code);
+        assert!(known_group.is_ok());
+        assert_eq!(known_group.unwrap(), KnownGroup::AlAqsaMartyrsBrigade);
+    }
+
+    #[test]
+    fn test_known_group_try_from_invalid_codes() {
+        init_logger();
+
+        let invalid_code = CAMEOKnownGroupCode(*b"XXX"); // Invalid code
+        info!("Testing invalid KnownGroup code: {:?}", invalid_code);
+        let known_group = KnownGroup::try_from(invalid_code);
+        assert!(known_group.is_err());
     }
 }

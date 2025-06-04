@@ -2,6 +2,7 @@ use anyhow::anyhow;
 
 use crate::types::event_table::actor::CAMEOEthnicityCode;
 
+#[derive(Debug, PartialOrd, PartialEq)]
 pub enum Ethnicity {
     Unspecified,
     Afar,
@@ -1287,5 +1288,53 @@ impl TryFrom<CAMEOEthnicityCode> for Ethnicity {
             "zza" => Ok(Self::Zaza),
             _ => Err(anyhow!("Invalid Ethnicity Code")),
         }
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use log::info;
+
+    fn init_logger() {
+        static INIT: std::sync::Once = std::sync::Once::new();
+        INIT.call_once(|| {
+            env_logger::init();
+        });
+    }
+
+    #[test]
+    fn test_ethnicity_try_from_valid_codes() {
+        init_logger();
+
+        let valid_code = Some("pol"); // Poles
+        info!("Testing valid ethnicity code: {:?}", valid_code);
+        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(valid_code).unwrap());
+        assert!(ethnicity.is_ok());
+        assert_eq!(ethnicity.unwrap(), Ethnicity::Poles);
+    }
+
+    #[test]
+    fn test_ethnicity_try_from_invalid_codes() {
+        init_logger();
+
+        let invalid_code = Some("xxx"); // Invalid code
+        info!("Testing invalid ethnicity code: {:?}", invalid_code);
+        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(invalid_code).unwrap());
+        assert!(ethnicity.is_err());
+    }
+
+    #[test]
+    fn test_ethnicity_try_from_edge_cases() {
+        init_logger();
+
+        let empty_code = Some(""); // Empty code
+        info!("Testing empty ethnicity code: {:?}", empty_code);
+        let empty_result = CAMEOEthnicityCode::try_from(empty_code);
+        assert!(empty_result.is_err());
+
+        let short_code = Some("po"); // Short code
+        info!("Testing short ethnicity code: {:?}", short_code);
+        let short_result = CAMEOEthnicityCode::try_from(short_code);
+        assert!(short_result.is_err());
     }
 }
