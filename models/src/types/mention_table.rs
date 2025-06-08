@@ -199,7 +199,7 @@ pub struct MentionTable {
     pub confidence: Confidence,
     pub mention_doc_len: MentionDocLength,
     pub mention_doc_tone: MentionDocTone,
-    pub mention_doc_translation_info: (SourceLanguageCode, Engine),
+    pub mention_doc_translation_info: (Option<SourceLanguageCode>,Option<Engine>),
     pub extras: String,
 }
 impl TryFrom<csv::StringRecord> for MentionTable {
@@ -244,8 +244,8 @@ impl TryFrom<csv::StringRecord> for MentionTable {
             mention_doc_len: MentionDocLength::try_from(Some(fields[12]))?,
             mention_doc_tone: MentionDocTone::try_from(Some(fields[13]))?,
             mention_doc_translation_info: (
-                SourceLanguageCode::try_from(Some(fields[14]))?,
-                Engine::try_from(Some(fields[15]))?,
+                SourceLanguageCode::try_from(Some(fields[14])).ok(),
+                Engine::try_from(Some(fields[15])).ok(),
             ),
             extras: "".to_string(),
         })

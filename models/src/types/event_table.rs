@@ -800,7 +800,6 @@ pub mod event_geography {
         type Error = anyhow::Error;
 
         fn try_from(fields: &[&str]) -> Result<Self, Self::Error> {
-            debug!("\n\n\n\nTest Fields: {:?}", fields);
             if fields.len() != 8 {
                 return Err(anyhow::anyhow!(format!(
                     "Expected 10 fields for EventGeography, got {}",
