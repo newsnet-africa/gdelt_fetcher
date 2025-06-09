@@ -16,18 +16,19 @@ use anyhow::Result;
 pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
     // Set up temporary directories and files
     let tmp_dir = "./tmp";
-    let zip_path = format!("{tmp_dir}/mentions/latest_download.zip");
-    let output_dir = format!("{tmp_dir}/output/mention");
+    let zip_path = format!("{tmp_dir}/latest_download.zip");
+    let output_dir = format!("{tmp_dir}/output");
 
     // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
+    // fs::create_dir_all(&zip_path)?;
     let csv_files = fs::read_dir(&output_dir)
         .expect("Failed to read directory")
         .filter_map(|entry| {
             let entry = entry.ok()?;
             let path = entry.path();
             path.clone().extension().and_then(|ext| {
-                if ext.to_str() == Some("CSV") {
+                if ext.to_str() == Some("csv") {
                     // Check if the file name contains "mention"
                     let file_name = path.file_name()?.to_str()?;
                     if file_name.contains("mentions") {
@@ -109,19 +110,19 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
 pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
     // Set up temporary directories and files
     let tmp_dir = "./tmp";
-    let zip_path = format!("{tmp_dir}/events/latest_download.zip");
-    let output_dir = format!("{tmp_dir}/output/events");
+    let zip_path = format!("{tmp_dir}/latest_download.zip");
+    let output_dir = format!("{tmp_dir}/output");
 
     // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
-
+    // fs::create_dir_all(&zip_path)?;
     let csv_files = fs::read_dir(&output_dir)
         .expect("Failed to read directory")
         .filter_map(|entry| {
             let entry = entry.ok()?;
             let path = entry.path();
             path.clone().extension().and_then(|ext| {
-                if ext.to_str() == Some("CSV") {
+                if ext.to_str() == Some("csv") {
                     // Check if the file name contains "mention"
                     let file_name = path.file_name()?.to_str()?;
                     if file_name.contains("export") {
