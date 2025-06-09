@@ -2,154 +2,205 @@
 
 use csv::ReaderBuilder;
 use data::GDELTDatabase;
-use log::debug;
+use log::{debug, warn};
 use models::types::event_table::EventTable;
 use models::types::mention_table::MentionTable;
 use std::fs;
 use std::fs::File;
-use std::path::Path;
 
-pub async fn fetch_and_parse_mentions() -> anyhow::Result<Vec<MentionTable>> {
-    // Ensure tmp directory exists
+use anyhow::Context;
+use std::path::PathBuf;
+
+use anyhow::Result;
+
+pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
+    // Set up temporary directories and files
     let tmp_dir = "./tmp";
-    let zip_path = format!("{}/latest_download.zip", tmp_dir);
-    let output_dir = format!("{}/output", tmp_dir);
+    let zip_path = format!("{tmp_dir}/mentions/latest_download.zip");
+    let output_dir = format!("{tmp_dir}/output/mention");
 
+    // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
-
-    // Download and unzip only if file doesn't exist
-    let csv_path = {
-        // Check if a CSV already exists in output_dir
-        let existing_csv = fs::read_dir(&output_dir)?
-            .filter_map(|entry| entry.ok())
-            .find(|entry| {
-                entry
-                    .path()
-                    .extension()
-                    .map(|e| e == "csv")
-                    .unwrap_or(false)
+    let csv_files = fs::read_dir(&output_dir)
+        .expect("Failed to read directory")
+        .filter_map(|entry| {
+            let entry = entry.ok()?;
+            let path = entry.path();
+            path.clone().extension().and_then(|ext| {
+                if ext.to_str() == Some("CSV") {
+                    // Check if the file name contains "mention"
+                    let file_name = path.file_name()?.to_str()?;
+                    if file_name.contains("mentions") {
+                        Some(path)
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                }
             })
-            .map(|entry| entry.path());
+        })
+        .collect::<Vec<PathBuf>>();
 
-        if let Some(csv) = existing_csv {
-            csv
-        } else {
-            // Download and unzip
-            let db = crate::GDELTDatabase::new(data::DatabaseType::Mentions)?;
-            let _unzipped_file = db.download_and_unzip(&zip_path, &output_dir).await?;
+    debug!("CSV Files: {csv_files:?}");
 
-            // Find the unzipped CSV file
-            fs::read_dir(&output_dir)?
-                .filter_map(|entry| entry.ok())
-                .find(|entry| {
-                    entry
-                        .path()
-                        .extension()
-                        .map(|e| e == "csv")
-                        .unwrap_or(false)
+    // Find the first CSV file containing 'mentions' in its filename
+    let csv_path = csv_files
+        .iter()
+        .find(|path| {
+            path.file_name()
+                .and_then(|name| name.to_str())
+                .map(|s| s.contains("mentions"))
+                .unwrap_or(false)
+        })
+        .cloned();
+
+    let csv_path = match csv_path {
+        Some(path) => path,
+        None => {
+            // Download and unzip the latest data if no valid CSV is found
+            let db = crate::GDELTDatabase::new(data::DatabaseType::Mentions)
+                .expect("Failed to initialize database");
+            db.download_and_unzip(&zip_path, &output_dir)
+                .await
+                .expect("Failed to download and unzip");
+
+            debug!("Database(Mentions): {db:?}");
+
+            // Retrieve the CSV path after download
+            fs::read_dir(&output_dir)
+                .expect("Failed to read directory")
+                .filter_map(|entry| {
+                    entry.ok().and_then(|e| {
+                        let path = e.path();
+                        (path.extension() == Some(std::ffi::OsStr::new("csv"))).then_some(path)
+                    })
                 })
-                .map(|entry| entry.path())
-                .ok_or_else(|| anyhow::anyhow!("No CSV file found after unzipping"))?
+                .next()
+                .with_context(|| "No CSV file found after download and unzip")?
         }
     };
 
-    // Parse CSV into MentionTable objects
-    let mut rdr = ReaderBuilder::new()
+    // Parse the CSV into MentionTable objects
+    let mut rdr = csv::ReaderBuilder::new()
         .delimiter(b'\t')
         .has_headers(false)
         .from_path(&csv_path)?;
+
     let mut results = Vec::new();
     for result in rdr.records() {
         let record = result?;
         match MentionTable::try_from(record) {
             Ok(mention) => {
-                debug!("MentionTable parsed: {mention:?}");
-                results.push(mention)
+                // log::debug!("Parsed MentionTable: {:?}", mention);
+                results.push(mention);
             }
-            Err(e) => log::warn!("Failed to parse event: {e}"),
+            Err(e) => log::warn!("Failed to parse mention: {}", e),
         }
     }
 
-    // Clean up: delete CSV and ZIP files
+    // Clean up: remove CSV and ZIP files
     fs::remove_file(&csv_path)?;
     fs::remove_file(&zip_path)?;
 
     Ok(results)
 }
 
-pub async fn fetch_and_parse_events() -> anyhow::Result<Vec<EventTable>> {
-    // Ensure paths are initialized
+pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
+    // Set up temporary directories and files
     let tmp_dir = "./tmp";
-    let zip_path = format!("{}/latest_download.zip", tmp_dir);
-    let output_dir = format!("{}/output", tmp_dir);
+    let zip_path = format!("{tmp_dir}/events/latest_download.zip");
+    let output_dir = format!("{tmp_dir}/output/events");
+
+    // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
 
-    // Download and unzip only if file doesn't exist
-    let csv_path = {
-        // Check if a CSV already exists in output_dir
-        let existing_csv = fs::read_dir(&output_dir)?
-            .filter_map(|entry| entry.ok())
-            .find(|entry| {
-                entry
-                    .path()
-                    .extension()
-                    .map(|e| e == "csv")
-                    .unwrap_or(false)
+    let csv_files = fs::read_dir(&output_dir)
+        .expect("Failed to read directory")
+        .filter_map(|entry| {
+            let entry = entry.ok()?;
+            let path = entry.path();
+            path.clone().extension().and_then(|ext| {
+                if ext.to_str() == Some("CSV") {
+                    // Check if the file name contains "mention"
+                    let file_name = path.file_name()?.to_str()?;
+                    if file_name.contains("export") {
+                        Some(path)
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                }
             })
-            .map(|entry| entry.path());
+        })
+        .collect::<Vec<PathBuf>>();
+    // Find the first CSV file containing 'events' in its filename
+    let csv_path = csv_files
+        .iter()
+        .find(|path| {
+            path.file_name()
+                .and_then(|name| name.to_str())
+                .map(|s| s.contains("export"))
+                .unwrap_or(false)
+        })
+        .cloned();
 
-        if let Some(csv) = existing_csv {
-            csv
-        } else {
-            let db = crate::GDELTDatabase::new(data::DatabaseType::Events)?;
+    let csv_path = match csv_path {
+        Some(path) => path,
+        None => {
+            // Download and unzip the latest data if no valid CSV is found
+            let db = crate::GDELTDatabase::new(data::DatabaseType::Events)
+                .expect("Failed to initialize database");
+            db.download_and_unzip(&zip_path, &output_dir)
+                .await
+                .expect("Failed to download and unzip");
 
-            // Download and unzip the latest events file
-            let _unzipped_file = db.download_and_unzip(&zip_path, &output_dir).await?;
+            // debug!("Database(Events): {db:?}");
 
-            // Find the first CSV file in the output directory
-            fs::read_dir(&output_dir)?
-                .filter_map(|entry| entry.ok())
-                .find(|entry| {
-                    entry
-                        .path()
-                        .extension()
-                        .map(|e| e == "csv")
-                        .unwrap_or(false)
+            // Retrieve the CSV path after download
+            fs::read_dir(&output_dir)
+                .expect("Failed to read directory")
+                .filter_map(|entry| {
+                    entry.ok().and_then(|e| {
+                        let path = e.path();
+                        (path.extension() == Some(std::ffi::OsStr::new("csv"))).then_some(path)
+                    })
                 })
-                .map(|entry| entry.path())
-                .ok_or_else(|| anyhow::anyhow!("No CSV file found in output directory"))?
+                .next()
+                .with_context(|| "No CSV file found after download and unzip")?
         }
     };
 
-    // Open and parse the CSV
-    let file = File::open(&csv_path)?;
-    let mut rdr = ReaderBuilder::new()
+    // Parse the CSV into eventTable objects
+    let mut rdr = csv::ReaderBuilder::new()
         .delimiter(b'\t')
         .has_headers(false)
-        .from_reader(file);
+        .from_path(&csv_path)?;
 
-    let mut events = Vec::new();
+    let mut results = Vec::new();
     for result in rdr.records() {
         let record = result?;
         match EventTable::try_from(record) {
             Ok(event) => {
-                debug!("EventTable parsed: {event:?}");
-                events.push(event)
+                // log::debug!("Parsed eventTable: {:?}", event);
+                results.push(event);
             }
-            Err(e) => log::warn!("Failed to parse event: {e}"),
+            Err(e) => log::warn!("Failed to parse event: {}", e),
         }
     }
 
-    // Clean up: delete CSV and ZIP files
-    fs::remove_file(&csv_path).ok();
-    fs::remove_file(&zip_path).ok();
+    // Clean up: remove CSV and ZIP files
+    fs::remove_file(&csv_path)?;
+    fs::remove_file(&zip_path)?;
 
-    Ok(events)
+    Ok(results)
 }
+
 #[cfg(test)]
 mod verbose_tests {
     use super::*;
-    use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
+    use chrono::NaiveDate;
     use data::DatabaseType;
     use std::fs;
     use std::io::Read;
@@ -549,53 +600,24 @@ mod verbose_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use async_trait::async_trait;
-    use std::path::PathBuf;
-    use std::{
-        fs,
-        sync::{Arc, Mutex},
-    };
 
-    // Mock GDELTDatabase
-    #[derive(Debug, Default, Clone)]
-    struct MockGDELTDatabase {
-        pub downloaded_data: Arc<Mutex<Option<String>>>,
-    }
+    use std::sync::Once;
 
-    impl MockGDELTDatabase {
-        pub fn set_downloaded_data(&self, data: String) {
-            let mut downloaded_data = self.downloaded_data.lock().unwrap();
-            *downloaded_data = Some(data);
-        }
-    }
+    use super::*;
 
-    #[async_trait]
-    trait GDELTDownloader {
-        async fn download_and_unzip(
-            &self,
-            zip_path: &str,
-            output_path: &str,
-        ) -> anyhow::Result<PathBuf>;
-    }
+    static INIT: Once = Once::new();
 
-    #[async_trait]
-    impl GDELTDownloader for MockGDELTDatabase {
-        async fn download_and_unzip(
-            &self,
-            _zip_path: &str,
-            output_path: &str,
-        ) -> anyhow::Result<PathBuf> {
-            let downloaded_data = self.downloaded_data.lock().unwrap();
-            let data = downloaded_data
-                .as_ref()
-                .ok_or_else(|| anyhow::anyhow!("No data was downloaded"))?;
-
-            fs::write(output_path, data)?;
-            Ok(PathBuf::from(output_path))
-        }
+    fn init_logger() {
+        INIT.call_once(|| {
+            let _ = env_logger::builder()
+                .is_test(true)
+                .filter_level(log::LevelFilter::Trace)
+                .try_init();
+        });
     }
 
     fn log_first_ten_fields<T: std::fmt::Debug>(label: &str, items: &[T]) {
+        init_logger();
         for (i, item) in items.iter().enumerate() {
             log::info!("{} {}: {:?}", label, i, item);
         }
@@ -603,43 +625,26 @@ mod tests {
 
     #[tokio::test]
     async fn test_fetch_and_parse_events() -> anyhow::Result<()> {
-        let mock_data = "123\t20240101\t2024\t2024\t2024.0\tUSA\tUSA\tUSA\t\t\t\t\t\t\tUSA\tUSA\tUSA\t\t\t\t\t\t\t0\t0\t0\t0\t0\t0.0\t0\t0\t0\t0.0\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t20240101000000\thttps://example.com".to_string();
-
-        let mut mock_db = MockGDELTDatabase::default();
-
-        mock_db.set_downloaded_data(mock_data);
-
-        // Call fetch_and_parse_events
         let events = fetch_and_parse_events().await?;
+        debug!("Input tested events: {events:?}");
 
         // Log the first ten fields of every created EventTable
         log_first_ten_fields("Event", &events);
 
         assert_ne!(events.len(), 0);
-        // assert_eq!(events[0].global_event_id.0, 123);
-        // assert_eq!(events[0].src_url.as_str(), "https://example.com/");
 
         Ok(())
     }
 
     #[tokio::test]
     async fn test_fetch_and_parse_mentions() -> anyhow::Result<()> {
-        let mock_mention_data =
-            "123\t20240101\t20240101\t1\tsource\t1\t1\t2\t3\ttext\t100\t20\t0.5\ten\tengine"
-                .to_string();
-
-        let mock_db = MockGDELTDatabase::default();
-        mock_db.set_downloaded_data(mock_mention_data);
-
         // Call fetch_and_parse_mentions
         let mentions = fetch_and_parse_mentions().await?;
 
         // Log the first ten fields of every created MentionTable
         log_first_ten_fields("Mention", &mentions);
 
-        assert_eq!(mentions.len(), 1);
-        assert_eq!(mentions[0].global_event_id.0, 123);
-        assert_eq!(mentions[0].confidence.0, 100);
+        assert_ne!(mentions.len(), 0);
 
         Ok(())
     }

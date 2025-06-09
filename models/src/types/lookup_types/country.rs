@@ -333,10 +333,6 @@ impl TryFrom<Option<FIPSCountryCode>> for CountryZone {
 
     fn try_from(value: Option<FIPSCountryCode>) -> Result<Self, Self::Error> {
         let value = value.ok_or_else(|| anyhow!("CAMEOCountryCode is None"))?;
-        log::info!(
-            "Attempting to convert FIPSCountryCode to CountryZone: {:?}",
-            value
-        );
         match std::str::from_utf8(&value.0)? {
             "AF" => Ok(CountryZone::Afghanistan),
             "AX" => Ok(CountryZone::AkrotiriSovereignBaseArea),

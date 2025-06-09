@@ -2,7 +2,10 @@ use actor::Actor;
 use chrono::{DateTime, Utc};
 use event_action::EventAction;
 use event_geography::EventGeography;
+use log::debug;
 use url::Url;
+
+use super::DatabaseTable;
 
 #[derive(Debug)]
 pub struct GlobalEventID(pub u128);
@@ -99,6 +102,8 @@ pub struct EventTable {
     pub src_url: Url,
 }
 
+impl DatabaseTable for EventTable {}
+
 impl std::convert::TryFrom<csv::StringRecord> for EventTable {
     type Error = anyhow::Error;
 
@@ -114,7 +119,7 @@ impl std::convert::TryFrom<csv::StringRecord> for EventTable {
         }
 
         if record.len() != 61 {
-            return Err(anyhow::anyhow!("Expected 62 fields, got {}", record.len()));
+            return Err(anyhow::anyhow!("Expected 61 fields, got {}", record.len()));
         }
 
         let fields: [&str; 61] = record

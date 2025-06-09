@@ -1,6 +1,6 @@
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 
-use super::{event_table::GlobalEventID, lookup_types::mention_type::MentionType};
+use super::{DatabaseTable, event_table::GlobalEventID, lookup_types::mention_type::MentionType};
 
 #[derive(Debug)]
 pub struct MentionTypeCode(pub u8);
@@ -199,9 +199,12 @@ pub struct MentionTable {
     pub confidence: Confidence,
     pub mention_doc_len: MentionDocLength,
     pub mention_doc_tone: MentionDocTone,
-    pub mention_doc_translation_info: (Option<SourceLanguageCode>,Option<Engine>),
+    pub mention_doc_translation_info: (Option<SourceLanguageCode>, Option<Engine>),
     pub extras: String,
 }
+
+impl DatabaseTable for MentionTable {}
+
 impl TryFrom<csv::StringRecord> for MentionTable {
     type Error = anyhow::Error;
 
@@ -218,7 +221,9 @@ impl TryFrom<csv::StringRecord> for MentionTable {
             .try_into()
             .map_err(|_| anyhow::anyhow!("Failed to convert record to fixed-size array"))?;
 
-        fn convert_to_utc_datetime(date_time_str: &str) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
+        fn convert_to_utc_datetime(
+            date_time_str: &str,
+        ) -> anyhow::Result<chrono::DateTime<chrono::Utc>> {
             chrono::NaiveDateTime::parse_from_str(date_time_str, "%Y%m%d%H%M%S")
                 .or_else(|_| chrono::NaiveDateTime::parse_from_str(date_time_str, "%Y%m%d"))
                 .map(|ndt| chrono::Utc.from_utc_datetime(&ndt))
@@ -266,7 +271,10 @@ mod tests {
         let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
-        assert!(mention_table_result.is_ok(), "Failed to create MentionTable from valid input");
+        assert!(
+            mention_table_result.is_ok(),
+            "Failed to create MentionTable from valid input"
+        );
         let mention_table = mention_table_result.unwrap();
         assert_eq!(mention_table.global_event_id.0, 1233696063);
         assert_eq!(mention_table.mention_source_name.0, "wyomingnewsnow.tv");
@@ -277,7 +285,10 @@ mod tests {
         let input = "1233696063\t20250322164500\t20250322180000";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
-        assert!(mention_table_result.is_err(), "Should fail due to invalid input length");
+        assert!(
+            mention_table_result.is_err(),
+            "Should fail due to invalid input length"
+        );
     }
 
     #[test]
@@ -285,7 +296,10 @@ mod tests {
         let input = "invalid_id\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
-        assert!(mention_table_result.is_err(), "Should fail due to invalid GlobalEventID");
+        assert!(
+            mention_table_result.is_err(),
+            "Should fail due to invalid GlobalEventID"
+        );
     }
 
     #[test]
@@ -293,7 +307,10 @@ mod tests {
         let input = "1233696063\t20250322164500\t20250322180000\t999\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
-        assert!(mention_table_result.is_err(), "Should fail due to invalid MentionTypeCode");
+        assert!(
+            mention_table_result.is_err(),
+            "Should fail due to invalid MentionTypeCode"
+        );
     }
 
     #[test]
@@ -301,7 +318,10 @@ mod tests {
         let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tEN\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
-        assert!(mention_table_result.is_err(), "Should fail due to invalid SourceLanguageCode");
+        assert!(
+            mention_table_result.is_err(),
+            "Should fail due to invalid SourceLanguageCode"
+        );
     }
 }
 #[cfg(test)]
