@@ -16,19 +16,19 @@ use anyhow::Result;
 pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
     // Set up temporary directories and files
     let tmp_dir = "./tmp";
-    let zip_path = format!("{tmp_dir}/latest_download.zip");
+    let zip_path = format!("{tmp_dir}/mention/latest_download.zip");
     let output_dir = format!("{tmp_dir}/output");
 
     // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
-    // fs::create_dir_all(&zip_path)?;
+    fs::create_dir_all(format!("./{tmp_dir}/mention"))?;
     let csv_files = fs::read_dir(&output_dir)
         .expect("Failed to read directory")
         .filter_map(|entry| {
             let entry = entry.ok()?;
             let path = entry.path();
             path.clone().extension().and_then(|ext| {
-                if ext.to_str() == Some("csv") {
+                if ext.to_str().eq(&Some("csv")) || ext.to_str().eq(&Some("CSV")) {
                     // Check if the file name contains "mention"
                     let file_name = path.file_name()?.to_str()?;
                     if file_name.contains("mentions") {
@@ -110,19 +110,19 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
 pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
     // Set up temporary directories and files
     let tmp_dir = "./tmp";
-    let zip_path = format!("{tmp_dir}/latest_download.zip");
+    let zip_path = format!("{tmp_dir}/event/latest_download.zip");
     let output_dir = format!("{tmp_dir}/output");
 
     // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
-    // fs::create_dir_all(&zip_path)?;
+    fs::create_dir_all(format!("./{tmp_dir}/event"))?;
     let csv_files = fs::read_dir(&output_dir)
         .expect("Failed to read directory")
         .filter_map(|entry| {
             let entry = entry.ok()?;
             let path = entry.path();
             path.clone().extension().and_then(|ext| {
-                if ext.to_str() == Some("csv") {
+                if ext.to_str().eq(&Some("csv")) || ext.to_str().eq(&Some("CSV")) {
                     // Check if the file name contains "mention"
                     let file_name = path.file_name()?.to_str()?;
                     if file_name.contains("export") {
@@ -627,7 +627,6 @@ mod tests {
     #[tokio::test]
     async fn test_fetch_and_parse_events() -> anyhow::Result<()> {
         let events = fetch_and_parse_events().await?;
-        debug!("Input tested events: {events:?}");
 
         // Log the first ten fields of every created EventTable
         log_first_ten_fields("Event", &events);

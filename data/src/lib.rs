@@ -19,7 +19,6 @@ pub static OUTPUT_DIR: OnceLock<&'static str> = OnceLock::new();
 
 pub fn init_paths() {
     TMP_DIR.get_or_init(|| "./tmp");
-    ZIP_PATH.get_or_init(|| "./tmp/latest_download.zip");
     OUTPUT_DIR.get_or_init(|| "./tmp/output");
 }
 
@@ -199,7 +198,7 @@ impl GDELTDatabase {
         use std::str::FromStr;
 
         init_paths();
-        let zip_path = *ZIP_PATH.get().unwrap();
+        let zip_path = format!("./tmp/latest_{:?}.zip", self.db_type);
 
         // Get the current time in UTC and round down to the latest 15th minute
         let now = Utc::now().checked_sub_signed(Duration::hours(1)).unwrap();
@@ -230,7 +229,7 @@ impl GDELTDatabase {
         self.db_type = DatabaseType::Events;
 
         // Download the file
-        self.download_to_path(zip_path).await?;
+        self.download_to_path(&zip_path).await?;
 
         Ok(())
     }
