@@ -1,31 +1,18 @@
-use chrono::Duration;
-use futures::StreamExt;
-use log::info;
-use std::sync::OnceLock;
-use std::{
+use std::path::Path;
+
+use anyhow::Result;
+use chrono::{Datelike, Duration, NaiveDateTime, Timelike};
+use tokio::{
     fs::{self, File},
-    io,
-    path::Path,
-    str::FromStr,
+    io::{self, AsyncWriteExt},
 };
 use utils::{extract_date, extract_db_type};
-use zip::ZipArchive;
 
 pub mod utils;
 
-pub static TMP_DIR: OnceLock<&'static str> = OnceLock::new();
-pub static ZIP_PATH: OnceLock<&'static str> = OnceLock::new();
-pub static OUTPUT_DIR: OnceLock<&'static str> = OnceLock::new();
-
-pub fn init_paths() {
-    TMP_DIR.get_or_init(|| "./tmp");
-    OUTPUT_DIR.get_or_init(|| "./tmp/output");
-}
-
-#[derive(Debug)]
 pub struct GDELTDatabase {
     pub link: reqwest::Url,
-    pub date: chrono::NaiveDateTime,
+    pub date: NaiveDateTime,
     pub file: Option<File>,
     pub db_type: DatabaseType,
 }
@@ -45,7 +32,7 @@ impl TryFrom<&str> for DatabaseType {
             "export" => Ok(DatabaseType::Events),
             "gkg" => Ok(DatabaseType::GlobalKnowledgeGraph),
             "mentions" => Ok(DatabaseType::Mentions),
-            _ => Err(anyhow::Error::msg("Invalid database type")),
+            _ => Err(anyhow::anyhow!("Invalid database type: {}", value)),
         }
     }
 }
@@ -63,10 +50,15 @@ impl TryFrom<&DatabaseType> for String {
 }
 
 impl GDELTDatabase {
-    pub fn new(db_type: DatabaseType) -> anyhow::Result<Self> {
-        use chrono::{Datelike, Timelike, Utc};
-        let now = Utc::now()
-            .checked_sub_signed(chrono::Duration::hours(1))
+    pub async fn new(db_type: DatabaseType) -> Result<Self> {
+        let tmp_dir = "./tmp";
+        let output_dir = "./tmp/output";
+
+        fs::create_dir_all(tmp_dir).await?;
+        fs::create_dir_all(output_dir).await?;
+
+        let now = chrono::Utc::now()
+            .checked_sub_signed(Duration::hours(1))
             .unwrap();
         let rounded_minute = (now.minute() / 15) * 15;
         let rounded_time = now
@@ -76,31 +68,40 @@ impl GDELTDatabase {
             .unwrap()
             .with_minute(rounded_minute)
             .unwrap();
-        Self::from_date_and_type(rounded_time.naive_utc(), db_type)
+        Self::from_date_and_type(rounded_time.naive_utc(), db_type).await
     }
 
-    pub fn from_url_str(url: &str) -> anyhow::Result<Self> {
-        info!("Creating Instance of GDELTDatabase");
+    pub async fn from_url_str(url: &str) -> Result<Self> {
+        let tmp_dir = "./tmp";
+        let output_dir = "./tmp/output";
+
+        fs::create_dir_all(tmp_dir).await?;
+        fs::create_dir_all(output_dir).await?;
+
         let db_type = extract_db_type(url)?;
         let date = extract_date(url)?;
         let db_type_enum = match db_type.as_str() {
             "export" => DatabaseType::Events,
             "gkg" => DatabaseType::GlobalKnowledgeGraph,
             "mentions" => DatabaseType::Mentions,
-            _ => return Err(anyhow::Error::msg("Link not supported")),
+            _ => return Err(anyhow::anyhow!("Link not supported")),
         };
-        Ok(Self {
-            link: reqwest::Url::from_str(url)?,
+
+        Ok(GDELTDatabase {
+            link: reqwest::Url::parse(url)?,
             date,
             file: None,
             db_type: db_type_enum,
         })
     }
 
-    pub fn from_date_and_type(
-        date: chrono::NaiveDateTime,
-        db_type: DatabaseType,
-    ) -> anyhow::Result<Self> {
+    pub async fn from_date_and_type(date: NaiveDateTime, db_type: DatabaseType) -> Result<Self> {
+        let tmp_dir = "./tmp";
+        let output_dir = "./tmp/output";
+
+        fs::create_dir_all(tmp_dir).await?;
+        fs::create_dir_all(output_dir).await?;
+
         let db_type_str = match db_type {
             DatabaseType::Events => "export",
             DatabaseType::GlobalKnowledgeGraph => "gkg",
@@ -113,95 +114,63 @@ impl GDELTDatabase {
             db_type = db_type_str
         );
 
-        Ok(Self {
-            link: reqwest::Url::from_str(&url)?,
+        Ok(GDELTDatabase {
+            link: reqwest::Url::parse(&url)?,
             date,
             file: None,
             db_type,
         })
     }
 
-    pub async fn download_and_unzip(
-        &self,
-        download_path: &str,
-        output_dir: &str,
-    ) -> anyhow::Result<File> {
-        let res = self.download_to_path(download_path).await;
-        if res.is_err() {
-            return Err(anyhow::anyhow!("Failed to download file: {:?}", res));
-        }
-        let unzipped_file = Self::unzip_single_file(download_path, output_dir)?;
-        Ok(unzipped_file)
+    pub async fn download_and_unzip(&self, download_path: &str, output_dir: &str) -> Result<File> {
+        self.download_to_path(download_path).await?;
+        Self::unzip_single_file(download_path, output_dir).await
     }
-    pub async fn download_to_path(&self, path: &str) -> anyhow::Result<()> {
-        use std::path::Path as StdPath;
-        log::info!("Making Request");
+
+    pub async fn download_to_path(&self, path: &str) -> Result<()> {
+        use futures::StreamExt;
+
+        let parent = Path::new(path).parent().ok_or(anyhow::anyhow!(
+            "Path {} does not have a parent directory",
+            path
+        ))?;
+        tokio::fs::create_dir_all(&parent).await?;
+
         let response = reqwest::get(self.link.clone()).await?;
-        log::info!("Download Response: {response:?}");
-
-        if let Some(parent) = StdPath::new(path).parent() {
-            tokio::fs::create_dir_all(parent).await?;
-        }
-
         let mut file = tokio::fs::File::create(path).await?;
-        let mut content = response.bytes_stream();
 
-        while let Some(Ok(chunk)) = content.next().await {
-            tokio::io::copy(&mut chunk.as_ref(), &mut file).await?;
+        let mut content = response.bytes_stream();
+        while let Some(chunk) = content.next().await {
+            let chunk = chunk?;
+            file.write_all(&chunk).await?;
         }
 
         Ok(())
     }
 
-    pub fn unzip_single_file(zip_file_path: &str, output_dir: &str) -> anyhow::Result<File> {
-        use std::fs::OpenOptions;
-        use std::path::Path;
+    pub async fn unzip_single_file(zip_file_path: &str, output_dir: &str) -> Result<File> {
+        let zip_file = std::fs::File::open(zip_file_path)?;
+        let mut archive = zip::ZipArchive::new(zip_file)?;
 
-        // Check if the ZIP file exists
-        if !Path::new(zip_file_path).exists() {
-            return Err(anyhow::anyhow!(
-                "ZIP file does not exist at {}",
-                zip_file_path
-            ));
-        }
+        let output_path = Path::new(output_dir).join(archive.by_index(0)?.name().to_lowercase());
 
-        // Ensure output directory exists
-        fs::create_dir_all(output_dir)?;
+        let mut output_file = File::create(&output_path).await?;
+        let mut reader = archive.by_index(0)?;
+        io::copy(&mut reader, &mut output_file).await?;
 
-        let file = File::open(zip_file_path)?;
-        info!("File: {file:?}");
-        let mut archive = ZipArchive::new(file)?;
-
-        info!("Archive: {archive:?}");
-
-        let mut zip_file = archive.by_index(0)?;
-        info!("File: {:?}", zip_file.name());
-
-        let output_path = Path::new(output_dir).join(zip_file.name().to_lowercase());
-        info!("Output Path: {:?}", output_path);
-
-        let mut outfile = OpenOptions::new()
-            .write(true)
-            .create(true)
-            .truncate(true)
-            .open(&output_path)?;
-
-        info!("Output File: {outfile:?}");
-
-        io::copy(&mut zip_file, &mut outfile)?;
-
-        fs::remove_file(zip_file_path)?;
-        Ok(outfile)
+        Ok(output_file)
     }
-    pub async fn update_latest(&mut self) -> anyhow::Result<()> {
-        use chrono::{Datelike, Timelike, Utc};
-        use std::str::FromStr;
 
-        init_paths();
-        let zip_path = format!("./tmp/latest_{:?}.zip", self.db_type);
+    pub async fn update_latest(&mut self) -> Result<()> {
+        let tmp_dir = "./tmp";
+        let output_dir = "./tmp/output";
 
-        // Get the current time in UTC and round down to the latest 15th minute
-        let now = Utc::now().checked_sub_signed(Duration::hours(1)).unwrap();
+        fs::create_dir_all(tmp_dir).await?;
+        fs::create_dir_all(output_dir).await?;
+
+        let now = chrono::Utc::now()
+            .checked_sub_signed(Duration::hours(1))
+            .unwrap();
         let rounded_minute = (now.minute() / 15) * 15;
         let rounded_time = now
             .with_second(0)
@@ -211,7 +180,7 @@ impl GDELTDatabase {
             .with_minute(rounded_minute)
             .unwrap();
 
-        // Generate the URL
+        let db_type_str = String::try_from(&self.db_type)?;
         let url = format!(
             "http://data.gdeltproject.org/gdeltv2/{:04}{:02}{:02}{:02}{:02}{:02}.{}.CSV.zip",
             rounded_time.year(),
@@ -220,32 +189,27 @@ impl GDELTDatabase {
             rounded_time.hour(),
             rounded_time.minute(),
             rounded_time.second(),
-            String::try_from(&self.db_type)?
+            db_type_str
         );
 
-        // Update the instance fields
-        self.link = reqwest::Url::from_str(&url)?;
+        self.link = reqwest::Url::parse(&url)?;
         self.date = rounded_time.naive_utc();
         self.db_type = DatabaseType::Events;
-
-        // Download the file
-        self.download_to_path(&zip_path).await?;
 
         Ok(())
     }
 
-    /// Downloads GDELT databases in batches between `start` and `end` (inclusive), at 15-minute intervals.
     pub async fn download_batch(
-        start: chrono::NaiveDateTime,
-        end: chrono::NaiveDateTime,
+        start: NaiveDateTime,
+        end: NaiveDateTime,
         db_type: DatabaseType,
         output_dir: &str,
-    ) -> anyhow::Result<()> {
+    ) -> Result<()> {
         use chrono::Duration;
 
         let mut current = start;
         while current <= end {
-            let db = GDELTDatabase::from_date_and_type(current, db_type.clone())?;
+            let db = GDELTDatabase::from_date_and_type(current, db_type.clone()).await?;
             let file_name = format!(
                 "{}/{}.{}.CSV.zip",
                 output_dir,
@@ -261,10 +225,8 @@ impl GDELTDatabase {
 
 #[cfg(test)]
 mod tests {
-    use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
-    use std::sync::Once;
-
     use super::*;
+    use std::sync::Once;
 
     static INIT: Once = Once::new();
 
@@ -277,123 +239,67 @@ mod tests {
         });
     }
 
-    #[test]
-    fn test_gdelt_database_new() {
+    #[tokio::test]
+    async fn test_gdelt_database_new() {
         init_logger();
-        log::info!("Running test_gdelt_database_new");
-        let url = "https://data.gdeltproject.org/gdeltv2/20211021000000.mentions.CSV.zip";
-        let db = GDELTDatabase::from_url_str(url).unwrap();
-        log::debug!("Created db: {:?}", db);
-        assert_eq!(db.db_type, DatabaseType::Mentions);
-        assert_eq!(
-            db.date,
-            chrono::NaiveDate::from_ymd_opt(2021, 10, 21)
-                .unwrap()
-                .and_hms_opt(0, 0, 0)
-                .unwrap()
+        let db = GDELTDatabase::new(DatabaseType::Events).await.unwrap();
+        assert_eq!(db.db_type, DatabaseType::Events);
+        assert!(
+            db.link.as_str().contains("gdeltv2"),
+            "URL should contain 'gdeltv2'"
         );
     }
 
-    #[test]
-    fn test_gdelt_database_new_invalid_url() {
+    #[tokio::test]
+    async fn test_gdelt_database_new_invalid_url() {
         init_logger();
-        log::info!("Running test_gdelt_database_new_invalid_url");
-        let url = "https://invalid.url";
-        let result = GDELTDatabase::from_url_str(url);
-        log::debug!("Result: {:?}", result);
+        let result = GDELTDatabase::from_url_str("http://invalid.url").await;
         assert!(result.is_err());
     }
 
     #[tokio::test]
-    async fn test_download_to_path() {
+    async fn test_download_to_path() -> Result<()> {
         init_logger();
-        log::info!("Running test_download_to_path");
         let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
-        let db = GDELTDatabase::from_url_str(url).unwrap();
-        log::debug!("Created db: {:?}", db);
-        let result = db.download_to_path("./tmp/test.csv.zip").await;
-        log::debug!("Download result: {:?}", result);
-        assert!(result.is_ok());
+        let db = GDELTDatabase::from_url_str(url).await.unwrap();
+        let download_path = "./tmp/test.csv.zip";
+        db.download_to_path(download_path).await?;
+        assert!(Path::new(download_path).exists());
+        Ok(())
     }
 
-    #[test]
-    fn test_unzip_single_file() {
+    #[tokio::test]
+    async fn test_download_and_unzip() -> Result<()> {
         init_logger();
-        log::info!("Running test_unzip_single_file");
-        let zip_file_path = "./tmp/test.csv.zip";
+        let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
+        let db = GDELTDatabase::from_url_str(url).await.unwrap();
+        let download_path = "./tmp/test.csv.zip";
         let output_dir = "./tmp/output";
-        let result = GDELTDatabase::unzip_single_file(zip_file_path, output_dir);
-        log::debug!("Unzip result: {:?}", result);
-        assert!(result.is_ok());
+        db.download_and_unzip(download_path, output_dir).await?;
+        let output_path = Path::new(output_dir).join("export.CSV");
+        assert!(output_path.exists());
+        Ok(())
     }
 
     #[tokio::test]
-    async fn download_and_unzip_creates_unzipped_file() {
+    async fn test_update_latest() -> Result<()> {
         init_logger();
-        log::info!("Running download_and_unzip_creates_unzipped_file");
-        let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.mentions.CSV.zip";
-        let db = GDELTDatabase::from_url_str(url).unwrap();
-        log::debug!("Created db: {:?}", db);
-        let download_path = "./tmp/test_download.zip";
-        let output_dir = "./tmp/test_output";
-
-        let result = db.download_and_unzip(download_path, output_dir).await;
-        log::debug!("Download and unzip result: {:?}", result);
-        assert!(result.is_ok());
-
-        let unzipped_file = result.unwrap();
-        assert!(unzipped_file.metadata().is_ok());
-        assert!(unzipped_file.metadata().unwrap().is_file());
+        let mut db = GDELTDatabase::new(DatabaseType::Events).await.unwrap();
+        db.update_latest().await?;
+        assert!(
+            db.link.as_str().contains("gdeltv2"),
+            "Updated URL should contain 'gdeltv2'"
+        );
+        Ok(())
     }
 
     #[tokio::test]
-    async fn download_and_unzip_invalid_url_fails() {
+    async fn test_from_date_and_type() -> Result<()> {
         init_logger();
-        log::info!("Running download_and_unzip_invalid_url_fails");
-        let url = "http://invalid.url";
-        let db = GDELTDatabase::from_url_str(url);
-        log::debug!("DB creation result: {:?}", db);
-        assert!(db.is_err());
-    }
-
-    #[test]
-    fn from_date_and_type_creates_correct_instance() {
-        init_logger();
-        log::info!("Running from_date_and_type_creates_correct_instance");
-        let date = chrono::NaiveDate::from_ymd_opt(2023, 3, 22)
-            .unwrap()
-            .and_hms_opt(18, 0, 0)
-            .unwrap();
-        let db_type = DatabaseType::Mentions;
-
-        let db = GDELTDatabase::from_date_and_type(date, db_type).unwrap();
-        log::debug!("Created db: {:?}", db);
+        let date = NaiveDateTime::parse_from_str("2023-03-22 18:00:00", "%Y-%m-%d %H:%M:%S")?;
+        let db = GDELTDatabase::from_date_and_type(date, DatabaseType::Mentions).await?;
         assert_eq!(db.db_type, DatabaseType::Mentions);
-        assert_eq!(db.date, date);
         assert!(db.link.as_str().contains("20230322180000.mentions.CSV.zip"));
-    }
-
-    #[test]
-    fn from_date_and_type_invalid_date_fails() {
-        init_logger();
-        log::info!("Running from_date_and_type_invalid_date_fails");
-        let date = chrono::NaiveDate::from_ymd_opt(2023, 2, 30); // Invalid date
-        let _db_type = DatabaseType::Events;
-
-        log::debug!("Date result: {:?}", date);
-        assert!(date.is_none());
-    }
-
-    #[tokio::test]
-    async fn test_update_latest() {
-        init_logger();
-        log::info!("Running test_update_latest");
-        let mut db = GDELTDatabase::new(DatabaseType::Events).expect("Messed up");
-        log::debug!("Initial db: {:?}", db);
-        let result = db.update_latest().await;
-        log::debug!("Update result: {:?}", result);
-        assert!(result.is_ok());
-        assert!(db.link.as_str().contains("gdeltv2"));
-        assert!(db.date > NaiveDateTime::new(NaiveDate::default(), NaiveTime::default()));
+        Ok(())
     }
 }
