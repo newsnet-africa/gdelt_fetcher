@@ -145,7 +145,6 @@ impl GDELTDatabase {
 
         let response = reqwest::get(self.link.clone()).await?;
         let mut file = tokio::fs::File::create(path).await?;
-
         let mut content = response.bytes_stream();
         while let Some(chunk) = content.next().await {
             let chunk = chunk?;
@@ -166,53 +165,50 @@ impl GDELTDatabase {
     }
 
     /// Extracts everything from the ZIP archive to the output directory
-    async fn unzip_file(archive: &str, out_dir: &str) -> anyhow::Result<File> {
+    pub async fn unzip_file(archive: &str, out_dir: &str) -> anyhow::Result<File> {
         let archive = File::open(archive).await?;
         let out_dir = Path::new(out_dir);
         let archive = BufReader::new(archive).compat();
         let mut reader = ZipFileReader::new(archive)
             .await
             .expect("Failed to read zip file");
-        for index in 0..reader.file().entries().len() {
-            let entry = reader.file().entries().get(index).unwrap();
-            let path = out_dir.join(Self::sanitize_file_path(entry.filename().as_str().unwrap()));
-            let entry_is_dir = entry.dir().unwrap();
+        let entry = reader.file().entries().first().unwrap();
+        let path = out_dir.join(Self::sanitize_file_path(entry.filename().as_str().unwrap()));
+        let entry_is_dir = entry.dir().unwrap();
 
-            let mut entry_reader = reader
-                .reader_without_entry(index)
+        let mut entry_reader = reader
+            .reader_without_entry(0)
+            .await
+            .expect("Failed to read ZipEntry");
+
+        if entry_is_dir && !path.exists() {
+            create_dir_all(&path)
                 .await
-                .expect("Failed to read ZipEntry");
-
-            if entry_is_dir {
-                // The directory may have been created if iteration is out of order.
-                if !path.exists() {
-                    create_dir_all(&path)
-                        .await
-                        .expect("Failed to create extracted directory");
-                    return Err(anyhow!("Failed to created extracted directory"));
-                };
-            } else {
-                // Creates parent directories. They may not exist if iteration is out of order
-                // or the archive does not contain directory entries.
-                let parent = path
-                    .parent()
-                    .expect("A file entry should have parent directories");
-                if !parent.is_dir() {
-                    create_dir_all(parent)
-                        .await
-                        .expect("Failed to create parent directories");
-                }
-                let writer = OpenOptions::new()
-                    .write(true)
-                    .create_new(true)
-                    .open(&path)
+                .expect("Failed to create extracted directory");
+            Err(anyhow!("Failed to create directory"))
+        } else {
+            // Creates parent directories. They may not exist if iteration is out of order
+            // or the archive does not contain directory entries.
+            let parent = path
+                .parent()
+                .expect("A file entry should have parent directories");
+            if !parent.is_dir() {
+                create_dir_all(parent)
                     .await
-                    .expect("Failed to create extracted file");
+                    .expect("Failed to create parent directories");
+            }
+            let writer = OpenOptions::new()
+                .write(true)
+                .create(true) // TODO: Use create_new cause it is atomic and safer, then handle the AlreadyExists error thrown after the await here
+                .open(&path)
+                .await
+                .expect("Failed to create extracted file");
+            {
                 futures_lite::io::copy(&mut entry_reader, &mut writer.compat_write())
                     .await
                     .expect("Failed to copy to extracted file");
-                return Ok(writer);
             }
+            Ok(File::open(&path).await?)
         }
     }
 
@@ -328,7 +324,7 @@ mod tests {
         init_logger();
         let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
         let db = GDELTDatabase::from_url_str(url).await.unwrap();
-        let download_path = "./tmp/test.csv.zip";
+        let download_path = "./tmp/output/test.csv.zip";
         let output_dir = "./tmp/output";
         db.download_and_unzip(download_path, output_dir).await?;
         let output_path = Path::new(output_dir).join("export.CSV");
