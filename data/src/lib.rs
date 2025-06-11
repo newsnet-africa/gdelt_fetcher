@@ -1,11 +1,18 @@
-use std::path::Path;
+use anyhow::anyhow;
+use std::path::{Path, PathBuf};
+use tokio_util::compat::TokioAsyncReadCompatExt;
+use tokio_util::compat::TokioAsyncWriteCompatExt;
+
+use async_zip::base::read::seek::ZipFileReader;
+use tokio::{
+    fs::{File, OpenOptions, create_dir_all},
+    io::BufReader,
+};
 
 use anyhow::Result;
 use chrono::{Datelike, Duration, NaiveDateTime, Timelike};
-use tokio::{
-    fs::{self, File},
-    io::{self, AsyncWriteExt},
-};
+use tokio::fs;
+use tokio::io::AsyncWriteExt;
 use utils::{extract_date, extract_db_type};
 
 pub mod utils;
@@ -124,7 +131,7 @@ impl GDELTDatabase {
 
     pub async fn download_and_unzip(&self, download_path: &str, output_dir: &str) -> Result<File> {
         self.download_to_path(download_path).await?;
-        Self::unzip_single_file(download_path, output_dir).await
+        Self::unzip_file(download_path, output_dir).await
     }
 
     pub async fn download_to_path(&self, path: &str) -> Result<()> {
@@ -148,17 +155,65 @@ impl GDELTDatabase {
         Ok(())
     }
 
-    pub async fn unzip_single_file(zip_file_path: &str, output_dir: &str) -> Result<File> {
-        let zip_file = std::fs::File::open(zip_file_path)?;
-        let mut archive = zip::ZipArchive::new(zip_file)?;
+    /// Returns a relative path without reserved names, redundant separators, ".", or "..".
+    fn sanitize_file_path(path: &str) -> PathBuf {
+        // Replaces backwards slashes
+        path.replace('\\', "/")
+            // Sanitizes each component
+            .split('/')
+            .map(sanitize_filename::sanitize)
+            .collect()
+    }
 
-        let output_path = Path::new(output_dir).join(archive.by_index(0)?.name().to_lowercase());
+    /// Extracts everything from the ZIP archive to the output directory
+    async fn unzip_file(archive: &str, out_dir: &str) -> anyhow::Result<File> {
+        let archive = File::open(archive).await?;
+        let out_dir = Path::new(out_dir);
+        let archive = BufReader::new(archive).compat();
+        let mut reader = ZipFileReader::new(archive)
+            .await
+            .expect("Failed to read zip file");
+        for index in 0..reader.file().entries().len() {
+            let entry = reader.file().entries().get(index).unwrap();
+            let path = out_dir.join(Self::sanitize_file_path(entry.filename().as_str().unwrap()));
+            let entry_is_dir = entry.dir().unwrap();
 
-        let mut output_file = File::create(&output_path).await?;
-        let mut reader = archive.by_index(0)?;
-        io::copy(&mut reader, &mut output_file).await?;
+            let mut entry_reader = reader
+                .reader_without_entry(index)
+                .await
+                .expect("Failed to read ZipEntry");
 
-        Ok(output_file)
+            if entry_is_dir {
+                // The directory may have been created if iteration is out of order.
+                if !path.exists() {
+                    create_dir_all(&path)
+                        .await
+                        .expect("Failed to create extracted directory");
+                    return Err(anyhow!("Failed to created extracted directory"));
+                };
+            } else {
+                // Creates parent directories. They may not exist if iteration is out of order
+                // or the archive does not contain directory entries.
+                let parent = path
+                    .parent()
+                    .expect("A file entry should have parent directories");
+                if !parent.is_dir() {
+                    create_dir_all(parent)
+                        .await
+                        .expect("Failed to create parent directories");
+                }
+                let writer = OpenOptions::new()
+                    .write(true)
+                    .create_new(true)
+                    .open(&path)
+                    .await
+                    .expect("Failed to create extracted file");
+                futures_lite::io::copy(&mut entry_reader, &mut writer.compat_write())
+                    .await
+                    .expect("Failed to copy to extracted file");
+                return Ok(writer);
+            }
+        }
     }
 
     pub async fn update_latest(&mut self) -> Result<()> {

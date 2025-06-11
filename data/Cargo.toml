@@ -4,13 +4,18 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-zip = "*"
+async_zip = {version = "*", features = ["full"]}
 tokio = { version = "*", features = ["full"] }
 env_logger = "*"
 log = "*"
+csv = "*"
 reqwest = { version = "*", features = ["stream"] }
 chrono = "*"
 regex = "*"
 url = "*"
 anyhow = "*"
 futures = "*"
+tokio-util = "0.7.15"
+sanitize-filename = "0.6.0"
+futures-lite = "2.6.0"
+async-compression = "0.4.24"

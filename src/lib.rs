@@ -6,7 +6,6 @@ use log::{debug, warn};
 use models::types::event_table::EventTable;
 use models::types::mention_table::MentionTable;
 use std::fs;
-use std::fs::File;
 
 use anyhow::Context;
 use std::path::PathBuf;
@@ -15,75 +14,72 @@ use anyhow::Result;
 
 pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
     // Set up temporary directories and files
-    let tmp_dir = "./tmp";
-    let zip_path = format!("{tmp_dir}/mention/latest_download.zip");
+    let tmp_dir = "./tmp/mention";
+    let zip_path = format!("{tmp_dir}/latest_download.zip");
     let output_dir = format!("{tmp_dir}/output");
 
     // Create the output directory if it doesn't exist
     fs::create_dir_all(&output_dir)?;
-    fs::create_dir_all(format!("./{tmp_dir}/mention"))?;
-    let csv_files = fs::read_dir(&output_dir)
+
+    // Attempt to find existing CSV files
+    let mut csv_files = fs::read_dir(&output_dir)
         .expect("Failed to read directory")
         .filter_map(|entry| {
-            let entry = entry.ok()?;
-            let path = entry.path();
-            path.clone().extension().and_then(|ext| {
-                if ext.to_str().eq(&Some("csv")) || ext.to_str().eq(&Some("CSV")) {
-                    // Check if the file name contains "mention"
-                    let file_name = path.file_name()?.to_str()?;
-                    if file_name.contains("mentions") {
+            entry.ok().and_then(|e| {
+                let path = e.path();
+                path.clone().extension().and_then(|ext| {
+                    if ext.to_str().eq(&Some("csv")) || ext.to_str().eq(&Some("CSV")) {
                         Some(path)
                     } else {
                         None
                     }
-                } else {
-                    None
-                }
+                })
             })
         })
         .collect::<Vec<PathBuf>>();
 
-    debug!("CSV Files: {csv_files:?}");
-
-    // Find the first CSV file containing 'mentions' in its filename
     let csv_path = csv_files
         .iter()
         .find(|path| {
+            // Check for mention files and exclude others
             path.file_name()
-                .and_then(|name| name.to_str())
-                .map(|s| s.contains("mentions"))
-                .unwrap_or(false)
+                .and_then(|f| f.to_str())
+                .and_then(|s| (s.contains("mentions") && !s.contains("event")).then_some(()))
+                .is_some()
         })
         .cloned();
 
     let csv_path = match csv_path {
         Some(path) => path,
         None => {
-            // Download and unzip the latest data if no valid CSV is found
+            // No valid mention CSV found, proceed to download
             let db = crate::GDELTDatabase::new(data::DatabaseType::Mentions)
-                .expect("Failed to initialize database");
+                .expect("Failed to initialize database for mentions");
             db.download_and_unzip(&zip_path, &output_dir)
                 .await
-                .expect("Failed to download and unzip");
+                .expect("Failed to download and unzip mentions");
 
-            debug!("Database(Mentions): {db:?}");
-
-            // Retrieve the CSV path after download
+            // Locate the newly downloaded CSV file
             fs::read_dir(&output_dir)
-                .expect("Failed to read directory")
+                .expect("Failed to read output directory after download")
                 .filter_map(|entry| {
                     entry.ok().and_then(|e| {
                         let path = e.path();
-                        (path.extension() == Some(std::ffi::OsStr::new("csv"))).then_some(path)
+                        path.clone()
+                            .extension()
+                            .and_then(|ext| (ext == "csv" || ext == "CSV").then_some(path))
                     })
                 })
                 .next()
-                .with_context(|| "No CSV file found after download and unzip")?
+                .with_context(|| "No CSV file found after download")
+                .expect(
+                    "There was an issue over here right here by the mentions with the file reading",
+                )
         }
     };
 
-    // Parse the CSV into MentionTable objects
-    let mut rdr = csv::ReaderBuilder::new()
+    // Validate and parse the CSV
+    let mut rdr = ReaderBuilder::new()
         .delimiter(b'\t')
         .has_headers(false)
         .from_path(&csv_path)?;
@@ -91,16 +87,25 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
     let mut results = Vec::new();
     for result in rdr.records() {
         let record = result?;
+        if record.len() != 16 {
+            warn!(
+                "Skipping mention record with unexpected field count (found {}, expected 16)",
+                record.len()
+            );
+            continue;
+        }
         match MentionTable::try_from(record) {
             Ok(mention) => {
-                // log::debug!("Parsed MentionTable: {:?}", mention);
+                // debug!("Parsed Mention: {:?}", mention);
                 results.push(mention);
             }
-            Err(e) => log::warn!("Failed to parse mention: {}", e),
+            Err(e) => {
+                warn!("Error parsing mention: {}", e);
+            }
         }
     }
 
-    // Clean up: remove CSV and ZIP files
+    // Optional: Remove temporary files
     fs::remove_file(&csv_path)?;
     fs::remove_file(&zip_path)?;
 
@@ -109,72 +114,74 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
 
 pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
     // Set up temporary directories and files
-    let tmp_dir = "./tmp";
-    let zip_path = format!("{tmp_dir}/event/latest_download.zip");
+    let tmp_dir = "./tmp/event";
+    let zip_path = format!("{tmp_dir}/latest_download.zip");
     let output_dir = format!("{tmp_dir}/output");
 
-    // Create the output directory if it doesn't exist
+    // Create directories if they don't exist
     fs::create_dir_all(&output_dir)?;
     fs::create_dir_all(format!("./{tmp_dir}/event"))?;
-    let csv_files = fs::read_dir(&output_dir)
+
+    // Look for existing CSV files
+    let mut csv_files = fs::read_dir(&output_dir)
         .expect("Failed to read directory")
         .filter_map(|entry| {
-            let entry = entry.ok()?;
-            let path = entry.path();
-            path.clone().extension().and_then(|ext| {
-                if ext.to_str().eq(&Some("csv")) || ext.to_str().eq(&Some("CSV")) {
-                    // Check if the file name contains "mention"
-                    let file_name = path.file_name()?.to_str()?;
-                    if file_name.contains("export") {
+            entry.ok().and_then(|e| {
+                let path = e.path();
+                path.clone().extension().and_then(|ext| {
+                    if ext.to_str().eq(&Some("csv")) || ext.to_str().eq(&Some("CSV")) {
                         Some(path)
                     } else {
                         None
                     }
-                } else {
-                    None
-                }
+                })
             })
         })
         .collect::<Vec<PathBuf>>();
-    // Find the first CSV file containing 'events' in its filename
+
     let csv_path = csv_files
         .iter()
         .find(|path| {
-            path.file_name()
-                .and_then(|name| name.to_str())
-                .map(|s| s.contains("export"))
-                .unwrap_or(false)
+            // Ensure it's an event file and not a mention/file
+            let filename = path.file_name();
+            filename
+                .and_then(|f| f.to_str())
+                .and_then(|s| {
+                    (s.contains("export") && !s.contains("gkg") && !s.contains("mentions"))
+                        .then_some(())
+                })
+                .is_some()
         })
         .cloned();
 
     let csv_path = match csv_path {
         Some(path) => path,
         None => {
-            // Download and unzip the latest data if no valid CSV is found
+            // No valid event CSV found; download the latest
             let db = crate::GDELTDatabase::new(data::DatabaseType::Events)
-                .expect("Failed to initialize database");
+                .expect("Failed to initialize database for events");
             db.download_and_unzip(&zip_path, &output_dir)
                 .await
-                .expect("Failed to download and unzip");
+                .expect("Failed to download and unzip events");
 
-            // debug!("Database(Events): {db:?}");
-
-            // Retrieve the CSV path after download
             fs::read_dir(&output_dir)
-                .expect("Failed to read directory")
+                .expect("Failed to read output directory after download")
                 .filter_map(|entry| {
                     entry.ok().and_then(|e| {
                         let path = e.path();
-                        (path.extension() == Some(std::ffi::OsStr::new("csv"))).then_some(path)
+                        path.clone()
+                            .extension()
+                            .and_then(|ext| (ext == "csv" || ext == "CSV").then_some(path))
                     })
                 })
                 .next()
-                .with_context(|| "No CSV file found after download and unzip")?
+                .with_context(|| "No CSV file found after download")
+                .expect("There was an error reading the events over here")
         }
     };
 
-    // Parse the CSV into eventTable objects
-    let mut rdr = csv::ReaderBuilder::new()
+    // Validate and parse the CSV
+    let mut rdr = ReaderBuilder::new()
         .delimiter(b'\t')
         .has_headers(false)
         .from_path(&csv_path)?;
@@ -182,16 +189,25 @@ pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
     let mut results = Vec::new();
     for result in rdr.records() {
         let record = result?;
+        if record.len() != 61 {
+            warn!(
+                "Skipping event record with unexpected field count (found {}, expected 61)",
+                record.len()
+            );
+            continue;
+        }
         match EventTable::try_from(record) {
             Ok(event) => {
-                // log::debug!("Parsed eventTable: {:?}", event);
+                // debug!("Parsed Event: {:?}", event);
                 results.push(event);
             }
-            Err(e) => log::warn!("Failed to parse event: {}", e),
+            Err(e) => {
+                warn!("Error parsing event: {}", e);
+            }
         }
     }
 
-    // Clean up: remove CSV and ZIP files
+    // Optional: Clean up temporary files
     fs::remove_file(&csv_path)?;
     fs::remove_file(&zip_path)?;
 
