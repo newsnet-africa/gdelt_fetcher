@@ -54,6 +54,7 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
         None => {
             // No valid mention CSV found, proceed to download
             let db = crate::GDELTDatabase::new(data::DatabaseType::Mentions)
+                .await
                 .expect("Failed to initialize database for mentions");
             db.download_and_unzip(&zip_path, &output_dir)
                 .await
@@ -159,6 +160,7 @@ pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
         None => {
             // No valid event CSV found; download the latest
             let db = crate::GDELTDatabase::new(data::DatabaseType::Events)
+                .await
                 .expect("Failed to initialize database for events");
             db.download_and_unzip(&zip_path, &output_dir)
                 .await
@@ -233,12 +235,13 @@ mod verbose_tests {
         });
     }
 
-    #[test]
-    fn test_gdelt_database_new_valid_url() {
+    #[tokio::test]
+    async fn test_gdelt_database_new_valid_url() {
         init_logger();
         let url = "http://data.gdeltproject.org/gdeltv2/20211021000000.mentions.CSV.zip";
-        let db =
-            GDELTDatabase::from_url_str(url).expect("Should create GDELTDatabase from valid URL");
+        let db = GDELTDatabase::from_url_str(url)
+            .await
+            .expect("Should create GDELTDatabase from valid URL");
         assert_eq!(
             db.db_type,
             DatabaseType::Mentions,
@@ -256,11 +259,11 @@ mod verbose_tests {
         assert!(db.file.is_none(), "File should be None on creation");
     }
 
-    #[test]
-    fn test_gdelt_database_new_invalid_url() {
+    #[tokio::test]
+    async fn test_gdelt_database_new_invalid_url() {
         init_logger();
         let url = "http://invalid.url";
-        let result = GDELTDatabase::from_url_str(url);
+        let result = GDELTDatabase::from_url_str(url).await;
         assert!(result.is_err(), "Should fail with invalid URL");
     }
 
@@ -294,9 +297,11 @@ mod verbose_tests {
         );
     }
 
-    #[test]
-    fn test_gdelt_database_default() {
-        let db = GDELTDatabase::new(DatabaseType::Mentions).expect("Messuo");
+    #[tokio::test]
+    async fn test_gdelt_database_default() {
+        let db = GDELTDatabase::new(DatabaseType::Mentions)
+            .await
+            .expect("Messuo");
         assert_eq!(
             db.db_type,
             DatabaseType::Mentions,
@@ -308,13 +313,15 @@ mod verbose_tests {
         );
     }
 
-    #[test]
-    fn test_from_date_and_type_valid() {
+    #[tokio::test]
+    async fn test_from_date_and_type_valid() {
         let date = NaiveDate::from_ymd_opt(2023, 3, 22)
             .unwrap()
             .and_hms_opt(18, 0, 0)
             .unwrap();
-        let db = GDELTDatabase::from_date_and_type(date, DatabaseType::Mentions).unwrap();
+        let db = GDELTDatabase::from_date_and_type(date, DatabaseType::Mentions)
+            .await
+            .unwrap();
         assert_eq!(db.db_type, DatabaseType::Mentions);
         assert_eq!(db.date, date);
         assert!(db.link.as_str().contains("20230322180000.mentions.CSV.zip"));
@@ -330,7 +337,7 @@ mod verbose_tests {
     async fn test_download_to_path_and_unzip() {
         init_logger();
         let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.mentions.CSV.zip";
-        let db = GDELTDatabase::from_url_str(url).unwrap();
+        let db = GDELTDatabase::from_url_str(url).await.unwrap();
         let zip_path = "./tmp/test_download.zip";
         let output_dir = "./tmp/test_output";
 
@@ -339,7 +346,7 @@ mod verbose_tests {
         assert!(download_result.is_ok(), "Download should succeed");
 
         // Unzip the file
-        let unzip_result = GDELTDatabase::unzip_single_file(zip_path, output_dir);
+        let unzip_result = GDELTDatabase::unzip_file(zip_path, output_dir).await;
         assert!(unzip_result.is_ok(), "Unzip should succeed");
 
         // Check that the file exists in the output directory
@@ -364,7 +371,9 @@ mod verbose_tests {
     #[tokio::test]
     async fn test_update_latest_sets_fields_and_downloads() {
         init_logger();
-        let mut db = GDELTDatabase::new(DatabaseType::Events).expect("Fuck");
+        let mut db = GDELTDatabase::new(DatabaseType::Events)
+            .await
+            .expect("Fuuuuuuuuck");
         let old_url = db.link.clone();
         tokio::time::sleep(Duration::from_mins(15));
         let result = db.update_latest().await;
@@ -380,7 +389,7 @@ mod verbose_tests {
     async fn test_download_and_unzip_invalid_url() {
         init_logger();
         let url = "http://invalid.url";
-        let db = GDELTDatabase::from_url_str(url);
+        let db = GDELTDatabase::from_url_str(url).await;
         assert!(
             db.is_err(),
             "Should fail to create GDELTDatabase with invalid URL"
@@ -629,19 +638,20 @@ mod tests {
             let _ = env_logger::builder()
                 .is_test(true)
                 .filter_level(log::LevelFilter::Trace)
+                .write_style(env_logger::WriteStyle::Always)
                 .try_init();
         });
     }
 
     fn log_first_ten_fields<T: std::fmt::Debug>(label: &str, items: &[T]) {
-        init_logger();
-        for (i, item) in items.iter().enumerate() {
-            log::info!("{} {}: {:?}", label, i, item);
+        for (i, item) in items.iter().take(10).enumerate() {
+            log::info!("{} {}: {:?}\n\n", label, i, item);
         }
     }
 
     #[tokio::test]
     async fn test_fetch_and_parse_events() -> anyhow::Result<()> {
+        init_logger();
         let events = fetch_and_parse_events().await?;
 
         // Log the first ten fields of every created EventTable
@@ -654,6 +664,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_fetch_and_parse_mentions() -> anyhow::Result<()> {
+        init_logger();
         // Call fetch_and_parse_mentions
         let mentions = fetch_and_parse_mentions().await?;
 
