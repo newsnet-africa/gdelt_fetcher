@@ -1,4 +1,5 @@
 #![feature(duration_constructors)]
+#![feature(duration_constructors_lite)]
 
 use csv::ReaderBuilder;
 use data::GDELTDatabase;
