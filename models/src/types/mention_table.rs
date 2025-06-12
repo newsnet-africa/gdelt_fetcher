@@ -1,4 +1,4 @@
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use chrono::{DateTime, TimeZone, Utc};
 
 use super::{DatabaseTable, event_table::GlobalEventID, lookup_types::mention_type::MentionType};
 

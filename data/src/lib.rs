@@ -17,6 +17,7 @@ use utils::{extract_date, extract_db_type};
 
 pub mod utils;
 
+#[derive(Debug)]
 pub struct GDELTDatabase {
     pub link: reqwest::Url,
     pub date: NaiveDateTime,
@@ -276,6 +277,8 @@ impl GDELTDatabase {
 
 #[cfg(test)]
 mod tests {
+    use log::debug;
+
     use super::*;
     use std::sync::Once;
 
@@ -286,6 +289,7 @@ mod tests {
             let _ = env_logger::builder()
                 .is_test(true)
                 .filter_level(log::LevelFilter::Trace)
+                .write_style(env_logger::WriteStyle::Always)
                 .try_init();
         });
     }
@@ -293,10 +297,16 @@ mod tests {
     #[tokio::test]
     async fn test_gdelt_database_new() {
         init_logger();
-        let db = GDELTDatabase::new(DatabaseType::Events).await.unwrap();
-        assert_eq!(db.db_type, DatabaseType::Events);
+        let db_event = GDELTDatabase::new(DatabaseType::Events).await.unwrap();
+        let db_mention = GDELTDatabase::new(DatabaseType::Mentions).await.unwrap();
+        let db_gkg = GDELTDatabase::new(DatabaseType::GlobalKnowledgeGraph)
+            .await
+            .unwrap();
+        assert_eq!(db_event.db_type, DatabaseType::Events);
+        assert_eq!(db_mention.db_type, DatabaseType::Mentions);
+        assert_eq!(db_gkg.db_type, DatabaseType::GlobalKnowledgeGraph);
         assert!(
-            db.link.as_str().contains("gdeltv2"),
+            db_event.link.as_str().contains("gdeltv2"),
             "URL should contain 'gdeltv2'"
         );
     }
@@ -311,24 +321,58 @@ mod tests {
     #[tokio::test]
     async fn test_download_to_path() -> Result<()> {
         init_logger();
-        let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
-        let db = GDELTDatabase::from_url_str(url).await.unwrap();
-        let download_path = "./tmp/test.csv.zip";
-        db.download_to_path(download_path).await?;
-        assert!(Path::new(download_path).exists());
+        let url_event = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
+        let url_gkg = "http://data.gdeltproject.org/gdeltv2/20250322180000.gkg.csv.zip";
+        let url_mention = "http://data.gdeltproject.org/gdeltv2/20250322180000.mention.CSV.zip";
+        let db_event = GDELTDatabase::from_url_str(url_event).await?;
+        let db_mention = GDELTDatabase::from_url_str(url_mention).await?;
+        let db_gkg = GDELTDatabase::from_url_str(url_gkg).await?;
+        debug!("Event: {db_event:?}");
+        debug!("Mention: {db_mention:?}");
+        debug!("GKG: {db_gkg:?}");
+        let gkg_download_path = "./tmp/test/test_download_to_path/test_gkg.csv.zip";
+        let mention_download_path = "./tmp/test/test_download_to_path/test_mention.csv.zip";
+        let event_download_path = "./tmp/test/test_download_to_path/test_event.csv.zip";
+        db_event.download_to_path(url_event).await?;
+        db_mention.download_to_path(url_mention).await?;
+        db_gkg.download_to_path(url_gkg).await?;
+        assert!(Path::new(event_download_path).exists());
+        assert!(Path::new(mention_download_path).exists());
+        assert!(Path::new(gkg_download_path).exists());
         Ok(())
     }
 
     #[tokio::test]
     async fn test_download_and_unzip() -> Result<()> {
         init_logger();
-        let url = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
-        let db = GDELTDatabase::from_url_str(url).await.unwrap();
-        let download_path = "./tmp/output/test.csv.zip";
-        let output_dir = "./tmp/output";
-        db.download_and_unzip(download_path, output_dir).await?;
-        let output_path = Path::new(output_dir).join("export.CSV");
-        assert!(output_path.exists());
+        let url_event = "http://data.gdeltproject.org/gdeltv2/20250322180000.export.CSV.zip";
+        let url_gkg = "http://data.gdeltproject.org/gdeltv2/20250322180000.gkg.csv.zip";
+        let url_mention = "http://data.gdeltproject.org/gdeltv2/20250322180000.mention.CSV.zip";
+        let db_event = GDELTDatabase::from_url_str(url_event).await.unwrap();
+        let db_mention = GDELTDatabase::from_url_str(url_mention).await.unwrap();
+        let db_gkg = GDELTDatabase::from_url_str(url_gkg).await.unwrap();
+        debug!("Event: {db_event:?}");
+        debug!("Mention: {db_mention:?}");
+        debug!("GKG: {db_gkg:?}");
+        let gkg_download_path = "./tmp/test/test_download_and_unzip/test_gkg.csv.zip";
+        let mention_download_path = "./tmp/test/test_download_and_unzip/test_mention.csv.zip";
+        let event_download_path = "./tmp/test/test_download_and_unzip/test_event.csv.zip";
+        let output_dir = "./tmp/test_download_and_unzip/";
+        db_event
+            .download_and_unzip(gkg_download_path, output_dir)
+            .await?;
+        db_mention
+            .download_and_unzip(mention_download_path, output_dir)
+            .await?;
+        db_gkg
+            .download_and_unzip(event_download_path, output_dir)
+            .await?;
+        let event_output_path = Path::new(output_dir).join("export.CSV");
+        let gkg_output_path = Path::new(output_dir).join("mention.CSV");
+        let mention_output_path = Path::new(output_dir).join("gkg.csv");
+        assert!(event_output_path.exists());
+        assert!(gkg_output_path.exists());
+        assert!(mention_output_path.exists());
         Ok(())
     }
 

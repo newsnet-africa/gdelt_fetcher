@@ -1,3 +1,4 @@
+pub mod actor_type;
 pub mod country;
 pub mod ethnicity;
 pub mod event_action_description;
@@ -7,3 +8,4 @@ pub mod mention_type;
 pub mod quad_class;
 pub mod religion;
 pub mod role;
+pub mod social_embeds;
