@@ -1,3 +1,19 @@
+// General TODO:
+// 1. Write and test data fetching for the GKG tables. (I don't assume that this will be more complicated than the existing implementations, but still a chore)
+// 2. Tests for this specific crate (the data crate) are failing. (I think it's just not parsing the URL properly idk)
+// 3. Adjust the implementation to extract links from the http://data.gdeltproject.org/gdeltv2/lastupdate.txt link or the http://data.gdeltproject.org/gdeltv2/masterfilelist.txt link
+//    instead of building the link blindly. This can let us use the checksums to verify the data.
+// 4. Commenting everything.
+// 5. Add implementations for Non CSV fetches. As far as I know, the only CSV pulls are for Events, Mentions and GKGs.
+//    a. Some come as RSS feeds, which is great cause it's standardised
+// 6. Organise these functions so that different data pulls are possible.
+// 7. Manage the pulling of data from the network, (Although this is super low priority cause I think when the P2P database is self-managing, but just in case)
+// 8. Set up the boilerplate for other types of data fetches that could be useful. The basics would include:
+//    a. Adding a more general function (probably a macro honestly) to pull data from *any* source and save it anywhere.
+//    b. Actually managing the temp data storage locations
+// 9. CUSTOM ERROR TYPES. anyhow is great but it's probably a good idea to have an exhaustive list of errors so that we can standardise error handling and prevent unpleasant surprises
+// 10. Remove as many ".expect("Blah")" as possible for similar reasons to 9. I hate Null pointer and random panics. Most should be recoverable anyways, I was either lazy or incapable of gracefully handling panics
+
 use anyhow::anyhow;
 use std::path::{Path, PathBuf};
 use tokio_util::compat::TokioAsyncReadCompatExt;
@@ -17,14 +33,16 @@ use utils::{extract_date, extract_db_type};
 
 pub mod utils;
 
+//TODO: Move this out of here into a module of its own so taht non GDELT data can be pulled
 #[derive(Debug)]
 pub struct GDELTDatabase {
     pub link: reqwest::Url,
-    pub date: NaiveDateTime,
+    pub date: NaiveDateTime, //TODO: Update to latest fetch so that we can track how old the data is
     pub file: Option<File>,
     pub db_type: DatabaseType,
 }
 
+//TODO: Extend this enum for all the possible GDELT Data tables that we could pull.
 #[derive(Debug, PartialEq, Clone)]
 pub enum DatabaseType {
     Events,

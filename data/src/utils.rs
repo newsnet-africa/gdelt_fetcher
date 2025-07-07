@@ -1,3 +1,13 @@
+// 1. Add a sanitisation function:
+//    a. This means preventing arbitrary URL injections into the string by either doing the URL think mentioned in ./lib.rs or some other method
+//    b. Also add field validators (Make sure that all possible links can exist; Check the earliest date possbile, check for duplicate links in the downloads folder etc.)
+// 2. Probably some shit regarding the compartmentalising of these functions. There is a way to do this gracefully that I can't properly explain here,
+//    but everything should be it's own function for:
+//    a. Reusability reasons
+//    b. Readability reasons. So much easier than commenting everytime
+//    c. Compilation reasons. Functions compile much easier when logic is grouped.
+// 3. Clean up the testing and add some more exhaustive testing.
+
 use anyhow::{Error, Result};
 use chrono::NaiveDateTime;
 use log::info;
