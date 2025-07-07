@@ -1,6 +1,11 @@
 #![feature(duration_constructors)]
 #![feature(duration_constructors_lite)]
 
+//TODO: Defs clean this up:
+// 1. Smaller functions
+// 2. So much logic is rewritten and can be encapsulated (like the file finding and cleanup and other shit). do that
+// 3. Most stuff about TODOing is in the submodules `data` (../data) and `models` (../models)
+
 use csv::ReaderBuilder;
 use data::GDELTDatabase;
 use log::{debug, warn};
