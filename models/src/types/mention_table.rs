@@ -262,12 +262,48 @@ mod tests {
     use super::*;
     use csv::StringRecord;
 
+    fn init_logger() {
+        static INIT: std::sync::Once = std::sync::Once::new();
+        INIT.call_once(|| {
+            let _ = env_logger::try_init();
+        });
+    }
+
     fn make_record(input: &str) -> StringRecord {
         StringRecord::from(input.split('\t').collect::<Vec<_>>())
     }
 
     #[test]
+    fn test_debug_mention_table_data_structure() {
+        init_logger();
+
+        println!("=== MentionTable Debug Test ===");
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+
+        println!("Total fields: {}", record.len());
+        println!("First 10 fields:");
+        for (i, field) in record.iter().take(10).enumerate() {
+            println!("  Field {}: '{}'", i, field);
+        }
+
+        // Test parsing
+        match MentionTable::try_from(record) {
+            Ok(mention) => {
+                println!("✅ Parsing successful!");
+                println!("Global Event ID: {}", mention.global_event_id.0);
+                println!("Source Name: {}", mention.mention_source_name.0);
+                println!("Confidence: {}", mention.confidence.0);
+            }
+            Err(e) => {
+                println!("❌ Parsing failed: {}", e);
+            }
+        }
+    }
+
+    #[test]
     fn test_mention_table_try_from_valid_input() {
+        init_logger();
         let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
@@ -282,6 +318,7 @@ mod tests {
 
     #[test]
     fn test_mention_table_try_from_invalid_input_length() {
+        init_logger();
         let input = "1233696063\t20250322164500\t20250322180000";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
@@ -293,6 +330,7 @@ mod tests {
 
     #[test]
     fn test_mention_table_try_from_invalid_global_event_id() {
+        init_logger();
         let input = "invalid_id\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
@@ -304,6 +342,7 @@ mod tests {
 
     #[test]
     fn test_mention_table_try_from_invalid_mention_type_code() {
+        init_logger();
         let input = "1233696063\t20250322164500\t20250322180000\t999\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
@@ -315,12 +354,244 @@ mod tests {
 
     #[test]
     fn test_mention_table_try_from_invalid_source_language_code() {
+        init_logger();
         let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tEN\tEngineName";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
         assert!(
             mention_table_result.is_err(),
             "Should fail due to invalid SourceLanguageCode"
+        );
+    }
+
+    #[test]
+    fn test_mention_table_try_from_wrong_field_count() {
+        init_logger();
+        // Test with too few fields
+        let record = make_record("field1\tfield2\tfield3");
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with wrong field count");
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("Expected 16 fields")
+        );
+
+        // Test with too many fields
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName\textra_field";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with too many fields");
+    }
+
+    #[test]
+    fn test_mention_table_try_from_invalid_dates() {
+        init_logger();
+        let input = "1233696063\tinvalid_date\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with invalid event date");
+
+        let input = "1233696063\t20250322164500\tinvalid_mention_date\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with invalid mention date");
+    }
+
+    #[test]
+    fn test_mention_table_try_from_invalid_numeric_fields() {
+        init_logger();
+        // Invalid sentence ID
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\tnot_number\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with invalid sentence ID");
+
+        // Invalid confidence
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\tnot_number\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with invalid confidence");
+    }
+
+    #[test]
+    fn test_mention_table_try_from_invalid_url() {
+        init_logger();
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\tinvalid_url\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Should fail with invalid URL");
+    }
+
+    #[test]
+    fn test_mention_table_mock_data_parsing() {
+        init_logger();
+        let input1 = "1000000001\t20250322164500\t20250322180000\t1\texample.com\thttps://example.com/article1\t1\t100\t200\t300\t1\t50\t1000\t5\tENG\tTestEngine";
+        let record1 = make_record(input1);
+        let result1 = MentionTable::try_from(record1);
+        assert!(
+            result1.is_ok(),
+            "First mock record should parse successfully"
+        );
+        let mention1 = result1.unwrap();
+        assert_eq!(mention1.global_event_id.0, 1000000001);
+        assert_eq!(mention1.mention_source_name.0, "example.com");
+        assert_eq!(mention1.confidence.0, 5);
+
+        let input2 = "1000000002\t20250322164600\t20250322180100\t2\ttest.org\thttps://test.org/article2\t2\t-1\t-1\t-1\t0\t25\t500\t200\tSPA\tAnotherEngine";
+        let record2 = make_record(input2);
+        let result2 = MentionTable::try_from(record2);
+        assert!(
+            result2.is_ok(),
+            "Second mock record should parse successfully"
+        );
+        let mention2 = result2.unwrap();
+        assert_eq!(mention2.global_event_id.0, 1000000002);
+        assert_eq!(mention2.confidence.0, 200);
+    }
+
+    #[test]
+    fn test_mention_table_edge_cases() {
+        init_logger();
+        // Test with minimum values
+        let input = "0\t20250101000000\t20250101000000\t1\tm\thttps://m.co\t0\t-1\t-1\t-1\t0\t0\t0\t0\tENG\tE";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_ok(), "Minimum values should parse successfully");
+        let mention = result.unwrap();
+        assert_eq!(mention.global_event_id.0, 0);
+        assert_eq!(mention.confidence.0, 0);
+
+        // Test with maximum reasonable values
+        let input = "999999999999\t20251231235959\t20251231235959\t8\tveryverylongsourcename.verylongdomain.com\thttps://verylongurlname.verylongdomain.com/very/long/path/to/article\t999999\t99999\t99999\t99999\t1\t999999\t999999\t255\tENG\tVeryLongEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_ok(), "Maximum values should parse successfully");
+        let mention = result.unwrap();
+        assert_eq!(mention.global_event_id.0, 999999999999);
+        assert_eq!(mention.confidence.0, 255);
+    }
+
+    #[test]
+    fn test_mention_table_unicode_handling() {
+        init_logger();
+        let input = "1233696063\t20250322164500\t20250322180000\t1\t测试新闻.com\thttps://测试新闻.com/文章/新闻\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tZHO\t中文引擎";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_ok(), "Unicode content should parse successfully");
+        let mention = result.unwrap();
+        assert_eq!(mention.mention_source_name.0, "测试新闻.com");
+    }
+
+    #[test]
+    fn test_mention_table_optional_char_offsets() {
+        init_logger();
+        // Test with -1 values (indicating missing offsets)
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t-1\t-1\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(
+            result.is_ok(),
+            "Missing char offsets should parse successfully"
+        );
+        let mention = result.unwrap();
+        assert!(mention.actor_1_char_offset.is_none());
+        assert!(mention.actor_2_char_offset.is_none());
+        assert!(mention.action_char_offset.is_none());
+
+        // Test with valid positive offsets
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t100\t200\t300\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(
+            result.is_ok(),
+            "Valid char offsets should parse successfully"
+        );
+        let mention = result.unwrap();
+        assert!(mention.actor_1_char_offset.is_some());
+        assert!(mention.actor_2_char_offset.is_some());
+        assert!(mention.action_char_offset.is_some());
+        assert_eq!(mention.actor_1_char_offset.unwrap().0, 100);
+    }
+
+    #[test]
+    fn test_mention_table_different_mention_types() {
+        init_logger();
+        // Test all valid mention type codes (1-8)
+        for mention_type in 1u8..=8u8 {
+            let input = format!(
+                "1233696063\t20250322164500\t20250322180000\t{}\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName",
+                mention_type
+            );
+            let record = make_record(&input);
+            let result = MentionTable::try_from(record);
+            assert!(
+                result.is_ok(),
+                "Mention type {} should parse successfully",
+                mention_type
+            );
+        }
+
+        // Test invalid mention type
+        let input = "1233696063\t20250322164500\t20250322180000\t99\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Invalid mention type should fail");
+    }
+
+    #[test]
+    fn test_mention_table_language_codes() {
+        init_logger();
+        // Test various language codes
+        let languages = vec![
+            "ENG", "SPA", "FRA", "DEU", "ITA", "POR", "RUS", "ZHO", "JPN", "ARA",
+        ];
+
+        for lang in languages {
+            let input = format!(
+                "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\t{}\tEngineName",
+                lang
+            );
+            let record = make_record(&input);
+            let result = MentionTable::try_from(record);
+            assert!(
+                result.is_ok(),
+                "Language code {} should parse successfully",
+                lang
+            );
+        }
+
+        // Test invalid language code (wrong length)
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tEN\tEngineName";
+        let record = make_record(input);
+        let result = MentionTable::try_from(record);
+        assert!(result.is_err(), "Invalid language code should fail");
+    }
+
+    #[test]
+    fn test_mention_table_performance_simulation() {
+        init_logger();
+        // Simulate parsing multiple records
+        let mut successful_parses = 0;
+        for i in 0..100 {
+            let input = format!(
+                "{}\t20250322164500\t20250322180000\t1\texample{}.com\thttps://example{}.com/article\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngine{}",
+                1000000000 + i,
+                i,
+                i,
+                i
+            );
+            let record = make_record(&input);
+            let result = MentionTable::try_from(record);
+            if result.is_ok() {
+                successful_parses += 1;
+            }
+        }
+
+        assert_eq!(
+            successful_parses, 100,
+            "All 100 simulated records should parse successfully"
         );
     }
 }

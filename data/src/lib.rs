@@ -134,8 +134,13 @@ impl GDELTDatabase {
             DatabaseType::Mentions => "mentions",
         };
 
+        let csv_str = match db_type {
+            DatabaseType::GlobalKnowledgeGraph => "csv",
+            _ => "CSV",
+        };
+
         let url = format!(
-            "http://data.gdeltproject.org/gdeltv2/{date}.{db_type}.CSV.zip",
+            "http://data.gdeltproject.org/gdeltv2/{date}.{db_type}.{csv_str}.zip",
             date = date.format("%Y%m%d%H%M%S"),
             db_type = db_type_str
         );
