@@ -1,4 +1,5 @@
 use chrono::{DateTime, TimeZone, Utc};
+use std::fmt;
 
 use super::{DatabaseTable, event_table::GlobalEventID, lookup_types::mention_type::MentionType};
 
@@ -203,6 +204,49 @@ pub struct MentionTable {
     pub extras: String,
 }
 
+impl fmt::Display for MentionTable {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "Mention for Event #{}", self.global_event_id.0)?;
+        writeln!(f, "  Event Date: {}", self.event_date)?;
+        writeln!(f, "  Mention Date: {}", self.mention_date)?;
+        writeln!(f, "  Mention Type: {:?}", self.mention_type)?;
+        writeln!(f, "  Source Name: {:?}", self.mention_source_name)?;
+        writeln!(f, "  Sentence ID: {}", self.sentence_id.0)?;
+
+        if let Some(ref offset) = self.actor_1_char_offset {
+            writeln!(f, "  Actor 1 Character Offset: {}", offset.0)?;
+        }
+
+        if let Some(ref offset) = self.actor_2_char_offset {
+            writeln!(f, "  Actor 2 Character Offset: {}", offset.0)?;
+        }
+
+        if let Some(ref offset) = self.action_char_offset {
+            writeln!(f, "  Action Character Offset: {}", offset.0)?;
+        }
+
+        writeln!(f, "  In Raw Text: {}", self.in_raw_text.0)?;
+        writeln!(f, "  Confidence: {}", self.confidence.0)?;
+        writeln!(f, "  Document Length: {}", self.mention_doc_len.0)?;
+        writeln!(f, "  Document Tone: {}", self.mention_doc_tone.0)?;
+
+        let (source_lang, engine) = &self.mention_doc_translation_info;
+        if source_lang.is_some() || engine.is_some() {
+            writeln!(
+                f,
+                "  Translation: Source={:?}, Engine={:?}",
+                source_lang, engine
+            )?;
+        }
+
+        if !self.extras.is_empty() {
+            writeln!(f, "  Extras: {}", self.extras)?;
+        }
+
+        Ok(())
+    }
+}
+
 impl DatabaseTable for MentionTable {}
 
 impl TryFrom<csv::StringRecord> for MentionTable {
@@ -230,6 +274,35 @@ impl TryFrom<csv::StringRecord> for MentionTable {
                 .map_err(|e| anyhow::anyhow!("Invalid datetime: {}", e))
         }
 
+        fn parse_translation_info(
+            translation_info: &str,
+        ) -> (Option<SourceLanguageCode>, Option<Engine>) {
+            if translation_info.is_empty() {
+                return (None, None);
+            }
+
+            let mut source_lang = None;
+            let mut engine = None;
+
+            // Parse format like "srclc:fra; eng:Moses 2.1.1 / MosesCore Europarl fr-en / GT-FRA 1.0"
+            for part in translation_info.split(';') {
+                let part = part.trim();
+                if let Some(lang_part) = part.strip_prefix("srclc:") {
+                    let lang_code = lang_part.trim();
+                    if lang_code.len() == 3 {
+                        source_lang = SourceLanguageCode::try_from(Some(lang_code)).ok();
+                    }
+                } else if let Some(eng_part) = part.strip_prefix("eng:") {
+                    let eng_str = eng_part.trim();
+                    if !eng_str.is_empty() {
+                        engine = Engine::try_from(Some(eng_str)).ok();
+                    }
+                }
+            }
+
+            (source_lang, engine)
+        }
+
         let mention_type_code = MentionTypeCode::try_from(Some(fields[3]))?;
         let mention_identifier = MentionIdentifier::try_from(Some(fields[5]))?;
         let mention_type = MentionType::try_from(Some((mention_type_code, mention_identifier)))?;
@@ -248,11 +321,8 @@ impl TryFrom<csv::StringRecord> for MentionTable {
             confidence: Confidence::try_from(Some(fields[11]))?,
             mention_doc_len: MentionDocLength::try_from(Some(fields[12]))?,
             mention_doc_tone: MentionDocTone::try_from(Some(fields[13]))?,
-            mention_doc_translation_info: (
-                SourceLanguageCode::try_from(Some(fields[14])).ok(),
-                Engine::try_from(Some(fields[15])).ok(),
-            ),
-            extras: "".to_string(),
+            mention_doc_translation_info: parse_translation_info(fields[14]),
+            extras: fields[15].to_string(),
         })
     }
 }
@@ -353,14 +423,37 @@ mod tests {
     }
 
     #[test]
-    fn test_mention_table_try_from_invalid_source_language_code() {
+    fn test_mention_table_translation_info_parsing() {
         init_logger();
-        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tEN\tEngineName";
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/news/national/turkey-braces-for-fourth-night-of-protests-as-police-quiz-mayor/article_5cf163b7-4383-5dd1-9343-68d3caf61293.html\t1\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tsrclc:eng; eng:TestEngine\tExtras";
         let record = make_record(input);
         let mention_table_result = MentionTable::try_from(record);
         assert!(
-            mention_table_result.is_err(),
-            "Should fail due to invalid SourceLanguageCode"
+            mention_table_result.is_ok(),
+            "Should parse successfully with proper translation info format"
+        );
+        let mention = mention_table_result.unwrap();
+        assert_eq!(mention.extras, "Extras");
+    }
+
+    #[test]
+    fn test_mention_table_try_from_invalid_source_language_code() {
+        init_logger();
+        // Test with invalid language code (too short)
+        let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t1\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tsrclc:x; eng:TestEngine\tExtras";
+        let record = make_record(input);
+        let mention_table_result = MentionTable::try_from(record);
+        // Should still succeed because invalid language codes are handled gracefully
+        // (they just result in None for the language code)
+        assert!(
+            mention_table_result.is_ok(),
+            "Should handle invalid language codes gracefully"
+        );
+
+        let mention = mention_table_result.unwrap();
+        assert!(
+            mention.mention_doc_translation_info.0.is_none(),
+            "Should have None for invalid language code"
         );
     }
 
@@ -427,7 +520,7 @@ mod tests {
     #[test]
     fn test_mention_table_mock_data_parsing() {
         init_logger();
-        let input1 = "1000000001\t20250322164500\t20250322180000\t1\texample.com\thttps://example.com/article1\t1\t100\t200\t300\t1\t50\t1000\t5\tENG\tTestEngine";
+        let input1 = "1000000001\t20250322164500\t20250322180000\t1\texample.com\thttps://example.com/article1\t1\t100\t200\t300\t1\t5\t1000\t50\tsrclc:eng; eng:TestEngine\tExtras1";
         let record1 = make_record(input1);
         let result1 = MentionTable::try_from(record1);
         assert!(
@@ -438,8 +531,9 @@ mod tests {
         assert_eq!(mention1.global_event_id.0, 1000000001);
         assert_eq!(mention1.mention_source_name.0, "example.com");
         assert_eq!(mention1.confidence.0, 5);
+        assert_eq!(mention1.extras, "Extras1");
 
-        let input2 = "1000000002\t20250322164600\t20250322180100\t2\ttest.org\thttps://test.org/article2\t2\t-1\t-1\t-1\t0\t25\t500\t200\tSPA\tAnotherEngine";
+        let input2 = "1000000002\t20250322164600\t20250322180100\t2\ttest.org\thttps://test.org/article2\t2\t-1\t-1\t-1\t0\t200\t500\t25\tsrclc:spa; eng:AnotherEngine\tExtras2";
         let record2 = make_record(input2);
         let result2 = MentionTable::try_from(record2);
         assert!(
@@ -449,13 +543,15 @@ mod tests {
         let mention2 = result2.unwrap();
         assert_eq!(mention2.global_event_id.0, 1000000002);
         assert_eq!(mention2.confidence.0, 200);
+        assert_eq!(mention2.extras, "Extras2");
     }
 
     #[test]
     fn test_mention_table_edge_cases() {
         init_logger();
         // Test with minimum values
-        let input = "0\t20250101000000\t20250101000000\t1\tm\thttps://m.co\t0\t-1\t-1\t-1\t0\t0\t0\t0\tENG\tE";
+        let input =
+            "0\t20250101000000\t20250101000000\t1\tm\thttps://m.co\t0\t-1\t-1\t-1\t0\t0\t0\t0\t\tE";
         let record = make_record(input);
         let result = MentionTable::try_from(record);
         assert!(result.is_ok(), "Minimum values should parse successfully");
@@ -464,7 +560,7 @@ mod tests {
         assert_eq!(mention.confidence.0, 0);
 
         // Test with maximum reasonable values
-        let input = "999999999999\t20251231235959\t20251231235959\t8\tveryverylongsourcename.verylongdomain.com\thttps://verylongurlname.verylongdomain.com/very/long/path/to/article\t999999\t99999\t99999\t99999\t1\t999999\t999999\t255\tENG\tVeryLongEngineName";
+        let input = "999999999999\t20251231235959\t20251231235959\t6\tveryverylongsourcename.verylongdomain.com\thttps://verylongurlname.verylongdomain.com/very/long/path/to/article\t999999\t99999\t99999\t99999\t1\t255\t999999\t999.999\tsrclc:eng; eng:VeryLongEngineName\tVeryLongExtras";
         let record = make_record(input);
         let result = MentionTable::try_from(record);
         assert!(result.is_ok(), "Maximum values should parse successfully");
@@ -518,10 +614,10 @@ mod tests {
     #[test]
     fn test_mention_table_different_mention_types() {
         init_logger();
-        // Test all valid mention type codes (1-8)
-        for mention_type in 1u8..=8u8 {
+        // Test all valid mention type codes (1-6)
+        for mention_type in 1u8..=6u8 {
             let input = format!(
-                "1233696063\t20250322164500\t20250322180000\t{}\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tENG\tEngineName",
+                "1233696063\t20250322164500\t20250322180000\t{}\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tsrclc:eng; eng:EngineName\tExtras",
                 mention_type
             );
             let record = make_record(&input);
@@ -562,11 +658,19 @@ mod tests {
             );
         }
 
-        // Test invalid language code (wrong length)
+        // Test invalid language code (wrong length) - should parse successfully but with None language code
         let input = "1233696063\t20250322164500\t20250322180000\t1\twyomingnewsnow.tv\thttps://www.wyomingnewsnow.tv/article.html\t8\t-1\t1562\t1620\t0\t20\t3569\t-7.2790294627383\tEN\tEngineName";
         let record = make_record(input);
         let result = MentionTable::try_from(record);
-        assert!(result.is_err(), "Invalid language code should fail");
+        assert!(
+            result.is_ok(),
+            "Should parse successfully even with invalid language code"
+        );
+        let mention = result.unwrap();
+        assert!(
+            mention.mention_doc_translation_info.0.is_none(),
+            "Invalid language code should result in None"
+        );
     }
 
     #[test]

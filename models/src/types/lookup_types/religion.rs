@@ -1,7 +1,7 @@
 use crate::types::event_table::actor::CAMEOReligionCode;
 use anyhow::anyhow;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum Religion {
     Unspecified,
     AfricanDiasporicReligion,
@@ -42,8 +42,8 @@ impl TryFrom<Option<CAMEOReligionCode>> for Religion {
 
     fn try_from(value: Option<CAMEOReligionCode>) -> Result<Self, Self::Error> {
         let value = value.ok_or_else(|| anyhow!("CAMEOReligionCode is None"))?;
-        let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
-        match std::str::from_utf8(&value.0)? {
+
+        match value.0.as_str() {
             "ADR" => Ok(Self::AfricanDiasporicReligion),
             "ALE" => Ok(Self::Alewi),
             "ATH" => Ok(Self::Agnostic),
@@ -99,7 +99,7 @@ mod tests {
         info!("Testing valid CAMEOReligionCode: {:?}", valid_code_str);
         let code = CAMEOReligionCode::try_from(Some(valid_code_str));
         assert!(code.is_ok());
-        assert_eq!(code.unwrap().0, *b"CHR");
+        assert_eq!(code.unwrap().0, "CHR");
     }
 
     #[test]
@@ -116,7 +116,7 @@ mod tests {
     fn test_religion_try_from_valid_codes() {
         // init_logger();
 
-        let valid_code = Some(CAMEOReligionCode(*b"CHR")); // Christianity
+        let valid_code = Some(CAMEOReligionCode("CHR".to_string())); // Christianity
         info!("Testing valid Religion code: {:?}", valid_code);
         let religion = Religion::try_from(valid_code);
         assert!(religion.is_ok());
@@ -127,7 +127,7 @@ mod tests {
     fn test_religion_try_from_invalid_codes() {
         // init_logger();
 
-        let invalid_code = Some(CAMEOReligionCode(*b"XXX")); // Invalid code
+        let invalid_code = Some(CAMEOReligionCode("XXX".to_string())); // Invalid code
         info!("Testing invalid Religion code: {:?}", invalid_code);
         let religion = Religion::try_from(invalid_code);
         assert!(religion.is_err());

@@ -2,7 +2,7 @@ use anyhow::anyhow;
 
 use crate::types::event_table::event_geography::GeographyTypeCode;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum GeographyType {
     Unspecifed,
     Country,

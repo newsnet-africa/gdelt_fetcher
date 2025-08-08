@@ -2,14 +2,14 @@ use anyhow::anyhow;
 
 use crate::types::event_table::event_action::QuadClassCode;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum QuadClass {
     Invalid,
     Cooperation(Manner),
     Conflict(Manner),
 }
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum Manner {
     Verbal,
     Material,

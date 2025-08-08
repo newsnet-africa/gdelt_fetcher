@@ -2,7 +2,7 @@ use anyhow::anyhow;
 
 use crate::types::event_table::actor::CAMEORoleCode;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum ActorRole {
     Unspecified,
     Policeforces,
@@ -51,7 +51,7 @@ impl TryFrom<Option<CAMEORoleCode>> for ActorRole {
 
     fn try_from(value: Option<CAMEORoleCode>) -> anyhow::Result<Self> {
         let value = value.ok_or_else(|| anyhow!("CAMEORoleCode is None"))?;
-        let str_value = std::str::from_utf8(&value.0)?;
+        let str_value = value.0.as_str();
         match str_value {
             "COP" => Ok(Self::Policeforces),
             "GOV" => Ok(Self::Government),
@@ -116,14 +116,14 @@ mod tests {
         info!("Testing valid CAMEORoleCode: {:?}", valid_code_str);
         let code = CAMEORoleCode::try_from(Some(valid_code_str));
         assert!(code.is_ok());
-        assert_eq!(std::str::from_utf8(&code.unwrap().0).unwrap(), "COP");
+        assert_eq!(code.unwrap().0, "COP");
     }
 
     #[test]
     fn test_actor_role_try_from_valid_codes() {
         // init_logger();
 
-        let valid_code = Some(CAMEORoleCode(*b"COP")); // Policeforces
+        let valid_code = Some(CAMEORoleCode("COP".to_string())); // Policeforces
         info!("Testing valid ActorRole: {:?}", valid_code);
         let actor_role = ActorRole::try_from(valid_code);
         assert!(actor_role.is_ok());
@@ -134,7 +134,7 @@ mod tests {
     fn test_actor_role_try_from_invalid_codes() {
         // init_logger();
 
-        let invalid_code = Some(CAMEORoleCode(*b"XXX")); // Invalid code
+        let invalid_code = Some(CAMEORoleCode("XXX".to_string())); // Invalid code
         info!("Testing invalid ActorRole: {:?}", invalid_code);
         let actor_role = ActorRole::try_from(invalid_code);
         assert!(actor_role.is_err());

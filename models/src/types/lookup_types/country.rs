@@ -2,7 +2,7 @@ use anyhow::anyhow;
 
 use crate::types::event_table::{actor::CAMEOCountryCode, event_geography::FIPSCountryCode};
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum CountryZone {
     Unspecified,
     WestBank,
@@ -333,7 +333,7 @@ impl TryFrom<Option<FIPSCountryCode>> for CountryZone {
 
     fn try_from(value: Option<FIPSCountryCode>) -> Result<Self, Self::Error> {
         let value = value.ok_or_else(|| anyhow!("CAMEOCountryCode is None"))?;
-        match std::str::from_utf8(&value.0)? {
+        match value.0.as_str() {
             "AF" => Ok(CountryZone::Afghanistan),
             "AX" => Ok(CountryZone::AkrotiriSovereignBaseArea),
             "AL" => Ok(CountryZone::Albania),
@@ -618,7 +618,7 @@ impl TryFrom<Option<CAMEOCountryCode>> for CountryZone {
 
     fn try_from(value: Option<CAMEOCountryCode>) -> Result<Self, Self::Error> {
         let value = value.ok_or_else(|| anyhow!("CAMEOCountryCode is None"))?;
-        match std::str::from_utf8(&value.0)? {
+        match value.0.as_str() {
             "WSB" => Ok(CountryZone::WestBank),
             "BAG" => Ok(CountryZone::Baghdad),
             "GZS" => Ok(CountryZone::GazaStrip),
@@ -911,7 +911,7 @@ mod tests {
         info!("Testing valid CAMEO country code: {:?}", valid_code);
         let valid_result = CAMEOCountryCode::try_from(Some(valid_code));
         assert!(valid_result.is_ok());
-        assert_eq!(valid_result.unwrap().0, [b'U', b'S', b'A']);
+        assert_eq!(valid_result.unwrap().0, "USA");
 
         info!("Testing invalid CAMEO country code: {:?}", invalid_code);
         let invalid_result = CAMEOCountryCode::try_from(Some(invalid_code));
@@ -938,7 +938,7 @@ mod tests {
         info!("Testing valid FIPS country code: {:?}", valid_code);
         let valid_result = FIPSCountryCode::try_from(Some(valid_code));
         assert!(valid_result.is_ok());
-        assert_eq!(valid_result.unwrap().0, [b'U', b'S']);
+        assert_eq!(valid_result.unwrap().0, "US");
 
         info!("Testing invalid FIPS country code: {:?}", invalid_code);
         let invalid_result = FIPSCountryCode::try_from(Some(invalid_code));

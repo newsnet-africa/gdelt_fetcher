@@ -16,7 +16,7 @@ pub mod top_level_actions {
         PublicStatement, Rejection, Relations, Threat, Yieldable,
     };
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum EventActionDescription {
         Unspecified,
         MakePublicStatement(PublicStatement),
@@ -43,7 +43,7 @@ pub mod top_level_actions {
 }
 
 pub mod subcategories {
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum PublicStatement {
         Unspecified,
         DeclineToComment,
@@ -57,7 +57,7 @@ pub mod subcategories {
         ExpressAccord,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Cooperation {
         Unspecified,
         MaterialCooperation(MaterialCooperation),
@@ -73,7 +73,7 @@ pub mod subcategories {
         Withdraw,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Consultation {
         Unspecified,
         DiscussByTelephone,
@@ -84,7 +84,7 @@ pub mod subcategories {
         EngageInNegotiation,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum DiplomaticCooperation {
         Unspecified,
         PraiseOrEndorse,
@@ -96,7 +96,7 @@ pub mod subcategories {
         SignFormalAgreement,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum MaterialCooperation {
         Unspecified,
         Economic,
@@ -106,7 +106,7 @@ pub mod subcategories {
         Aid(Aid),
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Aid {
         Unspecified,
         Economic,
@@ -116,14 +116,14 @@ pub mod subcategories {
         GrantAsylum,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum ReturnRelease {
         Unspecified,
         Person,
         Property,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Yieldable {
         Unspecified,
         AdministrativeSanctions(AdministrativeSanctions),
@@ -135,7 +135,7 @@ pub mod subcategories {
         DeEscelateMilitaryEngagement(MilitaryEngagement),
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Investigation {
         Unspecified,
         CrimeCorruption,
@@ -146,7 +146,7 @@ pub mod subcategories {
         Aggression,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Disapproval {
         Unspecified,
         CriticiseOrDenounce,
@@ -157,7 +157,7 @@ pub mod subcategories {
         FindGuiltyOrLiable,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Rejection {
         Unspecified,
         Cooperation(Cooperation),
@@ -165,7 +165,7 @@ pub mod subcategories {
         Veto,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum NonForce {
         Unspecified,
         ReduceOrStopAid,
@@ -173,7 +173,7 @@ pub mod subcategories {
         ReduceOrBreakRelations,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Threat {
         Unspecified,
         NonForce(NonForce),
@@ -187,7 +187,7 @@ pub mod subcategories {
         Ultimatum,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum MilitaryForce {
         Unspecified,
         Blockade,
@@ -197,7 +197,7 @@ pub mod subcategories {
         WMD,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum MilitaryEngagement {
         Unspecified,
         DeclareTruceCeasefire,
@@ -206,7 +206,7 @@ pub mod subcategories {
         RetreatSurrender,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Change {
         Unspecified,
         Leadership,
@@ -215,7 +215,7 @@ pub mod subcategories {
         Institution,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Protest {
         Unspecified,
         DemonstrateOrRally(Change),
@@ -225,7 +225,7 @@ pub mod subcategories {
         ViolentRiot(Change),
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum ForcePosture {
         Unspecified,
         IncreasePoliceAlertStatus,
@@ -235,7 +235,7 @@ pub mod subcategories {
         MobilizeOrIncreaseCyberForces,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Relations {
         Unspecified,
         Diplomatic,
@@ -246,7 +246,7 @@ pub mod subcategories {
         ExpelWithdraw(InternationalInvolvement),
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum InternationalInvolvement {
         Unspecified,
         PeaceKeepers,
@@ -254,14 +254,14 @@ pub mod subcategories {
         Aid(Aid),
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum SeizeDamageProperty {
         Unspecified,
         Confiscate,
         Destroy,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Coercion {
         Unspecified,
         WithProperty(SeizeDamageProperty),
@@ -272,7 +272,7 @@ pub mod subcategories {
         CyberneticAttack,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum PhysicalAssault {
         Unspecified,
         Sexual,
@@ -280,7 +280,7 @@ pub mod subcategories {
         Kill,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Bombing {
         Unspecified,
         Suicide,
@@ -289,7 +289,7 @@ pub mod subcategories {
         Location,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Assault {
         Unspecified,
         AbductHijackTakeHostage,
@@ -300,14 +300,14 @@ pub mod subcategories {
         Assasinate,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum ArialWeapons {
         Unspecified,
         PrecisionGuided,
         RemotelyPiloted,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Fight {
         Unspecified,
         ImposeBlockade,
@@ -318,14 +318,14 @@ pub mod subcategories {
         ViolateCeasefire,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum WMD {
         Unspecified,
         ChemicalBiologicalRadiological,
         Nuclear,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum MassViolence {
         Unspecified,
         MassExpulsions,
@@ -334,7 +334,7 @@ pub mod subcategories {
         WeaponsOfMassDistruction(WMD),
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum AdministrativeSanctions {
         Unspecified,
         PoliticalFreedoms,
@@ -343,7 +343,7 @@ pub mod subcategories {
         StateOfEmergencyOrMartialLaw,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub enum PoliticalReform {
         Unspecified,
         Leadership,
@@ -358,7 +358,7 @@ impl TryFrom<Option<CAMEOEventCode>> for EventActionDescription {
 
     fn try_from(value: Option<CAMEOEventCode>) -> Result<Self, Self::Error> {
         let value = value.ok_or_else(|| anyhow!("CAMEOEventCode is None"))?;
-        let str_value = std::str::from_utf8(&value.0).expect("Invalid CAMEO Code format");
+        let str_value = value.0.as_str();
         match &str_value[..2] {
             "01" => match str_value.chars().nth(2) {
                 Some('1') => Ok(EventActionDescription::MakePublicStatement(

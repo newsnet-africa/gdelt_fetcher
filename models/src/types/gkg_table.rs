@@ -1,112 +1,918 @@
+//! GDELT Global Knowledge Graph (GKG) Table structures and parsing
+//!
+//! This module implements the GDELT GKG V2.1 format according to the official codebook.
+//! The GKG format contains enhanced semantic information extracted from news articles.
+
+use anyhow::{Result, anyhow};
 use chrono::{DateTime, TimeZone, Utc};
+use csv::StringRecord;
+
+use std::fmt;
 use url::Url;
 
-use crate::types::{
-    event_table::{actor::ActorName, event_action::Tone, event_geography::EventGeography},
-    lookup_types::{actor_type::ActorType, mention_type::MentionType, social_embeds::SocialEmbed},
-    mention_table::{
-        CharOffset, Engine, MentionIdentifier, MentionSourceName, MentionTypeCode,
-        SourceLanguageCode,
-    },
+use super::event_table::{
+    ADM1Code, ADM2Code, Coordinates, FIPSCountryCode, FeatureID, event_geography::EventGeography,
 };
+use super::lookup_types::country::CountryZone;
+use super::lookup_types::geography_type::GeographyType;
 
-#[derive(Debug)]
+/// Character offset within a document
+#[derive(Debug, Clone, PartialEq)]
+pub struct CharOffset(pub u64);
+
+/// GKG Record ID containing date, sequence, and translation flag
+#[derive(Debug, Clone, PartialEq)]
 pub struct GKGRecordID {
     pub record_date: DateTime<Utc>,
-    pub sequence: u128,
+    pub sequence: u64,
     pub is_translated: bool,
 }
 
-#[derive(Debug)]
-pub struct CategoryTheme(String);
-
-#[derive(Debug)]
-pub struct Count {
-    pub count_type: CategoryTheme,
-    pub count: u128,
-    pub object_type: ActorName,
-    pub location: EventGeography,
+/// Source collection identifier enum matching V2SOURCECOLLECTIONIDENTIFIER
+#[derive(Debug, Clone, PartialEq)]
+pub enum SourceCollectionIdentifier {
+    Web = 1,
+    CitationOnly = 2,
+    Core = 3,
+    DTIC = 4,
+    JSTOR = 5,
+    NonTextualSource = 6,
 }
 
-#[derive(Debug)]
-pub struct PositiveScore(f32);
-#[derive(Debug)]
-pub struct NegativeScore(f32);
-#[derive(Debug)]
-pub struct Polarity(f32);
-#[derive(Debug)]
-pub struct ActivityReferenceDensity(f32);
-#[derive(Debug)]
-pub struct SelfGroupReferenceDensity(f32);
-#[derive(Debug)]
-pub struct WordCount(u128);
+impl TryFrom<u8> for SourceCollectionIdentifier {
+    type Error = anyhow::Error;
 
-#[derive(Debug)]
-pub struct AdvancedTone {
-    pub tone: Tone,
-    pub positive_score: PositiveScore,
-    pub negative_score: NegativeScore,
-    pub polarity: Polarity,
-    pub activity_reference_density: ActivityReferenceDensity,
-    pub selfgroup_reference_density: SelfGroupReferenceDensity,
-    pub word_count: WordCount,
-}
-
-#[derive(Debug)]
-pub struct ImageURL(Url);
-#[derive(Debug)]
-pub struct SocialMediaEmbedUrl(Url);
-
-#[derive(Debug)]
-pub struct Quotation {
-    pub offset: CharOffset,
-    pub length: u128,
-    pub verb: String,
-}
-
-#[derive(Debug)]
-pub struct Amount {
-    amount: u128,
-    object: String,
-    offset: CharOffset,
-}
-
-#[derive(Debug)]
-pub struct GKGTable {
-    pub global_knowledge_graph_id: GKGRecordID,
-    date: DateTime<Utc>,
-    source_identifier_type: MentionType,
-    source_common_name: MentionSourceName,
-    counts: Vec<(Count, CharOffset)>,
-    themes: Vec<(CategoryTheme, CharOffset)>,
-    locations: Vec<(EventGeography, CharOffset)>,
-    persons: Vec<(ActorType, CharOffset)>,
-    organisation: Vec<(ActorType, CharOffset)>,
-    tone: AdvancedTone,
-    enhanced_dates: Vec<(DateTime<Utc>, CharOffset)>,
-    sharing_image: ImageURL,
-    related_images: Vec<ImageURL>,
-    social_media_images: Vec<SocialEmbed>,
-    social_media_videos: Vec<SocialEmbed>,
-    all_names: Vec<ActorType>,
-    mention_doc_translation_info: (Option<SourceLanguageCode>, Option<Engine>),
-}
-
-use anyhow::anyhow;
-use csv::StringRecord;
-use std::convert::TryFrom;
-
-impl GKGTable {
-    pub fn tone(&self) -> &AdvancedTone {
-        &self.tone
+    fn try_from(value: u8) -> Result<Self> {
+        match value {
+            1 => Ok(Self::Web),
+            2 => Ok(Self::CitationOnly),
+            3 => Ok(Self::Core),
+            4 => Ok(Self::DTIC),
+            5 => Ok(Self::JSTOR),
+            6 => Ok(Self::NonTextualSource),
+            _ => Err(anyhow!("Invalid source collection identifier: {}", value)),
+        }
     }
 }
 
-fn parse_f32_or_default(s: &str) -> Result<f32, anyhow::Error> {
-    if s.trim().is_empty() {
+/// Theme with optional character offset
+#[derive(Debug, Clone, PartialEq)]
+pub struct Theme {
+    pub name: String,
+    pub offset: Option<CharOffset>,
+}
+
+/// Count entry from V1COUNTS or V2.1COUNTS
+#[derive(Debug, Clone, PartialEq)]
+pub struct Count {
+    pub count_type: String,
+    pub count: u64,
+    pub object_type: Option<String>,
+    pub location: Option<EventGeography>,
+    pub offset: Option<CharOffset>,
+}
+
+/// Enhanced date with resolution and offset
+#[derive(Debug, Clone, PartialEq)]
+pub struct EnhancedDate {
+    pub resolution: u8, // 1=year, 2=month, 3=day, 4=month-day without year
+    pub month: u8,
+    pub day: u8,
+    pub year: u16,
+    pub offset: CharOffset,
+}
+
+/// V1.5TONE structure
+#[derive(Debug, Clone, PartialEq)]
+pub struct Tone {
+    pub tone: f32,
+    pub positive_score: f32,
+    pub negative_score: f32,
+    pub polarity: f32,
+    pub activity_reference_density: f32,
+    pub selfgroup_reference_density: f32,
+    pub word_count: u64,
+}
+
+/// GCAM (Global Content Analysis Measures) entry
+#[derive(Debug, Clone, PartialEq)]
+pub struct GCAMEntry {
+    pub key: String,
+    pub value: f32,
+}
+
+/// Quotation with metadata
+#[derive(Debug, Clone, PartialEq)]
+pub struct Quotation {
+    pub offset: CharOffset,
+    pub length: u64,
+    pub verb: Option<String>,
+    pub quote: String,
+}
+
+/// Named entity with offset
+#[derive(Debug, Clone, PartialEq)]
+pub struct NamedEntity {
+    pub name: String,
+    pub offset: CharOffset,
+}
+
+/// Amount with object and offset
+#[derive(Debug, Clone, PartialEq)]
+pub struct Amount {
+    pub amount: f64,
+    pub object: Option<String>,
+    pub offset: CharOffset,
+}
+
+/// Translation information
+#[derive(Debug, Clone, PartialEq)]
+pub struct TranslationInfo {
+    pub source_language_code: Option<String>,
+    pub engine: Option<String>,
+}
+
+/// Main GKG Table structure according to V2.1 specification
+#[derive(Debug, Clone, PartialEq)]
+pub struct GKGTable {
+    /// V2GLOBALKNOWLEDGEGRAPHID - Unique identifier for the record
+    pub global_knowledge_graph_id: GKGRecordID,
+
+    /// V2DATE - Publication date of the document
+    pub date: DateTime<Utc>,
+
+    /// V2SOURCECOLLECTIONIDENTIFIER - Type of source (1-6)
+    pub source_collection_identifier: SourceCollectionIdentifier,
+
+    /// V2SOURCECOMMONNAME - Human-friendly source name
+    pub source_common_name: String,
+
+    /// V2DOCUMENTIDENTIFIER - External identifier for the document
+    pub document_identifier: String,
+
+    /// V1COUNTS - Simple counts without offsets
+    pub v1_counts: Vec<Count>,
+
+    /// V2.1COUNTS - Counts with character offsets
+    pub v2_counts: Vec<Count>,
+
+    /// V1THEMES - Simple themes without offsets
+    pub v1_themes: Vec<String>,
+
+    /// V2ENHANCEDTHEMES - Themes with character offsets
+    pub v2_enhanced_themes: Vec<Theme>,
+
+    /// V1LOCATIONS - Simple locations without offsets
+    pub v1_locations: Vec<EventGeography>,
+
+    /// V2ENHANCEDLOCATIONS - Locations with character offsets and ADM2
+    pub v2_enhanced_locations: Vec<(EventGeography, CharOffset)>,
+
+    /// V1PERSONS - Simple person names without offsets
+    pub v1_persons: Vec<String>,
+
+    /// V2ENHANCEDPERSONS - Person names with character offsets
+    pub v2_enhanced_persons: Vec<NamedEntity>,
+
+    /// V1ORGANIZATIONS - Simple organization names without offsets
+    pub v1_organizations: Vec<String>,
+
+    /// V2ENHANCEDORGANIZATIONS - Organization names with character offsets
+    pub v2_enhanced_organizations: Vec<NamedEntity>,
+
+    /// V1.5TONE - Emotional analysis of the document
+    pub tone: Tone,
+
+    /// V2.1ENHANCEDDATES - Date references with offsets
+    pub enhanced_dates: Vec<EnhancedDate>,
+
+    /// V2GCAM - Global Content Analysis Measures
+    pub gcam: Vec<GCAMEntry>,
+
+    /// V2.1SHARINGIMAGE - Sharing image URL
+    pub sharing_image: Option<Url>,
+
+    /// V2.1RELATEDIMAGES - Related image URLs
+    pub related_images: Vec<Url>,
+
+    /// V2.1SOCIALIMAGEEMBEDS - Social media image embed URLs
+    pub social_image_embeds: Vec<Url>,
+
+    /// V2.1SOCIALVIDEOEMBEDS - Social media video embed URLs
+    pub social_video_embeds: Vec<Url>,
+
+    /// V2.1QUOTATIONS - Extracted quotations with metadata
+    pub quotations: Vec<Quotation>,
+
+    /// V2.1ALLNAMES - All proper names with offsets
+    pub all_names: Vec<NamedEntity>,
+
+    /// V2.1AMOUNTS - Numeric amounts with objects and offsets
+    pub amounts: Vec<Amount>,
+
+    /// V2.1TRANSLATIONINFO - Translation provenance information
+    pub translation_info: Option<TranslationInfo>,
+}
+
+impl GKGTable {
+    /// Get the tone analysis
+    pub fn tone(&self) -> &Tone {
+        &self.tone
+    }
+
+    /// Get the publication date
+    pub fn date(&self) -> &DateTime<Utc> {
+        &self.date
+    }
+
+    /// Get the source collection identifier
+    pub fn source_collection_identifier(&self) -> &SourceCollectionIdentifier {
+        &self.source_collection_identifier
+    }
+
+    /// Get the source common name
+    pub fn source_common_name(&self) -> &str {
+        &self.source_common_name
+    }
+
+    /// Get the document identifier
+    pub fn document_identifier(&self) -> &str {
+        &self.document_identifier
+    }
+
+    /// Get V1 counts (simple counts without offsets)
+    pub fn v1_counts(&self) -> &[Count] {
+        &self.v1_counts
+    }
+
+    /// Get V2 counts (counts with character offsets)
+    pub fn v2_counts(&self) -> &[Count] {
+        &self.v2_counts
+    }
+
+    /// Get V1 themes (simple themes without offsets)
+    pub fn v1_themes(&self) -> &[String] {
+        &self.v1_themes
+    }
+
+    /// Get V2 enhanced themes (themes with character offsets)
+    pub fn v2_enhanced_themes(&self) -> &[Theme] {
+        &self.v2_enhanced_themes
+    }
+
+    /// Get V1 locations (simple locations without offsets)
+    pub fn v1_locations(&self) -> &[EventGeography] {
+        &self.v1_locations
+    }
+
+    /// Get V2 enhanced locations (locations with character offsets)
+    pub fn v2_enhanced_locations(&self) -> &[(EventGeography, CharOffset)] {
+        &self.v2_enhanced_locations
+    }
+
+    /// Get V1 persons (simple person names without offsets)
+    pub fn v1_persons(&self) -> &[String] {
+        &self.v1_persons
+    }
+
+    /// Get V2 enhanced persons (person names with character offsets)
+    pub fn v2_enhanced_persons(&self) -> &[NamedEntity] {
+        &self.v2_enhanced_persons
+    }
+
+    /// Get V1 organizations (simple organization names without offsets)
+    pub fn v1_organizations(&self) -> &[String] {
+        &self.v1_organizations
+    }
+
+    /// Get V2 enhanced organizations (organization names with character offsets)
+    pub fn v2_enhanced_organizations(&self) -> &[NamedEntity] {
+        &self.v2_enhanced_organizations
+    }
+
+    /// Get enhanced dates
+    pub fn enhanced_dates(&self) -> &[EnhancedDate] {
+        &self.enhanced_dates
+    }
+
+    /// Get GCAM data
+    pub fn gcam(&self) -> &[GCAMEntry] {
+        &self.gcam
+    }
+
+    /// Get sharing image URL
+    pub fn sharing_image(&self) -> Option<&Url> {
+        self.sharing_image.as_ref()
+    }
+
+    /// Get related images
+    pub fn related_images(&self) -> &[Url] {
+        &self.related_images
+    }
+
+    /// Get social media image embeds
+    pub fn social_image_embeds(&self) -> &[Url] {
+        &self.social_image_embeds
+    }
+
+    /// Get social media video embeds
+    pub fn social_video_embeds(&self) -> &[Url] {
+        &self.social_video_embeds
+    }
+
+    /// Get all quotations
+    pub fn quotations(&self) -> &[Quotation] {
+        &self.quotations
+    }
+
+    /// Get all names
+    pub fn all_names(&self) -> &[NamedEntity] {
+        &self.all_names
+    }
+
+    /// Get amounts
+    pub fn amounts(&self) -> &[Amount] {
+        &self.amounts
+    }
+
+    /// Get translation info
+    pub fn translation_info(&self) -> Option<&TranslationInfo> {
+        self.translation_info.as_ref()
+    }
+}
+
+impl fmt::Display for GKGTable {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "GKG Record #{:?}", self.global_knowledge_graph_id)?;
+        writeln!(f, "  Publication Date: {}", self.date)?;
+        writeln!(
+            f,
+            "  Source Collection: {:?}",
+            self.source_collection_identifier
+        )?;
+        writeln!(f, "  Source Name: {}", self.source_common_name)?;
+        writeln!(f, "  Document ID: {}", self.document_identifier)?;
+
+        // Show counts if available
+        if !self.v1_counts.is_empty() {
+            writeln!(f, "  V1 Counts ({} items):", self.v1_counts.len())?;
+            for count in self.v1_counts.iter().take(3) {
+                writeln!(f, "    - {:?}", count)?;
+            }
+            if self.v1_counts.len() > 3 {
+                writeln!(f, "    ... {} more", self.v1_counts.len() - 3)?;
+            }
+        }
+
+        if !self.v2_counts.is_empty() {
+            writeln!(f, "  V2 Counts ({} items):", self.v2_counts.len())?;
+            for count in self.v2_counts.iter().take(3) {
+                writeln!(f, "    - {:?}", count)?;
+            }
+            if self.v2_counts.len() > 3 {
+                writeln!(f, "    ... {} more", self.v2_counts.len() - 3)?;
+            }
+        }
+
+        // Show themes if available
+        if !self.v1_themes.is_empty() {
+            writeln!(f, "  V1 Themes ({} items):", self.v1_themes.len())?;
+            for theme in self.v1_themes.iter().take(5) {
+                writeln!(f, "    - {}", theme)?;
+            }
+            if self.v1_themes.len() > 5 {
+                writeln!(f, "    ... {} more", self.v1_themes.len() - 5)?;
+            }
+        }
+
+        if !self.v2_enhanced_themes.is_empty() {
+            writeln!(
+                f,
+                "  V2 Enhanced Themes ({} items):",
+                self.v2_enhanced_themes.len()
+            )?;
+            for theme in self.v2_enhanced_themes.iter().take(5) {
+                writeln!(
+                    f,
+                    "    - {} (offset: {})",
+                    theme.name,
+                    theme.offset.as_ref().map_or(0, |o| o.0)
+                )?;
+            }
+            if self.v2_enhanced_themes.len() > 5 {
+                writeln!(f, "    ... {} more", self.v2_enhanced_themes.len() - 5)?;
+            }
+        }
+
+        // Show locations if available
+        if !self.v1_locations.is_empty() {
+            writeln!(f, "  V1 Locations ({} items):", self.v1_locations.len())?;
+            for location in self.v1_locations.iter().take(3) {
+                writeln!(f, "    - {:?}", location)?;
+            }
+            if self.v1_locations.len() > 3 {
+                writeln!(f, "    ... {} more", self.v1_locations.len() - 3)?;
+            }
+        }
+
+        if !self.v2_enhanced_locations.is_empty() {
+            writeln!(
+                f,
+                "  V2 Enhanced Locations ({} items):",
+                self.v2_enhanced_locations.len()
+            )?;
+            for (location, offset) in self.v2_enhanced_locations.iter().take(3) {
+                writeln!(f, "    - {:?} (offset: {})", location, offset.0)?;
+            }
+            if self.v2_enhanced_locations.len() > 3 {
+                writeln!(f, "    ... {} more", self.v2_enhanced_locations.len() - 3)?;
+            }
+        }
+
+        // Show tone
+        writeln!(
+            f,
+            "  Tone: {:.2} (pos: {:.2}, neg: {:.2}, word_count: {})",
+            self.tone.tone,
+            self.tone.positive_score,
+            self.tone.negative_score,
+            self.tone.word_count
+        )?;
+
+        // Show persons if available
+        if !self.v1_persons.is_empty() {
+            writeln!(
+                f,
+                "  V1 Persons ({} items): {}",
+                self.v1_persons.len(),
+                self.v1_persons
+                    .iter()
+                    .take(3)
+                    .cloned()
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            )?;
+        }
+
+        if !self.v2_enhanced_persons.is_empty() {
+            writeln!(
+                f,
+                "  V2 Enhanced Persons ({} items):",
+                self.v2_enhanced_persons.len()
+            )?;
+            for person in self.v2_enhanced_persons.iter().take(3) {
+                writeln!(f, "    - {} (offset: {})", person.name, person.offset.0)?;
+            }
+        }
+
+        // Show organizations if available
+        if !self.v1_organizations.is_empty() {
+            writeln!(
+                f,
+                "  V1 Organizations ({} items): {}",
+                self.v1_organizations.len(),
+                self.v1_organizations
+                    .iter()
+                    .take(3)
+                    .cloned()
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            )?;
+        }
+
+        if !self.v2_enhanced_organizations.is_empty() {
+            writeln!(
+                f,
+                "  V2 Enhanced Organizations ({} items):",
+                self.v2_enhanced_organizations.len()
+            )?;
+            for org in self.v2_enhanced_organizations.iter().take(3) {
+                writeln!(f, "    - {} (offset: {})", org.name, org.offset.0)?;
+            }
+        }
+
+        // Show GCAM info if available
+        if !self.gcam.is_empty() {
+            writeln!(f, "  GCAM Measures ({} entries)", self.gcam.len())?;
+        }
+
+        // Show sharing image
+        if let Some(ref image) = self.sharing_image {
+            writeln!(f, "  Sharing Image: {}", image)?;
+        }
+
+        // Show other media
+        if !self.related_images.is_empty() {
+            writeln!(f, "  Related Images: {} items", self.related_images.len())?;
+        }
+        if !self.social_image_embeds.is_empty() {
+            writeln!(
+                f,
+                "  Social Image Embeds: {} items",
+                self.social_image_embeds.len()
+            )?;
+        }
+        if !self.social_video_embeds.is_empty() {
+            writeln!(
+                f,
+                "  Social Video Embeds: {} items",
+                self.social_video_embeds.len()
+            )?;
+        }
+
+        // Show quotations
+        if !self.quotations.is_empty() {
+            writeln!(f, "  Quotations: {} items", self.quotations.len())?;
+        }
+
+        // Show amounts
+        if !self.amounts.is_empty() {
+            writeln!(f, "  Amounts: {} items", self.amounts.len())?;
+        }
+
+        // Show translation info
+        if let Some(ref translation) = self.translation_info {
+            writeln!(f, "  Translation: {:?}", translation)?;
+        }
+
+        Ok(())
+    }
+}
+
+impl super::DatabaseTable for GKGTable {}
+
+/// Parse floating point with default fallback
+fn parse_f32_or_default(s: &str) -> Result<f32> {
+    if s.is_empty() {
         Ok(0.0)
     } else {
-        s.parse::<f32>().map_err(|e| anyhow!(e))
+        s.parse::<f32>()
+            .map_err(|e| anyhow!("Failed to parse f32: {}", e))
+    }
+}
+
+/// Parse counts from semicolon-delimited format
+fn parse_counts(s: &str, with_offsets: bool) -> Result<Vec<Count>> {
+    if s.is_empty() {
+        return Ok(vec![]);
+    }
+
+    let mut counts = Vec::new();
+    for count_str in s.split(';') {
+        if count_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = count_str.split('#').collect();
+        if parts.len() < 3 {
+            continue; // Skip malformed count entries
+        }
+
+        let count_type = parts[0].to_string();
+        let count = parts[1].parse::<u64>().unwrap_or(0);
+        let object_type = if parts[2].is_empty() {
+            None
+        } else {
+            Some(parts[2].to_string())
+        };
+
+        // Parse location if present (parts 3-9)
+        let location = if parts.len() > 9 {
+            EventGeography::try_from_gkg_parts(&parts[3..]).ok()
+        } else {
+            None
+        };
+
+        // Parse offset if this is V2.1 format and offset is present
+        let offset = if with_offsets && parts.len() > 10 {
+            parts[10].parse::<u64>().ok().map(CharOffset)
+        } else {
+            None
+        };
+
+        counts.push(Count {
+            count_type,
+            count,
+            object_type,
+            location,
+            offset,
+        });
+    }
+
+    Ok(counts)
+}
+
+/// Parse themes from semicolon-delimited format
+fn parse_themes_v1(s: &str) -> Vec<String> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    s.split(';')
+        .filter(|theme| !theme.is_empty())
+        .map(|theme| theme.to_string())
+        .collect()
+}
+
+/// Parse enhanced themes with offsets
+fn parse_themes_v2(s: &str) -> Vec<Theme> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut themes = Vec::new();
+    for theme_str in s.split(';') {
+        if theme_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = theme_str.split(',').collect();
+        if parts.is_empty() {
+            continue;
+        }
+
+        let name = parts[0].to_string();
+        let offset = if parts.len() > 1 {
+            parts[1].parse::<u64>().ok().map(CharOffset)
+        } else {
+            None
+        };
+
+        themes.push(Theme { name, offset });
+    }
+
+    themes
+}
+
+/// Parse persons/organizations with offsets
+fn parse_named_entities(s: &str) -> Vec<NamedEntity> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut entities = Vec::new();
+    for entity_str in s.split(';') {
+        if entity_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = entity_str.split(',').collect();
+        if parts.is_empty() {
+            continue;
+        }
+
+        let name = parts[0].to_string();
+        let offset = if parts.len() > 1 {
+            parts[1].parse::<u64>().unwrap_or(0)
+        } else {
+            0
+        };
+
+        entities.push(NamedEntity {
+            name,
+            offset: CharOffset(offset),
+        });
+    }
+
+    entities
+}
+
+/// Parse simple semicolon-delimited strings
+fn parse_simple_list(s: &str) -> Vec<String> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    s.split(';')
+        .filter(|item| !item.is_empty())
+        .map(|item| item.to_string())
+        .collect()
+}
+
+/// Parse GCAM data
+fn parse_gcam(s: &str) -> Vec<GCAMEntry> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut entries = Vec::new();
+    for entry_str in s.split(',') {
+        if entry_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = entry_str.split(':').collect();
+        if parts.len() != 2 {
+            continue;
+        }
+
+        let key = parts[0].to_string();
+        if let Ok(value) = parts[1].parse::<f32>() {
+            entries.push(GCAMEntry { key, value });
+        }
+    }
+
+    entries
+}
+
+/// Parse URLs from semicolon-delimited format
+fn parse_urls(s: &str) -> Vec<Url> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    s.split(';')
+        .filter(|url_str| !url_str.is_empty())
+        .filter_map(|url_str| Url::parse(url_str).ok())
+        .collect()
+}
+
+/// Parse quotations from pound-delimited format with pipe-separated fields
+fn parse_quotations(s: &str) -> Vec<Quotation> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut quotations = Vec::new();
+    for quote_str in s.split('#') {
+        if quote_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = quote_str.split('|').collect();
+        if parts.len() < 4 {
+            continue; // Need at least offset, length, verb, quote
+        }
+
+        let offset = parts[0].parse::<u64>().unwrap_or(0);
+        let length = parts[1].parse::<u64>().unwrap_or(0);
+        let verb = if parts[2].is_empty() {
+            None
+        } else {
+            Some(parts[2].to_string())
+        };
+        let quote = parts[3].to_string();
+
+        quotations.push(Quotation {
+            offset: CharOffset(offset),
+            length,
+            verb,
+            quote,
+        });
+    }
+
+    quotations
+}
+
+/// Parse amounts from semicolon-delimited format
+fn parse_amounts(s: &str) -> Vec<Amount> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut amounts = Vec::new();
+    for amount_str in s.split(';') {
+        if amount_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = amount_str.split(',').collect();
+        if parts.len() < 3 {
+            continue; // Need at least amount, object, offset
+        }
+
+        let amount = parts[0].parse::<f64>().unwrap_or(0.0);
+        let object = if parts[1].is_empty() {
+            None
+        } else {
+            Some(parts[1].to_string())
+        };
+        let offset = parts[2].parse::<u64>().unwrap_or(0);
+
+        amounts.push(Amount {
+            amount,
+            object,
+            offset: CharOffset(offset),
+        });
+    }
+
+    amounts
+}
+
+/// Parse V1 locations from semicolon-delimited format
+fn parse_locations_v1(s: &str) -> Vec<EventGeography> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut locations = Vec::new();
+    for location_str in s.split(';') {
+        if location_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = location_str.split('#').collect();
+        if parts.len() < 7 {
+            continue; // Need at least 7 parts for V1 format
+        }
+
+        if let Ok(geography) = EventGeography::try_from_gkg_parts(&parts) {
+            locations.push(geography);
+        }
+    }
+
+    locations
+}
+
+/// Parse V2 enhanced locations with character offsets
+fn parse_locations_v2(s: &str) -> Vec<(EventGeography, CharOffset)> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut locations = Vec::new();
+    for location_str in s.split(';') {
+        if location_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = location_str.split('#').collect();
+        if parts.len() < 8 {
+            continue; // Need at least 8 parts for V2 format (includes offset)
+        }
+
+        // Last part is the character offset
+        let offset = parts[parts.len() - 1].parse::<u64>().unwrap_or(0);
+
+        // Parse geography from all parts except the last (offset)
+        let geo_parts = &parts[..parts.len() - 1];
+        if let Ok(geography) = EventGeography::try_from_gkg_parts(geo_parts) {
+            locations.push((geography, CharOffset(offset)));
+        }
+    }
+
+    locations
+}
+
+/// Parse enhanced dates with resolution and offsets
+fn parse_enhanced_dates(s: &str) -> Vec<EnhancedDate> {
+    if s.is_empty() {
+        return vec![];
+    }
+
+    let mut dates = Vec::new();
+    for date_str in s.split(';') {
+        if date_str.is_empty() {
+            continue;
+        }
+
+        let parts: Vec<&str> = date_str.split(',').collect();
+        if parts.len() < 5 {
+            continue; // Need at least resolution, month, day, year, offset
+        }
+
+        let resolution = parts[0].parse::<u8>().unwrap_or(0);
+        let month = parts[1].parse::<u8>().unwrap_or(0);
+        let day = parts[2].parse::<u8>().unwrap_or(0);
+        let year = parts[3].parse::<u16>().unwrap_or(0);
+        let offset = parts[4].parse::<u64>().unwrap_or(0);
+
+        dates.push(EnhancedDate {
+            resolution,
+            month,
+            day,
+            year,
+            offset: CharOffset(offset),
+        });
+    }
+
+    dates
+}
+
+/// Parse translation info from semicolon-delimited format
+fn parse_translation_info(s: &str) -> Option<TranslationInfo> {
+    if s.is_empty() {
+        return None;
+    }
+
+    let mut source_language_code = None;
+    let mut engine = None;
+
+    for part in s.split(';') {
+        if let Some(lang_part) = part.strip_prefix("srclc:") {
+            source_language_code = Some(lang_part.to_string());
+        } else if let Some(eng_part) = part.strip_prefix("eng:") {
+            engine = Some(eng_part.to_string());
+        }
+    }
+
+    if source_language_code.is_some() || engine.is_some() {
+        Some(TranslationInfo {
+            source_language_code,
+            engine,
+        })
+    } else {
+        None
     }
 }
 
@@ -114,16 +920,16 @@ impl TryFrom<StringRecord> for GKGTable {
     type Error = anyhow::Error;
 
     fn try_from(record: StringRecord) -> Result<Self, Self::Error> {
-        // Adjust the number of fields as per the actual GKG file format
-        if record.len() != 27 {
+        // GKG V2.1 format has variable number of fields, but minimum 16 for core data
+        if record.len() < 16 {
             return Err(anyhow!(
-                "Expected 27 fields for GKGTable, got {}",
+                "Expected at least 16 fields for GKGTable V2.1 core data, got {}",
                 record.len()
             ));
         }
         let fields: Vec<&str> = record.iter().collect();
 
-        // Parse compound field 0: "YYYYMMDDHHMMSS-sequence"
+        // Field 0: V2GLOBALKNOWLEDGEGRAPHID (compound: YYYYMMDDHHMMSS-sequence)
         let compound_field_parts: Vec<&str> = fields[0].split('-').collect();
         if compound_field_parts.len() != 2 {
             return Err(anyhow!(
@@ -134,203 +940,213 @@ impl TryFrom<StringRecord> for GKGTable {
         let record_date_str = compound_field_parts[0];
         let sequence_str = compound_field_parts[1];
 
+        // Parse V2SOURCECOLLECTIONIDENTIFIER from field 2
+        let source_collection_identifier = SourceCollectionIdentifier::try_from(
+            fields[2]
+                .parse::<u8>()
+                .map_err(|e| anyhow!("Invalid source collection identifier: {}", e))?,
+        )?;
+
+        // Parse V1.5TONE from field 15 (comma-separated values)
+        let tone = if !fields[15].is_empty() {
+            let tone_parts: Vec<&str> = fields[15].split(',').collect();
+            Tone {
+                tone: tone_parts
+                    .get(0)
+                    .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
+                positive_score: tone_parts
+                    .get(1)
+                    .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
+                negative_score: tone_parts
+                    .get(2)
+                    .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
+                polarity: tone_parts
+                    .get(3)
+                    .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
+                activity_reference_density: tone_parts
+                    .get(4)
+                    .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
+                selfgroup_reference_density: tone_parts
+                    .get(5)
+                    .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
+                word_count: tone_parts
+                    .get(6)
+                    .map_or(0, |s| s.parse::<u64>().unwrap_or(0)),
+            }
+        } else {
+            Tone {
+                tone: 0.0,
+                positive_score: 0.0,
+                negative_score: 0.0,
+                polarity: 0.0,
+                activity_reference_density: 0.0,
+                selfgroup_reference_density: 0.0,
+                word_count: 0,
+            }
+        };
+
         Ok(GKGTable {
             global_knowledge_graph_id: GKGRecordID {
                 record_date: chrono::NaiveDateTime::parse_from_str(record_date_str, "%Y%m%d%H%M%S")
                     .map_err(|e| anyhow!("Invalid record_date: {}", e))
                     .map(|ndt| chrono::Utc.from_utc_datetime(&ndt))?,
-                sequence: sequence_str.parse::<u128>().map_err(|e| anyhow!(e))?,
-                is_translated: match fields[2] {
-                    "1" => true,
-                    "0" => false,
-                    _ => return Err(anyhow!("Invalid is_translated value")),
-                },
+                sequence: sequence_str
+                    .parse::<u64>()
+                    .map_err(|e| anyhow!("Invalid sequence: {}", e))?,
+                is_translated: fields[0].contains("-T"),
             },
+            // Field 1: V2DATE - Publication date
             date: chrono::NaiveDateTime::parse_from_str(fields[1], "%Y%m%d%H%M%S")
                 .map_err(|e| anyhow!("Invalid date: {}", e))
                 .map(|ndt| chrono::Utc.from_utc_datetime(&ndt))?,
-            source_identifier_type: MentionType::try_from(Some((
-                MentionTypeCode::try_from(Some("1"))?, // Fixed value as per actual data
-                MentionIdentifier::try_from(Some(fields[4]))?, // Document URL
-            )))?,
-            source_common_name: MentionSourceName::try_from(Some(fields[3]))?,
-            counts: vec![],       // TODO: parse counts from fields[7]
-            themes: vec![],       // TODO: parse themes from fields[8]
-            locations: vec![],    // TODO: parse locations from fields[9]
-            persons: vec![],      // TODO: parse persons from fields[10]
-            organisation: vec![], // TODO: parse organisation from fields[11]
-            tone: {
-                // Parse comma-separated tone values from field 15
-                let tone_parts: Vec<&str> = fields[15].split(',').collect();
-                AdvancedTone {
-                    tone: Tone::try_from(tone_parts.get(0).copied())?,
-                    positive_score: PositiveScore(
-                        tone_parts
-                            .get(1)
-                            .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
-                    ),
-                    negative_score: NegativeScore(
-                        tone_parts
-                            .get(2)
-                            .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
-                    ),
-                    polarity: Polarity(
-                        tone_parts
-                            .get(3)
-                            .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
-                    ),
-                    activity_reference_density: ActivityReferenceDensity(
-                        tone_parts
-                            .get(4)
-                            .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
-                    ),
-                    selfgroup_reference_density: SelfGroupReferenceDensity(
-                        tone_parts
-                            .get(5)
-                            .map_or(Ok(0.0), |s| parse_f32_or_default(s))?,
-                    ),
-                    word_count: WordCount(
-                        tone_parts
-                            .get(6)
-                            .map_or(0, |s| s.parse::<u128>().unwrap_or(0)),
-                    ),
+
+            // Field 2: V2SOURCECOLLECTIONIDENTIFIER
+            source_collection_identifier,
+
+            // Field 3: V2SOURCECOMMONNAME
+            source_common_name: fields.get(3).map_or("", |s| s).to_string(),
+
+            // Field 4: V2DOCUMENTIDENTIFIER
+            document_identifier: fields.get(4).map_or("", |s| s).to_string(),
+
+            // Field 5: V1COUNTS (semicolon-delimited, pound-separated fields)
+            v1_counts: parse_counts(fields.get(5).map_or("", |s| s), false)?,
+
+            // Field 6: V2.1COUNTS (with character offsets)
+            v2_counts: parse_counts(fields.get(6).map_or("", |s| s), true)?,
+
+            // Field 7: V1THEMES (semicolon-delimited)
+            v1_themes: parse_simple_list(fields.get(7).map_or("", |s| s)),
+
+            // Field 8: V2ENHANCEDTHEMES (with character offsets)
+            v2_enhanced_themes: parse_themes_v2(fields.get(8).map_or("", |s| s)),
+
+            // Field 9: V1LOCATIONS (semicolon-delimited, pound-separated fields)
+            v1_locations: parse_locations_v1(fields.get(9).map_or("", |s| s)),
+
+            // Field 10: V2ENHANCEDLOCATIONS (with character offsets and ADM2)
+            v2_enhanced_locations: parse_locations_v2(fields.get(10).map_or("", |s| s)),
+
+            // Field 11: V1PERSONS (semicolon-delimited)
+            v1_persons: parse_simple_list(fields.get(11).map_or("", |s| s)),
+
+            // Field 12: V2ENHANCEDPERSONS (with character offsets)
+            v2_enhanced_persons: parse_named_entities(fields.get(12).map_or("", |s| s)),
+
+            // Field 13: V1ORGANIZATIONS (semicolon-delimited)
+            v1_organizations: parse_simple_list(fields.get(13).map_or("", |s| s)),
+
+            // Field 14: V2ENHANCEDORGANIZATIONS (with character offsets)
+            v2_enhanced_organizations: parse_named_entities(fields.get(14).map_or("", |s| s)),
+
+            // Field 15: V1.5TONE (already parsed above)
+            tone,
+
+            // Field 16: V2.1ENHANCEDDATES (semicolon-delimited blocks)
+            enhanced_dates: parse_enhanced_dates(fields.get(16).map_or("", |s| s)),
+
+            // Field 17: V2GCAM (comma-delimited blocks with colon key/value pairs)
+            gcam: parse_gcam(fields.get(17).map_or("", |s| s)),
+
+            // Field 18: V2.1SHARINGIMAGE (textual URL)
+            sharing_image: fields
+                .get(18)
+                .and_then(|s| if s.is_empty() { None } else { Some(s) })
+                .and_then(|s| Url::parse(s).ok()),
+
+            // Field 19: V2.1RELATEDIMAGES (semicolon-delimited URLs)
+            related_images: parse_urls(fields.get(19).map_or("", |s| s)),
+
+            // Field 20: V2.1SOCIALIMAGEEMBEDS (semicolon-delimited URLs)
+            social_image_embeds: parse_urls(fields.get(20).map_or("", |s| s)),
+
+            // Field 21: V2.1SOCIALVIDEOEMBEDS (semicolon-delimited URLs)
+            social_video_embeds: parse_urls(fields.get(21).map_or("", |s| s)),
+
+            // Field 22: V2.1QUOTATIONS (pound-delimited blocks with pipe-separated fields)
+            quotations: parse_quotations(fields.get(22).map_or("", |s| s)),
+
+            // Field 23: V2.1ALLNAMES (semicolon-delimited blocks with comma-separated fields)
+            all_names: parse_named_entities(fields.get(23).map_or("", |s| s)),
+
+            // Field 24: V2.1AMOUNTS (semicolon-delimited blocks with comma-separated fields)
+            amounts: parse_amounts(fields.get(24).map_or("", |s| s)),
+
+            // Field 26: V2.1TRANSLATIONINFO (semicolon-delimited fields)
+            translation_info: parse_translation_info(fields.get(26).map_or("", |s| s)),
+        })
+    }
+}
+
+impl EventGeography {
+    /// Parse EventGeography from GKG location parts
+    fn try_from_gkg_parts(parts: &[&str]) -> Result<Self> {
+        if parts.len() < 7 {
+            return Err(anyhow!("Insufficient location parts"));
+        }
+
+        // GKG location format: Type#FullName#CountryCode#ADM1Code#Latitude#Longitude#FeatureID
+        // Enhanced format adds ADM2Code between ADM1Code and Latitude
+
+        let location_type = parts[0].parse::<u8>().unwrap_or(0);
+        let full_name = parts[1].to_string();
+        let country_code = parts[2].to_string();
+        let adm1_code = parts[3].to_string();
+
+        // Check if this is enhanced format with ADM2
+        let (adm2_code, lat_idx, lon_idx, feature_idx) = if parts.len() > 8 {
+            // Enhanced format with ADM2
+            (Some(parts[4].to_string()), 5, 6, 7)
+        } else {
+            // Standard format without ADM2
+            (None, 4, 5, 6)
+        };
+
+        let latitude = parts[lat_idx].parse::<f64>().unwrap_or(0.0);
+        let longitude = parts[lon_idx].parse::<f64>().unwrap_or(0.0);
+        let feature_id = parts.get(feature_idx).unwrap_or(&"").to_string();
+
+        // Parse geo_type from location_type
+        let geo_type = match location_type {
+            1 => Some(GeographyType::Country),
+            2 => Some(GeographyType::State),
+            3 => Some(GeographyType::City),
+            4 => Some(GeographyType::City),
+            5 => Some(GeographyType::State),
+            _ => None,
+        };
+
+        Ok(EventGeography {
+            geo_type,
+            fullname: if full_name.is_empty() {
+                None
+            } else {
+                Some(full_name)
+            },
+            country_code: if country_code.is_empty() {
+                None
+            } else {
+                match CountryZone::try_from(Some(FIPSCountryCode(country_code))) {
+                    Ok(zone) => Some(zone),
+                    Err(_) => None,
                 }
             },
-            enhanced_dates: vec![], // TODO: parse enhanced_dates from fields[19]
-            sharing_image: ImageURL(url::Url::parse("https://example.com").unwrap()), // TODO: parse from fields[20]
-            related_images: vec![], // TODO: parse related_images from fields[21]
-            social_media_images: vec![], // TODO: parse social_media_images from fields[22]
-            social_media_videos: vec![], // TODO: parse social_media_videos from fields[23]
-            all_names: vec![],      // TODO: parse all_names from fields[24]
-            mention_doc_translation_info: (None, None), // TODO: parse translation info from fields[25-26]
+            adm1_code: if adm1_code.is_empty() {
+                None
+            } else {
+                Some(ADM1Code(adm1_code))
+            },
+            adm2_code: adm2_code.map(ADM2Code),
+            coordinates: Some(Coordinates {
+                latitude,
+                longitude,
+            }),
+            feature_id: if feature_id.is_empty() {
+                None
+            } else {
+                Some(FeatureID(feature_id))
+            },
         })
-    }
-}
-
-impl TryFrom<(&str, &str, &str)> for GKGRecordID {
-    type Error = anyhow::Error;
-
-    fn try_from(values: (&str, &str, &str)) -> Result<Self, Self::Error> {
-        let record_date = chrono::NaiveDateTime::parse_from_str(values.0, "%Y%m%d%H%M%S")
-            .map_err(|e| anyhow!("Invalid record_date: {}", e))
-            .map(|ndt| chrono::Utc.from_utc_datetime(&ndt))?;
-        let sequence = values.1.parse::<u128>().map_err(|e| anyhow!(e))?;
-        let is_translated = match values.2 {
-            "1" => true,
-            "0" => false,
-            _ => return Err(anyhow!("Invalid is_translated value")),
-        };
-        Ok(GKGRecordID {
-            record_date,
-            sequence,
-            is_translated,
-        })
-    }
-}
-
-impl PositiveScore {
-    pub fn value(&self) -> f32 {
-        self.0
-    }
-}
-
-impl TryFrom<Option<&str>> for PositiveScore {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => s.parse::<f32>().map(PositiveScore).map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing PositiveScore")),
-        }
-    }
-}
-
-impl NegativeScore {
-    pub fn value(&self) -> f32 {
-        self.0
-    }
-}
-
-impl TryFrom<Option<&str>> for NegativeScore {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => s.parse::<f32>().map(NegativeScore).map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing NegativeScore")),
-        }
-    }
-}
-
-impl Polarity {
-    pub fn value(&self) -> f32 {
-        self.0
-    }
-}
-
-impl TryFrom<Option<&str>> for Polarity {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => s.parse::<f32>().map(Polarity).map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing Polarity")),
-        }
-    }
-}
-
-impl ActivityReferenceDensity {
-    pub fn value(&self) -> f32 {
-        self.0
-    }
-}
-
-impl TryFrom<Option<&str>> for ActivityReferenceDensity {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => s
-                .parse::<f32>()
-                .map(ActivityReferenceDensity)
-                .map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing ActivityReferenceDensity")),
-        }
-    }
-}
-
-impl SelfGroupReferenceDensity {
-    pub fn value(&self) -> f32 {
-        self.0
-    }
-}
-
-impl TryFrom<Option<&str>> for SelfGroupReferenceDensity {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => s
-                .parse::<f32>()
-                .map(SelfGroupReferenceDensity)
-                .map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing SelfGroupReferenceDensity")),
-        }
-    }
-}
-
-impl TryFrom<Option<&str>> for WordCount {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => s.parse::<u128>().map(WordCount).map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing WordCount")),
-        }
-    }
-}
-
-impl TryFrom<Option<&str>> for ImageURL {
-    type Error = anyhow::Error;
-    fn try_from(value: Option<&str>) -> Result<Self, Self::Error> {
-        match value {
-            Some(s) => url::Url::parse(s).map(ImageURL).map_err(|e| anyhow!(e)),
-            None => Err(anyhow!("missing ImageURL")),
-        }
     }
 }
 
@@ -338,7 +1154,6 @@ impl TryFrom<Option<&str>> for ImageURL {
 mod tests {
     use super::*;
     use csv::StringRecord;
-    use log::debug;
 
     fn init_logger() {
         static INIT: std::sync::Once = std::sync::Once::new();
@@ -348,378 +1163,326 @@ mod tests {
     }
 
     #[test]
-    fn test_debug_gkg_data_structure() {
-        init_logger();
-
-        println!("=== GKG Table Debug Test ===");
-        let record = make_valid_gkg_record();
-        println!("Total fields: {}", record.len());
-        println!("First 10 fields:");
-        for (i, field) in record.iter().take(10).enumerate() {
-            println!("  Field {}: '{}'", i, field);
-        }
-
-        // Test parsing
-        match GKGTable::try_from(record) {
-            Ok(gkg) => {
-                println!("✅ Parsing successful!");
-                println!("Record ID: {}", gkg.global_knowledge_graph_id.sequence);
-                println!(
-                    "Is translated: {}",
-                    gkg.global_knowledge_graph_id.is_translated
-                );
-            }
-            Err(e) => {
-                println!("❌ Parsing failed: {}", e);
-            }
-        }
-    }
-
-    fn make_valid_gkg_record() -> StringRecord {
-        let fields = vec![
-            "20250322164500",              // record_date
-            "12345",                       // sequence
-            "0",                           // is_translated
-            "20250322164500",              // date
-            "1",                           // source_identifier_type (mention_type_code)
-            "http://example.com/article1", // source_identifier (mention_identifier)
-            "Example News",                // source_common_name
-            "",                            // counts (empty for now)
-            "",                            // themes (empty for now)
-            "",                            // locations (empty for now)
-            "",                            // persons (empty for now)
-            "",                            // organisation (empty for now)
-            "-2.5",                        // tone
-            "5.2",                         // positive_score
-            "7.8",                         // negative_score
-            "-1.3",                        // polarity
-            "4.1",                         // activity_reference_density
-            "2.9",                         // selfgroup_reference_density
-        ];
-        StringRecord::from(fields)
-    }
-
-    fn make_record_with_fields(fields: Vec<&str>) -> StringRecord {
-        StringRecord::from(fields)
+    fn test_source_collection_identifier_try_from() {
+        assert!(matches!(
+            SourceCollectionIdentifier::try_from(1).unwrap(),
+            SourceCollectionIdentifier::Web
+        ));
+        assert!(matches!(
+            SourceCollectionIdentifier::try_from(2).unwrap(),
+            SourceCollectionIdentifier::CitationOnly
+        ));
+        assert!(matches!(
+            SourceCollectionIdentifier::try_from(3).unwrap(),
+            SourceCollectionIdentifier::Core
+        ));
+        assert!(matches!(
+            SourceCollectionIdentifier::try_from(4).unwrap(),
+            SourceCollectionIdentifier::DTIC
+        ));
+        assert!(matches!(
+            SourceCollectionIdentifier::try_from(5).unwrap(),
+            SourceCollectionIdentifier::JSTOR
+        ));
+        assert!(matches!(
+            SourceCollectionIdentifier::try_from(6).unwrap(),
+            SourceCollectionIdentifier::NonTextualSource
+        ));
+        assert!(SourceCollectionIdentifier::try_from(7).is_err());
     }
 
     #[test]
-    fn test_gkg_table_try_from_valid_record() {
-        init_logger();
-
-        let record = make_valid_gkg_record();
-        let result = GKGTable::try_from(record);
-
-        assert!(result.is_ok(), "Valid GKG record should parse successfully");
-
-        let gkg = result.unwrap();
-        assert_eq!(gkg.global_knowledge_graph_id.sequence, 12345);
-        assert!(!gkg.global_knowledge_graph_id.is_translated);
-        assert_eq!(gkg.tone().positive_score.value(), 5.2);
-        assert_eq!(gkg.tone().negative_score.value(), 7.8);
-        assert_eq!(gkg.tone().polarity.value(), -1.3);
-        assert_eq!(gkg.tone().activity_reference_density.value(), 4.1);
-        assert_eq!(gkg.tone().selfgroup_reference_density.value(), 2.9);
+    fn test_parse_counts_v1() {
+        let counts_str = "KILL#47#jihadists#1#Country#US#US#40#-100#12345";
+        let counts = parse_counts(counts_str, false).unwrap();
+        assert_eq!(counts.len(), 1);
+        assert_eq!(counts[0].count_type, "KILL");
+        assert_eq!(counts[0].count, 47);
+        assert_eq!(counts[0].object_type, Some("jihadists".to_string()));
+        assert!(counts[0].offset.is_none());
     }
 
     #[test]
-    fn test_gkg_table_try_from_wrong_field_count() {
-        init_logger();
-
-        // Test with too few fields
-        let record = make_record_with_fields(vec!["field1", "field2", "field3"]);
-        let result = GKGTable::try_from(record);
-        assert!(result.is_err(), "Should fail with wrong field count");
-        assert!(
-            result
-                .unwrap_err()
-                .to_string()
-                .contains("Expected 18 fields")
-        );
-
-        // Test with too many fields
-        let fields: Vec<&str> = (0..25)
-            .map(|i| match i {
-                0 | 3 => "20250322164500",
-                1 => "12345",
-                2 => "0",
-                4 => "1",
-                5 => "http://example.com",
-                6 => "Example News",
-                12 => "-2.5",
-                13 => "5.2",
-                14 => "7.8",
-                15 => "-1.3",
-                16 => "4.1",
-                17 => "2.9",
-                _ => "",
-            })
-            .collect();
-        let record = make_record_with_fields(fields);
-        let result = GKGTable::try_from(record);
-        assert!(result.is_err(), "Should fail with too many fields");
+    fn test_parse_counts_v2() {
+        let counts_str = "PROTEST#126#protesters#2#State#US#CA#37#-122#67890#150";
+        let counts = parse_counts(counts_str, true).unwrap();
+        assert_eq!(counts.len(), 1);
+        assert_eq!(counts[0].count_type, "PROTEST");
+        assert_eq!(counts[0].count, 126);
+        assert_eq!(counts[0].object_type, Some("protesters".to_string()));
+        assert_eq!(counts[0].offset.as_ref().unwrap().0, 150);
     }
 
     #[test]
-    fn test_gkg_table_try_from_invalid_date() {
-        init_logger();
+    fn test_parse_themes_v1() {
+        let themes_str = "THEME1;THEME2;THEME3";
+        let themes = parse_themes_v1(themes_str);
+        assert_eq!(themes.len(), 3);
+        assert_eq!(themes[0], "THEME1");
+        assert_eq!(themes[1], "THEME2");
+        assert_eq!(themes[2], "THEME3");
+    }
 
-        let fields = vec![
-            "invalid_date", // invalid record_date
-            "12345",
-            "0",
-            "20250322164500",
-            "1",
-            "http://example.com",
-            "Example News",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "-2.5",
-            "5.2",
-            "7.8",
-            "-1.3",
-            "4.1",
-            "2.9",
-        ];
-        let record = make_record_with_fields(fields);
-        let result = GKGTable::try_from(record);
-        assert!(result.is_err(), "Should fail with invalid date");
-        assert!(
-            result
-                .unwrap_err()
-                .to_string()
-                .contains("Invalid record_date")
+    #[test]
+    fn test_parse_themes_v2() {
+        let themes_str = "THEME1,150;THEME2,300;THEME3,450";
+        let themes = parse_themes_v2(themes_str);
+        assert_eq!(themes.len(), 3);
+        assert_eq!(themes[0].name, "THEME1");
+        assert_eq!(themes[0].offset.as_ref().unwrap().0, 150);
+        assert_eq!(themes[1].name, "THEME2");
+        assert_eq!(themes[1].offset.as_ref().unwrap().0, 300);
+    }
+
+    #[test]
+    fn test_parse_named_entities() {
+        let entities_str = "John Smith,100;Jane Doe,200;Bob Johnson,300";
+        let entities = parse_named_entities(entities_str);
+        assert_eq!(entities.len(), 3);
+        assert_eq!(entities[0].name, "John Smith");
+        assert_eq!(entities[0].offset.0, 100);
+        assert_eq!(entities[1].name, "Jane Doe");
+        assert_eq!(entities[1].offset.0, 200);
+    }
+
+    #[test]
+    fn test_parse_gcam() {
+        let gcam_str = "wc:125,c2.21:4,c10.1:40,v10.1:3.21111111";
+        let gcam = parse_gcam(gcam_str);
+        assert_eq!(gcam.len(), 4);
+        assert_eq!(gcam[0].key, "wc");
+        assert_eq!(gcam[0].value, 125.0);
+        assert_eq!(gcam[1].key, "c2.21");
+        assert_eq!(gcam[1].value, 4.0);
+    }
+
+    #[test]
+    fn test_parse_urls() {
+        let urls_str = "https://example.com/image1.jpg;https://example.com/image2.png";
+        let urls = parse_urls(urls_str);
+        assert_eq!(urls.len(), 2);
+        assert_eq!(urls[0].as_str(), "https://example.com/image1.jpg");
+        assert_eq!(urls[1].as_str(), "https://example.com/image2.png");
+    }
+
+    #[test]
+    fn test_parse_quotations() {
+        let quotes_str = "100|50|said|This is a quote#200|30|replied|Another quote";
+        let quotations = parse_quotations(quotes_str);
+        assert_eq!(quotations.len(), 2);
+        assert_eq!(quotations[0].offset.0, 100);
+        assert_eq!(quotations[0].length, 50);
+        assert_eq!(quotations[0].verb, Some("said".to_string()));
+        assert_eq!(quotations[0].quote, "This is a quote");
+    }
+
+    #[test]
+    fn test_parse_amounts() {
+        let amounts_str = "47.5,dollars,100;1000,people,200";
+        let amounts = parse_amounts(amounts_str);
+        assert_eq!(amounts.len(), 2);
+        assert_eq!(amounts[0].amount, 47.5);
+        assert_eq!(amounts[0].object, Some("dollars".to_string()));
+        assert_eq!(amounts[0].offset.0, 100);
+    }
+
+    #[test]
+    fn test_parse_translation_info() {
+        let trans_str = "srclc:fra;eng:Moses 2.1.1 / MosesCore Europarl fr-en / GT-FRA 1.0";
+        let trans_info = parse_translation_info(trans_str).unwrap();
+        assert_eq!(trans_info.source_language_code, Some("fra".to_string()));
+        assert_eq!(
+            trans_info.engine,
+            Some("Moses 2.1.1 / MosesCore Europarl fr-en / GT-FRA 1.0".to_string())
         );
     }
 
     #[test]
-    fn test_gkg_table_try_from_invalid_sequence() {
-        init_logger();
+    fn test_parse_locations_v1() {
+        let locations_str = "1#Australia#AS#AS#-25#135#AS;4#Brisbane, Queensland, Australia#AS#AS04#-27.5#153.017#-1561728";
+        let locations = parse_locations_v1(locations_str);
+        assert_eq!(locations.len(), 2);
 
-        let fields = vec![
-            "20250322164500",
-            "not_a_number", // invalid sequence
-            "0",
-            "20250322164500",
-            "1",
-            "http://example.com",
-            "Example News",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "-2.5",
-            "5.2",
-            "7.8",
-            "-1.3",
-            "4.1",
-            "2.9",
-        ];
-        let record = make_record_with_fields(fields);
-        let result = GKGTable::try_from(record);
-        assert!(result.is_err(), "Should fail with invalid sequence number");
-    }
+        // Check first location (Australia - country level)
+        assert!(matches!(
+            locations[0].geo_type,
+            Some(GeographyType::Country)
+        ));
+        assert_eq!(locations[0].fullname, Some("Australia".to_string()));
+        // Note: country_code is now CountryZone enum, not a string wrapper
+        assert!(locations[0].country_code.is_some());
 
-    #[test]
-    fn test_gkg_table_try_from_invalid_translated_flag() {
-        init_logger();
-
-        let fields = vec![
-            "20250322164500",
-            "12345",
-            "2", // invalid is_translated (should be 0 or 1)
-            "20250322164500",
-            "1",
-            "http://example.com",
-            "Example News",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "-2.5",
-            "5.2",
-            "7.8",
-            "-1.3",
-            "4.1",
-            "2.9",
-        ];
-        let record = make_record_with_fields(fields);
-        let result = GKGTable::try_from(record);
-        assert!(
-            result.is_err(),
-            "Should fail with invalid is_translated value"
-        );
-        assert!(
-            result
-                .unwrap_err()
-                .to_string()
-                .contains("Invalid is_translated value")
+        // Check second location (Brisbane - world city)
+        assert!(matches!(locations[1].geo_type, Some(GeographyType::City)));
+        assert_eq!(
+            locations[1].fullname,
+            Some("Brisbane, Queensland, Australia".to_string())
         );
     }
 
     #[test]
-    fn test_gkg_table_try_from_invalid_numeric_fields() {
-        init_logger();
+    fn test_parse_enhanced_dates() {
+        let dates_str = "3,3,15,2024,150;1,0,0,2023,300";
+        let dates = parse_enhanced_dates(dates_str);
+        assert_eq!(dates.len(), 2);
 
-        let fields = vec![
-            "20250322164500",
-            "12345",
-            "0",
-            "20250322164500",
-            "1",
-            "http://example.com",
-            "Example News",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "not_a_number", // invalid tone
-            "5.2",
-            "7.8",
-            "-1.3",
-            "4.1",
-            "2.9",
-        ];
-        let record = make_record_with_fields(fields);
-        let result = GKGTable::try_from(record);
-        assert!(result.is_err(), "Should fail with invalid tone value");
+        // Check first date (day-level resolution)
+        assert_eq!(dates[0].resolution, 3);
+        assert_eq!(dates[0].month, 3);
+        assert_eq!(dates[0].day, 15);
+        assert_eq!(dates[0].year, 2024);
+        assert_eq!(dates[0].offset.0, 150);
+
+        // Check second date (year-level resolution)
+        assert_eq!(dates[1].resolution, 1);
+        assert_eq!(dates[1].month, 0);
+        assert_eq!(dates[1].day, 0);
+        assert_eq!(dates[1].year, 2023);
+        assert_eq!(dates[1].offset.0, 300);
     }
 
     #[test]
-    fn test_gkg_record_id_try_from_valid() {
+    fn test_parse_locations_v2() {
+        let locations_str = "1#Australian#AS#AS##-25#135#AS#57;4#Brisbane, Queensland, Australia#AS#AS04#154654#-27.5#153.017#-1561728#98";
+        let locations = parse_locations_v2(locations_str);
+        assert_eq!(locations.len(), 2);
+
+        // Check first location with offset
+        assert!(matches!(
+            locations[0].0.geo_type,
+            Some(GeographyType::Country)
+        ));
+        assert_eq!(locations[0].1.0, 57);
+
+        // Check second location with offset
+        assert!(matches!(locations[1].0.geo_type, Some(GeographyType::City)));
+        assert_eq!(locations[1].1.0, 98);
+    }
+
+    #[test]
+    fn test_gkg_table_parsing_with_minimal_fields() {
         init_logger();
 
-        let result = GKGRecordID::try_from(("20250322164500", "12345", "1"));
+        let fields = vec![
+            "20250807220000-0",            // Field 0: compound ID
+            "20250807220000",              // Field 1: date
+            "1",                           // Field 2: source collection identifier
+            "example.com",                 // Field 3: source common name
+            "https://example.com/article", // Field 4: document identifier
+            "",                            // Field 5: V1 counts
+            "",                            // Field 6: V2 counts
+            "THEME1;THEME2",               // Field 7: V1 themes
+            "THEME1,100;THEME2,200",       // Field 8: V2 enhanced themes
+            "",                            // Field 9: V1 locations
+            "",                            // Field 10: V2 enhanced locations
+            "john smith;jane doe",         // Field 11: V1 persons
+            "John Smith,150;Jane Doe,250", // Field 12: V2 enhanced persons
+            "company a;company b",         // Field 13: V1 organizations
+            "Company A,300;Company B,400", // Field 14: V2 enhanced organizations
+            "1.5,2.5,3.5,4.5,5.5,6.5,100", // Field 15: tone
+            "1#0#0#2004#169",              // Field 16: enhanced dates
+            "wc:100,c1.1:5",               // Field 17: GCAM
+            "",                            // Field 18: sharing image
+            "",                            // Field 19: related images
+            "",                            // Field 20: social image embeds
+            "",                            // Field 21: social video embeds
+            "",                            // Field 22: quotations
+            "",                            // Field 23: all names
+            "",                            // Field 24: amounts
+            "",                            // Field 25: reserved
+            "",                            // Field 26: translation info
+        ];
+
+        let record = StringRecord::from(fields);
+        let result = GKGTable::try_from(record);
+
         assert!(
             result.is_ok(),
-            "Valid GKGRecordID should parse successfully"
+            "Minimal valid record should parse successfully: {:?}",
+            result.err()
         );
 
-        let record_id = result.unwrap();
-        assert_eq!(record_id.sequence, 12345);
-        assert!(record_id.is_translated);
+        let gkg = result.unwrap();
+        assert_eq!(gkg.global_knowledge_graph_id.sequence, 0);
+        assert!(!gkg.global_knowledge_graph_id.is_translated);
+        assert_eq!(gkg.source_common_name, "example.com");
+        assert_eq!(gkg.document_identifier, "https://example.com/article");
+        assert_eq!(gkg.v1_themes.len(), 2);
+        assert_eq!(gkg.v2_enhanced_themes.len(), 2);
+        assert_eq!(gkg.tone.tone, 1.5);
+        assert_eq!(gkg.tone.word_count, 100);
     }
 
     #[test]
-    fn test_gkg_record_id_try_from_invalid_date() {
+    fn test_parse_actual_gkg_data() {
         init_logger();
 
-        let result = GKGRecordID::try_from(("invalid_date", "12345", "0"));
-        assert!(result.is_err(), "Should fail with invalid date");
-        assert!(
-            result
-                .unwrap_err()
-                .to_string()
-                .contains("Invalid record_date")
-        );
-    }
+        // Test parsing against actual local GKG data file
+        let file_path = std::path::PathBuf::from("../gkg.csv");
+        if !file_path.exists() {
+            log::warn!("Local GKG data file not found, skipping test");
+            return;
+        }
 
-    #[test]
-    fn test_gkg_record_id_try_from_invalid_sequence() {
-        init_logger();
+        let file = std::fs::File::open(&file_path).expect("Failed to open GKG file");
+        let mut reader = csv::ReaderBuilder::new()
+            .has_headers(false)
+            .delimiter(b'\t')
+            .from_reader(file);
 
-        let result = GKGRecordID::try_from(("20250322164500", "not_a_number", "0"));
-        assert!(result.is_err(), "Should fail with invalid sequence");
-    }
+        let mut record_count = 0;
+        let mut successful_parses = 0;
+        let mut record = csv::StringRecord::new();
 
-    #[test]
-    fn test_gkg_record_id_try_from_invalid_translated() {
-        init_logger();
+        // Parse first 10 records to validate our implementation
+        while record_count < 10 && reader.read_record(&mut record).unwrap_or(false) {
+            record_count += 1;
 
-        let result = GKGRecordID::try_from(("20250322164500", "12345", "invalid"));
-        assert!(result.is_err(), "Should fail with invalid is_translated");
-        assert!(
-            result
-                .unwrap_err()
-                .to_string()
-                .contains("Invalid is_translated value")
-        );
-    }
-}
+            match GKGTable::try_from(record.clone()) {
+                Ok(gkg) => {
+                    successful_parses += 1;
+                    log::info!(
+                        "Successfully parsed GKG record {}: ID={}",
+                        record_count,
+                        gkg.global_knowledge_graph_id.record_date
+                    );
 
-#[cfg(test)]
-mod newtype_tests {
-    use super::*;
+                    // Validate some key fields are populated
+                    assert!(
+                        !gkg.source_common_name.is_empty(),
+                        "Source common name should not be empty"
+                    );
+                    assert!(
+                        !gkg.document_identifier.is_empty(),
+                        "Document identifier should not be empty"
+                    );
 
-    #[test]
-    fn test_positive_score_try_from() {
-        assert_eq!(PositiveScore::try_from(Some("5.2")).unwrap().0, 5.2);
-        assert_eq!(PositiveScore::try_from(Some("0.0")).unwrap().0, 0.0);
-        assert!(PositiveScore::try_from(Some("not_a_number")).is_err());
-        assert!(PositiveScore::try_from(None).is_err());
-    }
+                    // Log field values for verification
+                    log::debug!(
+                        "Record {}: source={}, themes={}, tone={:.2}",
+                        record_count,
+                        gkg.source_common_name,
+                        gkg.v1_themes.len(),
+                        gkg.tone.tone
+                    );
+                }
+                Err(e) => {
+                    log::error!("Failed to parse GKG record {}: {}", record_count, e);
+                    log::debug!("Record had {} fields", record.len());
+                }
+            }
+        }
 
-    #[test]
-    fn test_negative_score_try_from() {
-        assert_eq!(NegativeScore::try_from(Some("7.8")).unwrap().0, 7.8);
-        assert_eq!(NegativeScore::try_from(Some("0.0")).unwrap().0, 0.0);
-        assert!(NegativeScore::try_from(Some("not_a_number")).is_err());
-        assert!(NegativeScore::try_from(None).is_err());
-    }
-
-    #[test]
-    fn test_polarity_try_from() {
-        assert_eq!(Polarity::try_from(Some("-1.3")).unwrap().0, -1.3);
-        assert_eq!(Polarity::try_from(Some("2.5")).unwrap().0, 2.5);
-        assert!(Polarity::try_from(Some("not_a_number")).is_err());
-        assert!(Polarity::try_from(None).is_err());
-    }
-
-    #[test]
-    fn test_activity_reference_density_try_from() {
         assert_eq!(
-            ActivityReferenceDensity::try_from(Some("4.1")).unwrap().0,
-            4.1
+            record_count, successful_parses,
+            "All {} records should parse successfully, but only {} did",
+            record_count, successful_parses
         );
-        assert_eq!(
-            ActivityReferenceDensity::try_from(Some("0.0")).unwrap().0,
-            0.0
+
+        log::info!(
+            "Successfully parsed {}/{} actual GKG records",
+            successful_parses,
+            record_count
         );
-        assert!(ActivityReferenceDensity::try_from(Some("not_a_number")).is_err());
-        assert!(ActivityReferenceDensity::try_from(None).is_err());
-    }
-
-    #[test]
-    fn test_selfgroup_reference_density_try_from() {
-        assert_eq!(
-            SelfGroupReferenceDensity::try_from(Some("2.9")).unwrap().0,
-            2.9
-        );
-        assert_eq!(
-            SelfGroupReferenceDensity::try_from(Some("0.0")).unwrap().0,
-            0.0
-        );
-        assert!(SelfGroupReferenceDensity::try_from(Some("not_a_number")).is_err());
-        assert!(SelfGroupReferenceDensity::try_from(None).is_err());
-    }
-
-    #[test]
-    fn test_word_count_try_from() {
-        assert_eq!(WordCount::try_from(Some("100")).unwrap().0, 100);
-        assert_eq!(WordCount::try_from(Some("0")).unwrap().0, 0);
-        assert!(WordCount::try_from(Some("not_a_number")).is_err());
-        assert!(WordCount::try_from(Some("-1")).is_err()); // negative should fail for u128
-        assert!(WordCount::try_from(None).is_err());
-    }
-
-    #[test]
-    fn test_image_url_try_from() {
-        let valid_url = "https://example.com/image.jpg";
-        let result = ImageURL::try_from(Some(valid_url));
-        assert!(result.is_ok(), "Valid URL should parse successfully");
-
-        let invalid_url = "not_a_valid_url";
-        let result = ImageURL::try_from(Some(invalid_url));
-        assert!(result.is_err(), "Invalid URL should fail");
-
-        let result = ImageURL::try_from(None);
-        assert!(result.is_err(), "None should fail");
-        assert!(result.unwrap_err().to_string().contains("missing ImageURL"));
     }
 }

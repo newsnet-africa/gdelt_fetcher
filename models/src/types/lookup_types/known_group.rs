@@ -1,7 +1,7 @@
 use crate::types::event_table::actor::CAMEOKnownGroupCode;
 use anyhow::anyhow;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum KnownGroup {
     Unspecified,
     AlAqsaMartyrsBrigade,
@@ -128,7 +128,7 @@ impl TryFrom<Option<CAMEOKnownGroupCode>> for KnownGroup {
 
     fn try_from(value: Option<CAMEOKnownGroupCode>) -> anyhow::Result<Self> {
         let value = value.ok_or_else(|| anyhow!("CAMEOKnownGroupCode is None"))?;
-        match std::str::from_utf8(&value.0)? {
+        match value.0.as_str() {
             "AAM" => Ok(Self::AlAqsaMartyrsBrigade),
             "ABD" => Ok(Self::ArabBankforEconomicDevelopmentinAfrica),
             "ACC" => Ok(Self::ArabCooperationCouncil),
@@ -243,7 +243,6 @@ impl TryFrom<Option<CAMEOKnownGroupCode>> for KnownGroup {
             "WFP" => Ok(Self::WorldFoodProgram),
             "WHO" => Ok(Self::WorldHealthOrganization),
             "WTO" => Ok(Self::WorldTradeOrganization),
-            "WTO" => Ok(Self::WorldTradeOrganization),
             "XFM" => Ok(Self::Oxfam),
             _ => Err(anyhow!("Invalid Known Group Code")),
         }
@@ -269,7 +268,7 @@ mod tests {
         info!("Testing valid CAMEOKnownGroupCode: {:?}", valid_code_str);
         let code = CAMEOKnownGroupCode::try_from(Some(valid_code_str));
         assert!(code.is_ok());
-        assert_eq!(code.unwrap().0, *b"AAM");
+        assert_eq!(code.unwrap().0, "AAM");
     }
 
     #[test]
@@ -289,7 +288,7 @@ mod tests {
     fn test_known_group_try_from_valid_codes() {
         // init_logger();
 
-        let valid_code = Some(CAMEOKnownGroupCode(*b"AAM")); // AlAqsaMartyrsBrigade
+        let valid_code = Some(CAMEOKnownGroupCode("AAM".to_string())); // AlAqsaMartyrsBrigade
         info!("Testing valid KnownGroup code: {:?}", valid_code);
         let known_group = KnownGroup::try_from(valid_code);
         assert!(known_group.is_ok());
@@ -300,7 +299,7 @@ mod tests {
     fn test_known_group_try_from_invalid_codes() {
         // init_logger();
 
-        let invalid_code = Some(CAMEOKnownGroupCode(*b"XXX")); // Invalid code
+        let invalid_code = Some(CAMEOKnownGroupCode("XXX".to_string())); // Invalid code
         info!("Testing invalid KnownGroup code: {:?}", invalid_code);
         let known_group = KnownGroup::try_from(invalid_code);
         assert!(known_group.is_err());

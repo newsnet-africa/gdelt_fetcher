@@ -1,8 +1,8 @@
 use anyhow::anyhow;
 
-use crate::types::event_table::actor::CAMEOEthnicityCode;
+use crate::types::event_table::CAMEOEthnicCode;
 
-#[derive(Debug, PartialOrd, PartialEq)]
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
 pub enum Ethnicity {
     Unspecified,
     Afar,
@@ -640,12 +640,12 @@ pub enum Ethnicity {
     Zaza,
 }
 
-impl TryFrom<Option<CAMEOEthnicityCode>> for Ethnicity {
+impl TryFrom<Option<CAMEOEthnicCode>> for Ethnicity {
     type Error = anyhow::Error;
 
-    fn try_from(value: Option<CAMEOEthnicityCode>) -> anyhow::Result<Self> {
-        let value = value.ok_or_else(|| anyhow!("CAMEOEthnicityCode is None"))?;
-        match std::str::from_utf8(&value.0)? {
+    fn try_from(value: Option<CAMEOEthnicCode>) -> anyhow::Result<Self> {
+        let value = value.ok_or_else(|| anyhow!("CAMEOEthnicCode is None"))?;
+        match value.0.as_str() {
             "aar" => Ok(Self::Afar),
             "abk" => Ok(Self::Abkhaz),
             "abr" => Ok(Self::AboriginalAustralians),
@@ -1309,7 +1309,7 @@ mod tests {
 
         let valid_code = Some("pol"); // Poles
         info!("Testing valid ethnicity code: {:?}", valid_code);
-        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(valid_code).ok());
+        let ethnicity = Ethnicity::try_from(CAMEOEthnicCode::try_from(valid_code).ok());
         assert!(ethnicity.is_ok());
         assert_eq!(ethnicity.unwrap(), Ethnicity::Poles);
     }
@@ -1320,7 +1320,7 @@ mod tests {
 
         let invalid_code = Some("xxx"); // Invalid code
         info!("Testing invalid ethnicity code: {:?}", invalid_code);
-        let ethnicity = Ethnicity::try_from(CAMEOEthnicityCode::try_from(invalid_code).ok());
+        let ethnicity = Ethnicity::try_from(CAMEOEthnicCode::try_from(invalid_code).ok());
         assert!(ethnicity.is_err());
     }
 
@@ -1330,12 +1330,12 @@ mod tests {
 
         let empty_code = Some(""); // Empty code
         info!("Testing empty ethnicity code: {:?}", empty_code);
-        let empty_result = CAMEOEthnicityCode::try_from(empty_code);
+        let empty_result = CAMEOEthnicCode::try_from(empty_code);
         assert!(empty_result.is_err());
 
         let short_code = Some("po"); // Short code
         info!("Testing short ethnicity code: {:?}", short_code);
-        let short_result = CAMEOEthnicityCode::try_from(short_code);
+        let short_result = CAMEOEthnicCode::try_from(short_code);
         assert!(short_result.is_err());
     }
 }
