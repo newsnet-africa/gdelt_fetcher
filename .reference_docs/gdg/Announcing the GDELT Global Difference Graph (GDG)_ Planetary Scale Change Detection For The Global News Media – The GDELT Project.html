@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en-US" style="transform: none;"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://blog.gdeltproject.org/xmlrpc.php">
+<title>Announcing the GDELT Global Difference Graph (GDG): Planetary 
+Scale Change Detection For The Global News Media – The GDELT Project</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="The GDELT Project » Feed" href="https://blog.gdeltproject.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="The GDELT Project » Comments Feed" href="https://blog.gdeltproject.org/comments/feed/">
+		<!-- This site uses the Google Analytics by MonsterInsights plugin v8.1.0 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+							<script src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/js" type="text/javascript" data-cfasync="false" async=""></script>
+			<script type="text/javascript" data-cfasync="false">
+				var mi_version = '8.1.0';
+				var mi_track_user = true;
+				var mi_no_track_reason = '';
+				
+								var disableStrs = [
+										'ga-disable-G-770GH0B85C',
+															'ga-disable-UA-47450367-1',
+									];
+
+				/* Function to detect opted out users */
+				function __gtagTrackerIsOptedOut() {
+					for ( var index = 0; index < disableStrs.length; index++ ) {
+						if ( document.cookie.indexOf( disableStrs[ index ] + '=true' ) > -1 ) {
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				/* Disable tracking if the opt-out cookie exists. */
+				if ( __gtagTrackerIsOptedOut() ) {
+					for ( var index = 0; index < disableStrs.length; index++ ) {
+						window[ disableStrs[ index ] ] = true;
+					}
+				}
+
+				/* Opt-out function */
+				function __gtagTrackerOptout() {
+					for ( var index = 0; index < disableStrs.length; index++ ) {
+						document.cookie = disableStrs[ index ] + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+						window[ disableStrs[ index ] ] = true;
+					}
+				}
+
+				if ( 'undefined' === typeof gaOptout ) {
+					function gaOptout() {
+						__gtagTrackerOptout();
+					}
+				}
+								window.dataLayer = window.dataLayer || [];
+
+				window.MonsterInsightsDualTracker = {
+					helpers: {},
+					trackers: {},
+				};
+				if ( mi_track_user ) {
+					function __gtagDataLayer() {
+						dataLayer.push( arguments );
+					}
+
+					function __gtagTracker( type, name, parameters ) {
+						if ( type === 'event' ) {
+															parameters.send_to = monsterinsights_frontend.v4_id;
+								var hookName = name;
+								if ( typeof parameters[ 'event_category' ] !== 'undefined' ) {
+									hookName = parameters[ 'event_category' ] + ':' + name;
+								}
+
+								if ( typeof MonsterInsightsDualTracker.trackers[ hookName ] !== 'undefined' ) {
+									MonsterInsightsDualTracker.trackers[ hookName ]( parameters );
+								} else {
+									__gtagDataLayer( 'event', name, parameters );
+								}
+							
+															parameters.send_to = monsterinsights_frontend.ua;
+								__gtagDataLayer.apply( null, arguments );
+													} else {
+							__gtagDataLayer.apply( null, arguments );
+						}
+					}
+					__gtagTracker( 'js', new Date() );
+					__gtagTracker( 'set', {
+						'developer_id.dZGIzZG' : true,
+											} );
+										__gtagTracker( 'config', 'G-770GH0B85C', {"forceSSL":"true"} );
+															__gtagTracker( 'config', 'UA-47450367-1', {"forceSSL":"true"} );
+										window.gtag = __gtagTracker;										(
+						function () {
+							/* https://developers.google.com/analytics/devguides/collection/analyticsjs/ */
+							/* ga and __gaTracker compatibility shim. */
+							var noopfn = function () {
+								return null;
+							};
+							var newtracker = function () {
+								return new Tracker();
+							};
+							var Tracker = function () {
+								return null;
+							};
+							var p = Tracker.prototype;
+							p.get = noopfn;
+							p.set = noopfn;
+							p.send = function (){
+								var args = Array.prototype.slice.call(arguments);
+								args.unshift( 'send' );
+								__gaTracker.apply(null, args);
+							};
+							var __gaTracker = function () {
+								var len = arguments.length;
+								if ( len === 0 ) {
+									return;
+								}
+								var f = arguments[len - 1];
+								if ( typeof f !== 'object' || f === null || typeof f.hitCallback !== 'function' ) {
+									if ( 'send' === arguments[0] ) {
+										var hitConverted, hitObject = false, action;
+										if ( 'event' === arguments[1] ) {
+											if ( 'undefined' !== typeof arguments[3] ) {
+												hitObject = {
+													'eventAction': arguments[3],
+													'eventCategory': arguments[2],
+													'eventLabel': arguments[4],
+													'value': arguments[5] ? arguments[5] : 1,
+												}
+											}
+										}
+										if ( 'pageview' === arguments[1] ) {
+											if ( 'undefined' !== typeof arguments[2] ) {
+												hitObject = {
+													'eventAction': 'page_view',
+													'page_path' : arguments[2],
+												}
+											}
+										}
+										if ( typeof arguments[2] === 'object' ) {
+											hitObject = arguments[2];
+										}
+										if ( typeof arguments[5] === 'object' ) {
+											Object.assign( hitObject, arguments[5] );
+										}
+										if ( 'undefined' !== typeof arguments[1].hitType ) {
+											hitObject = arguments[1];
+											if ( 'pageview' === hitObject.hitType ) {
+												hitObject.eventAction = 'page_view';
+											}
+										}
+										if ( hitObject ) {
+											action = 'timing' === arguments[1].hitType ? 'timing_complete' : hitObject.eventAction;
+											hitConverted = mapArgs( hitObject );
+											__gtagTracker( 'event', action, hitConverted );
+										}
+									}
+									return;
+								}
+
+								function mapArgs( args ) {
+									var arg, hit = {};
+									var gaMap = {
+										'eventCategory': 'event_category',
+										'eventAction': 'event_action',
+										'eventLabel': 'event_label',
+										'eventValue': 'event_value',
+										'nonInteraction': 'non_interaction',
+										'timingCategory': 'event_category',
+										'timingVar': 'name',
+										'timingValue': 'value',
+										'timingLabel': 'event_label',
+										'page' : 'page_path',
+										'location' : 'page_location',
+										'title' : 'page_title',
+									};
+									for ( arg in args ) {
+																				if ( ! ( ! args.hasOwnProperty(arg) || ! gaMap.hasOwnProperty(arg) ) ) {
+											hit[gaMap[arg]] = args[arg];
+										} else {
+											hit[arg] = args[arg];
+										}
+									}
+									return hit;
+								}
+
+								try {
+									f.hitCallback();
+								} catch ( ex ) {
+								}
+							};
+							__gaTracker.create = newtracker;
+							__gaTracker.getByName = newtracker;
+							__gaTracker.getAll = function () {
+								return [];
+							};
+							__gaTracker.remove = noopfn;
+							__gaTracker.loaded = true;
+							window['__gaTracker'] = __gaTracker;
+						}
+					)();
+									} else {
+										console.log( "" );
+					( function () {
+							function __gtagTracker() {
+								return null;
+							}
+							window['__gtagTracker'] = __gtagTracker;
+							window['gtag'] = __gtagTracker;
+					} )();
+									}
+			</script>
+				<!-- / Google Analytics by MonsterInsights -->
+				<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/blog.gdeltproject.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.8.10"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/wp-emoji-release.min.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-pagenavi-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/pagenavi-css.css" type="text/css" media="all">
+<link rel="stylesheet" id="parent-style-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/style.css" type="text/css" media="all">
+<link crossorigin="anonymous" rel="stylesheet" id="wpb-google-fonts-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="clean-grid-maincss-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/font-awesome.min.css" type="text/css" media="all">
+<link crossorigin="anonymous" rel="stylesheet" id="clean-grid-webfont-css" href="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/css_002.css" type="text/css" media="all">
+<script type="text/javascript" id="monsterinsights-frontend-script-js-extra">
+/* <![CDATA[ */
+var monsterinsights_frontend = {"js_events_tracking":"true","download_extensions":"doc,pdf,ppt,zip,xls,docx,pptx,xlsx","inbound_paths":"[]","home_url":"https:\/\/blog.gdeltproject.org","hash_tracking":"false","ua":"UA-47450367-1","v4_id":"G-770GH0B85C"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/frontend-gtag.min.js" id="monsterinsights-frontend-script-js"></script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://blog.gdeltproject.org/wp-content/themes/clean-grid/assets/js/html5shiv.js' id='html5shiv-js'></script>
+<![endif]-->
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://blog.gdeltproject.org/wp-content/themes/clean-grid/assets/js/respond.js' id='respond-js'></script>
+<![endif]-->
+<link rel="https://api.w.org/" href="https://blog.gdeltproject.org/wp-json/"><link rel="alternate" type="application/json" href="https://blog.gdeltproject.org/wp-json/wp/v2/posts/5070"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://blog.gdeltproject.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://blog.gdeltproject.org/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.8.10">
+<link rel="canonical" href="https://blog.gdeltproject.org/announcing-the-gdelt-global-difference-graph-gdg-planetary-scale-change-detection-for-the-global-news-media/">
+<link rel="shortlink" href="https://blog.gdeltproject.org/?p=5070">
+<link rel="alternate" type="application/json+oembed" href="https://blog.gdeltproject.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.gdeltproject.org%2Fannouncing-the-gdelt-global-difference-graph-gdg-planetary-scale-change-detection-for-the-global-news-media%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://blog.gdeltproject.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.gdeltproject.org%2Fannouncing-the-gdelt-global-difference-graph-gdg-planetary-scale-change-detection-for-the-global-news-media%2F&amp;format=xml">
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-image: url("https://blog.gdeltproject.org/wp-content/themes/clean-grid/assets/images/background.png"); background-position: left top; background-size: auto; background-repeat: repeat; background-attachment: fixed; }
+</style>
+	<link rel="amphtml" href="https://blog.gdeltproject.org/announcing-the-gdelt-global-difference-graph-gdg-planetary-scale-change-detection-for-the-global-news-media/amp/"><style>
+            .password-toggler-button-parent {
+                position: relative;
+                overflow: visible;
+            }
+            .password-toggler-button {
+                position: absolute;
+                top: 50%;
+                right: 8px;
+                transform: translateY(-50%);
+                cursor: pointer;
+                background-repeat: no-repeat;
+                z-index: 9999;
+                background-color: #dcdcdc;
+                border-radius: 50%;
+                background-position: center;
+                width: 20px;
+                height: 20px;
+                display: none;
+            }
+            .password-toggler-show { background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDE0IDE0Ij4KPHBhdGggZmlsbD0iIzc1NzU3NSIgZD0iTTcgMi42MjVjLTMuMDUzIDAtNS43IDEuNzc4LTcgNC4zNzUgMS4zIDIuNTk3IDMuOTQ3IDQuMzc1IDcgNC4zNzVzNS42OTktMS43NzggNy00LjM3NWMtMS4zLTIuNTk3LTMuOTQ3LTQuMzc1LTctNC4zNzV6TTEwLjQ1MSA0Ljk0NWMwLjgyMyAwLjUyNSAxLjUyIDEuMjI3IDIuMDQzIDIuMDU1LTAuNTI0IDAuODI3LTEuMjIxIDEuNTMtMi4wNDMgMi4wNTUtMS4wMzQgMC42NTktMi4yMjcgMS4wMDgtMy40NTEgMS4wMDhzLTIuNDE4LTAuMzQ4LTMuNDUxLTEuMDA4Yy0wLjgyMi0wLjUyNS0xLjUxOS0xLjIyNy0yLjA0My0yLjA1NSAwLjUyNC0wLjgyNyAxLjIyMS0xLjUzIDIuMDQzLTIuMDU1IDAuMDU0LTAuMDM0IDAuMTA4LTAuMDY3IDAuMTYyLTAuMS0wLjEzNiAwLjM3NC0wLjIxMSAwLjc3Ny0wLjIxMSAxLjE5OCAwIDEuOTMzIDEuNTY3IDMuNSAzLjUgMy41czMuNS0xLjU2NyAzLjUtMy41YzAtMC40MjEtMC4wNzUtMC44MjQtMC4yMTEtMS4xOTggMC4wNTQgMC4wMzMgMC4xMDkgMC4wNjYgMC4xNjIgMC4xdjB6TTcgNS42ODhjMCAwLjcyNS0wLjU4OCAxLjMxMy0xLjMxMyAxLjMxM3MtMS4zMTMtMC41ODgtMS4zMTMtMS4zMTMgMC41ODgtMS4zMTMgMS4zMTMtMS4zMTMgMS4zMTMgMC41ODggMS4zMTMgMS4zMTN6Ij48L3BhdGg+Cjwvc3ZnPgo=); }
+            .password-toggler-hide { background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDE0IDE0Ij4KPHBhdGggZmlsbD0iIzc1NzU3NSIgZD0iTTEyLjkzMyAwLjE5MmMtMC4yNTYtMC4yNTYtMC42NzItMC4yNTYtMC45MjggMGwtMi43NjQgMi43NjRjLTAuNzEtMC4yMTUtMS40NjItMC4zMzEtMi4yNDEtMC4zMzEtMy4wNTMgMC01LjcgMS43NzgtNyA0LjM3NSAwLjU2MiAxLjEyMyAxLjM3NiAyLjA5MiAyLjM2NiAyLjgzMWwtMi4xNzMgMi4xNzNjLTAuMjU2IDAuMjU2LTAuMjU2IDAuNjcyIDAgMC45MjggMC4xMjggMC4xMjggMC4yOTYgMC4xOTIgMC40NjQgMC4xOTJzMC4zMzYtMC4wNjQgMC40NjQtMC4xOTJsMTEuODEzLTExLjgxM2MwLjI1Ni0wLjI1NiAwLjI1Ni0wLjY3MiAwLTAuOTI4ek01LjY4OCA0LjM3NWMwLjU3OCAwIDEuMDY4IDAuMzczIDEuMjQzIDAuODkxbC0xLjY2NCAxLjY2NGMtMC41MTgtMC4xNzYtMC44OTEtMC42NjYtMC44OTEtMS4yNDMgMC0wLjcyNSAwLjU4OC0xLjMxMyAxLjMxMy0xLjMxM3pNMS41MDUgN2MwLjUyNC0wLjgyNyAxLjIyMS0xLjUzIDIuMDQzLTIuMDU1IDAuMDU0LTAuMDM0IDAuMTA4LTAuMDY3IDAuMTYyLTAuMS0wLjEzNiAwLjM3NC0wLjIxMSAwLjc3Ny0wLjIxMSAxLjE5OCAwIDAuNzUgMC4yMzYgMS40NDYgMC42MzggMi4wMTVsLTAuODMzIDAuODMzYy0wLjcxNy0wLjUwNC0xLjMyOS0xLjE0Ny0xLjgtMS44OTF6Ij48L3BhdGg+CjxwYXRoIGZpbGw9IiM3NTc1NzUiIGQ9Ik0xMC41IDYuMDQzYzAtMC4zNzEtMC4wNTgtMC43MjktMC4xNjUtMS4wNjVsLTQuNCA0LjRjMC4zMzYgMC4xMDcgMC42OTQgMC4xNjUgMS4wNjUgMC4xNjUgMS45MzMgMCAzLjUtMS41NjcgMy41LTMuNXoiPjwvcGF0aD4KPHBhdGggZmlsbD0iIzc1NzU3NSIgZD0iTTExLjM0OCAzLjk2NGwtMC45NDggMC45NDhjMC4wMTcgMC4wMTEgMC4wMzUgMC4wMjEgMC4wNTIgMC4wMzIgMC44MjMgMC41MjUgMS41MiAxLjIyNyAyLjA0MyAyLjA1NS0wLjUyNCAwLjgyNy0xLjIyMSAxLjUzLTIuMDQzIDIuMDU1LTEuMDM0IDAuNjU5LTIuMjI3IDEuMDA4LTMuNDUxIDEuMDA4LTAuNTI5IDAtMS4wNTEtMC4wNjUtMS41NTgtMC4xOTJsLTEuMDUxIDEuMDUxYzAuODE2IDAuMjkzIDEuNjk1IDAuNDUzIDIuNjA5IDAuNDUzIDMuMDUzIDAgNS42OTktMS43NzggNy00LjM3NS0wLjYxNi0xLjIyOS0xLjUzMy0yLjI3NS0yLjY1Mi0zLjAzNnoiPjwvcGF0aD4KPC9zdmc+Cg==); }
+        </style><style>:is([id*='google_ads_iframe'],[id*='taboola-'],.taboolaHeight,.taboola-placeholder,#top-ad,#credential_picker_container,#credentials-picker-container,#credential_picker_iframe,[id*='google-one-tap-iframe'],#google-one-tap-popup-container,.google-one-tap__module,.google-one-tap-modal-div,#amp_floatingAdDiv,#ez-content-blocker-container) {display:none!important;min-height:0!important;height:0!important;}</style><style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style><style id="theia-sticky-sidebar-stylesheet-TSS">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style></head>
+
+<body class="post-template-default single single-post postid-5070 single-format-standard custom-background clean-grid-animated clean-grid-fadein clean-grid-page-full-width" id="clean-grid-site-body" itemscope="itemscope" itemtype="http://schema.org/WebPage" style="transform: none;"><div class="clean-grid-scroll-top" style="display: none;"></div>
+
+<div class="clean-grid-outer-wrapper-full" style="transform: none;">
+<div class="clean-grid-outer-wrapper" style="transform: none;">
+
+<div class="clean-grid-header clearfix" id="clean-grid-header" itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
+<div class="clean-grid-head-content clearfix" id="clean-grid-head-content">
+
+
+<div class="clean-grid-header-inside clearfix">
+<div class="clean-grid-logo" id="clean-grid-logo">
+    <div class="site-branding">
+      <h1 class="clean-grid-site-title"><a href="https://blog.gdeltproject.org/" rel="home">The GDELT Project</a></h1>
+      <p class="clean-grid-site-description"></p>
+    </div>
+</div><!--/#clean-grid-logo -->
+
+<div class="clean-grid-header-banner" id="clean-grid-header-banner">
+</div><!--/#clean-grid-header-banner -->
+</div>
+
+</div><!--/#clean-grid-head-content -->
+</div><!--/#clean-grid-header -->
+
+<div class="clean-grid-menu-container clearfix">
+<div class="clean-grid-menu-container-inside clearfix">
+
+<nav class="clean-grid-nav-primary" id="clean-grid-primary-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+<div class="menu-top-menu-container"><div class="clean-grid-responsive-menu-icon"></div><ul id="menu-primary-navigation" class="menu clean-grid-nav-menu menu-primary responsive-menu"><li id="menu-item-5278" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-5278"><a href="http://blog.gdeltproject.org/">The GDELT Project Blog</a></li>
+<li id="menu-item-5349" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5349"><a href="https://www.gdeltproject.org/">Website</a></li>
+</ul></div></nav>
+
+<div class="clean-grid-top-social-icons">
+                                                                        
+                                                            <a href="http://blog.gdeltproject.org/feed/" target="_blank" class="clean-grid-social-icon-rss" title="RSS"><i class="fa fa-rss" aria-hidden="true"></i></a>    <a href="#" title="Search" class="clean-grid-social-search-icon"><i class="fa fa-search"></i></a>
+</div>
+
+<div class="clean-grid-social-search-box">
+
+<form role="search" method="get" class="clean-grid-search-form" action="https://blog.gdeltproject.org/">
+<label>
+    <span class="screen-reader-text">Search for:</span>
+    <input type="search" class="clean-grid-search-field" placeholder="Search …" name="s">
+</label>
+<input type="submit" class="clean-grid-search-submit" value="Search">
+</form></div>
+
+</div>
+</div>
+
+
+<div class="clean-grid-featured-posts-area clean-grid-top-wrapper clearfix">
+</div>
+
+<div class="clean-grid-wrapper clearfix" id="clean-grid-wrapper" style="transform: none;">
+<div class="clean-grid-content-wrapper clearfix" id="clean-grid-content-wrapper" style="transform: none;">
+<div class="clean-grid-main-wrapper clearfix" id="clean-grid-main-wrapper" itemscope="itemscope" itemtype="http://schema.org/Blog" role="main" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: relative; transform: none;">
+
+
+<div class="clean-grid-featured-posts-area clearfix">
+</div>
+
+<div class="clean-grid-posts-wrapper" id="clean-grid-posts-wrapper">
+
+
+    
+<article id="post-5070" class="clean-grid-post-singular clean-grid-box post-5070 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized wpcat-1-id">
+
+    <header class="entry-header">
+        
+        <h1 class="post-title entry-title"><a href="https://blog.gdeltproject.org/announcing-the-gdelt-global-difference-graph-gdg-planetary-scale-change-detection-for-the-global-news-media/" rel="bookmark">Announcing the GDELT Global Difference Graph (GDG): Planetary Scale Change Detection For The Global News Media</a></h1>
+                <div class="clean-grid-entry-meta-single">
+        <span class="clean-grid-entry-meta-single-date"><i class="fa fa-clock-o"></i>&nbsp;August 28, 2018</span>            </div>
+        </header><!-- .entry-header -->
+
+    <div class="entry-content clearfix">
+                                        <a href="https://blog.gdeltproject.org/announcing-the-gdelt-global-difference-graph-gdg-planetary-scale-change-detection-for-the-global-news-media/" title="Permanent Link to Announcing the GDELT Global Difference Graph (GDG): Planetary Scale Change Detection For The Global News Media"><img width="1064" height="410" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-1064x410.png" class="clean-grid-post-thumbnail-single wp-post-image" alt="" loading="lazy" srcset="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-1064x410.png 1064w, Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-300x116.png 300w, Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-1024x395.png 1024w, Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-150x58.png 150w, Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-768x296.png 768w, Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg-1536x592.png 1536w, Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/2020-gdg.png 1920w" sizes="(max-width: 1064px) 100vw, 1064px"></a>
+                <p>Just under a decade ago I showed how coupling web 
+archiving with large scale automated change analysis could be used to 
+track how the White House was quietly <a href="https://theboard.blogs.nytimes.com/2008/11/25/president-bushs-coalition-of-the-willing-or-orwell-comes-to-iraq/">rewriting</a> America’s history in realtime. The success of this model led to many other projects like Propublica’s <a href="https://www.propublica.org/article/changetracker">ChangeTracker</a> and <a href="http://newsdiffs.org/">NewsDiffs</a>.
+ Yet, beyond a few efforts focused on a small number of articles from a 
+handful of mostly US outlets, there has been little focus on the grander
+ question: planetary scale change detection for the global news media.</p>
+<p>What would it look like to essentially perform a global “<a href="https://en.wikipedia.org/wiki/Diff">diff</a>”
+ on a growing fraction of the entire daily output of the world’s online 
+news outlets each day and each week to construct a running catalog of 
+every change made to the online news coverage that forms the basis of 
+our understanding of the world around us?</p>
+<p>Such a catalog would allow us to see for the first time the extent of
+ just how much of our online news landscape is rewritten on a daily 
+basis, the kinds of changes that are made, whether there are specific 
+topics or stories that endure greater rewriting or even deletion than 
+others and to allow us to begin to quantify both the scope and impact of
+ the growing practice of “stealth editing.”</p>
+<p>Today we are immensely excited to announce the alpha release of the 
+GDELT Global Difference Graph (GDG) that does exactly that. The GDG 
+recrawls every news article monitored by GDELT after 24 hours and again 
+after one week and compiles a running catalog of every change made to 
+the article, from deletion to URL redirection to title changes to the 
+article text itself being rewritten. When cataloging textual changes, 
+only changes to the actual article text itself are considered – the 
+surrounding navigation bars, headers, footers, trending sections, insets
+ and other sections are excluded. This means that instead of flagging 
+every time the trending stories box changes or an ad is rotated, the GDG
+ only reflects actual changes to the story itself.</p>
+<p>At a technical level, every 60 seconds the GDG compiles a list of 
+every article monitored by GDELT during that one-minute period the 
+previous day and 7 days prior and recrawls each of the URLs, checking 
+for any changes. (Until GDELT 3.0 launches, the GDG will update every 
+minute, but be largely limited to seeing new content only every 15 
+minutes due to GDELT 2.0’s 15 minute update cycle). Changes in the title
+ or body text are compiled using an optimized fast differencing engine 
+that compares at either the “word” level (for space-delimited languages)
+ or character level (currently for Burmese, Chinese, Dzongkha, Japanese,
+ Khmer, Laothian, Thai, Tibetan and Vietnamese, with more being added as
+ GDELT 3.0 launches). The text of any hyperlinks found in the article 
+are included in the analysis, but text found in image captions is 
+currently excluded to focus results on the body text (due to the number 
+of outlets that only display partial captions and the high rate of 
+caption editing on some sites resulting in large numbers of counter 
+intuitive edits – we may add a dedicated "captions" category in future).</p>
+<p>The GDG currently records four classes of change: download errors, 
+redirects, title changes and text changes. Download errors record cases 
+where the crawlers were unable to fetch the original page due to a 404, 
+410 or 451 response (it is too difficult to separate other error classes
+ from IP targeted responses or network transient errors, but we may 
+expand the list of reported responses over time). Redirects record when 
+the server redirects the client to a different URL (in which case the 
+crawlers follow the redirect and continue their change analysis). Title 
+changes reflect any edits made to the page title and text changes 
+reflect edits made to the body text of the article itself. Pages that 
+were found to be unchanged are recorded as either having exactly the 
+same HTML code or having exactly the same text (in case the surrounding 
+HTML of the page has changed, but the article text itself was not 
+edited).</p>
+<p>For web archives we also offer an <a href="http://data.gdeltproject.org/gdeltv3/gdg/RSS-GDG-15MINROLLUP.rss">RSS feed</a>
+ that updates every 15 minutes and provides a list of all of the changed
+ URLs identified over the previous 15 minutes. This makes it trivial for
+ archivers to ensure they recrawl changed pages as quickly as possible.</p>
+<p>In the end this is an alpha release so it is important to note that 
+the results won’t always be perfect and we’d love your feedback, error 
+reports, suggestions, etc.</p>
+<p>&nbsp;</p>
+<h2><strong>ALPHA RELEASE</strong></h2>
+<p>This inaugural release of the GDELT Global Difference Graph (GDG) 
+should be considered an alpha grade release. Based on user feedback and 
+our own monitoring over time we will be continuing to improve this 
+service as we roll it towards beta and may make breaking changes to the 
+data format, assumptions, workflows and end points. It also means that 
+while we have worked hard to make this service as accurate as possible, 
+the sheer number of moving parts and the enormous complexity of tasks 
+like document extraction at global scale mean there will always be some 
+level of error in the resulting data. There may also be brief outages 
+from time to time as we roll out major infrastructure changes to the 
+system, finetune our crawler fleet and adjust outputs and assumptions. 
+The alpha GDG release also enforces a versioning requirement on document
+ extraction upgrades that means that after major updates to our 
+extraction infrastructure there will be a 24 hour pause on text change 
+comparisons (see the section below for more details), which will be 
+removed as we move towards beta.</p>
+<p>To put it more succinctly, we’ve done our best to create a service 
+that is as accurate as we can make it and that we think will be 
+tremendously powerful for understanding the fluidity of the global news 
+landscape, but just keep in mind that as an alpha release there will be a
+ certain level of roughness around the edges and errors.</p>
+<p>&nbsp;</p>
+<h2><strong>ACCURACY</strong></h2>
+<p>The GDG identifies a number of different kinds of changes to articles. Server errors (currently only 404, 410 and <a href="https://www.thesun.co.uk/news/7019674/genoa-bridge-collapse-lorry-teetering-on-edge-of-italy-motorway-was-forced-to-brake-when-car-overtook-then-watched-driver-plunge-150ft/">451</a>
+ errors) are recorded as-is from the remote server. It is important to 
+remember that many kinds of errors may be transient and errors like “403
+ Forbidden” or a timeout may be unique to a specific crawler’s 
+interaction with the server rather than a broader error response. 
+GDELT’s crawler fleet is distributed across Google’s immense global data
+ center footprint, meaning at any given moment a new crawler might 
+launch on an IP address that previously belonged to a different user 
+that was blocked by a given site, inadvertently affecting that crawler 
+for the duration of its life (typically 30 minutes to an hour) or may 
+encounter a limited temporary issue with the remote server that causes 
+it to timeout or receive a server error. Transient network errors can 
+also result in a code 200 response that disconnects before the page 
+content itself is transferred. Most permanent error responses like 404’s
+ will not change, but keep in mind that the GDG merely reports the 
+experience of our crawlers when attempting to access the page at that 
+specific instant in time and you may see different results from your 
+specific IP addresses. For precision tasks you may wish to feed error 
+URLs into your own crawlers to test yourself.</p>
+<p>GDG crawlers use a 30 second timeout to give the best possible chance
+ to very slow websites. For timeouts and 500-series errors, the crawlers
+ will retry the URL a second time using a brand-new connection and allow
+ for another 30 second window to receive the results.</p>
+<p>To perform cross-domain or longitudinal analyses, use the 
+UNCHANGED_HTML and UNCHANGED_TEXT statuses (documented below) as a 
+normalization factor, comparing the number of statuses indicating 
+content changes to the number of UNCHANGED_* statuses. This way if a 
+site has a problem where most requests time out for a few hours and 
+there are only a handful of change reports during that period, you can 
+see from the low number of UNCHANGED_* statuses during those hours that 
+the reduced number of change reports is not a result of the site 
+performing less editing, but rather than our total monitoring volume 
+from that site was reduced during that period of time.</p>
+<p>When evaluating change reports, especially those involving large 
+scale changes to an article’s text, it is important to consider whether 
+the page also has a redirection status indicating that the original URL 
+now redirects to a new URL. In the vast majority of cases redirections 
+point to an updated version of the article, but in some cases sites may 
+redirect to administrative pages, such as this <a href="http://kfmx.com/alstrom-angels-hosting-fundraising-dinner/">article</a> that now <a href="http://kfmx.com/gdpr/consent/">redirects</a>
+ to a GDPR compliance page (instead of just displaying the notice as a 
+popover on the original page like most sites), which causes a page text 
+changed status to report that the entire article text has been replaced.
+ Some sites also do not correctly return 404’s for deleted pages and 
+instead return 200 with a page describing in textual or visual terms to 
+the user that the original page no longer exists. This can cause the 
+page text changed status to report the entire page has changed. Checking
+ the replacement text for boilerplate mentions of "404" or a "page not 
+being found" error in its respective language can help identify these 
+cases.</p>
+<p>Given the simplicity of extracting page titles, changes to title text
+ identified by the GDG can typically be trusted as-is. For precision 
+tasks it is important to note that GDELT combines the HTML 
+&lt;TITLE&gt;&lt;/TITLE&gt; tags with other elements of the page like 
+the OG:TITLE and other attributes to determine the “best” title and 
+handle TITLE tag abuses by some sites, as well as attempting to remove 
+extraneous elements like the site name from the title. However, in 
+nearly all cases title changes can be accepted as accurate. This can 
+include the actual <a href="http://www.zocalo.com.mx/reforma/detail/dispara-pdi-a-sospechoso-le-da-a-peaton">removal</a> of a page’s title, in which for unknown reasons a page that formerly had a title is republished without its title.</p>
+<p>Article body text changes, on the other hand, are entirely dependent 
+on the ability of the document extraction infrastructure’s ability to 
+correctly, robustly and repeatably extract the article text from the 
+rest of the page and do so with absolute stable precision.</p>
+<p>There are many factors that can negatively affect our ability to 
+precisely extract the body text, introducing error, particularly around 
+the exact start and stop boundaries of the text and the removal of 
+insets, allowing extraneous content to slip in that may change between 
+page fetches. For example, the server might truncate sections of the 
+page without reporting a problem. If a sufficient number of critical 
+sections are removed, that may impact how we see the page or even remove
+ the text entirely if it is buried at the bottom of a lengthy HTML page 
+that is truncated. Major structural changes to the page can impact the 
+extractor’s ability to correctly locate document boundaries. In extreme 
+cases a temporary misconfiguration of a server or CMS template might 
+cause sufficiently large blocks of badly encoded text to be injected 
+into a page (or even corrupt the encoding of the entire page) that it 
+interferes with our ability to correctly detect and decode the 
+characterset encoding of the page, leading us to incorrectly detect the 
+entire page as changed. In practice, certain changes to a page may cause
+ our extraction infrastructure to change its estimates of what precisely
+ constitutes the body of an article, allowing small amounts of unrelated
+ text to seep in that may change between page fetches.</p>
+<p>In short, the sheer magnitude of the number of moving parts involved 
+in correctly and precisely extracting each article’s body text across 
+the incredible stylistic, technical and linguistic diversity of the 
+world’s news outlets means there are necessarily going to be a certain 
+percentage of errors in our extractions, no matter how accurate they 
+are. Stable errors are those that persist despite small changes to the 
+page between fetches. Unstable errors are those where small but critical
+ changes to the page can yield small changes to the extracted text’s 
+start and end boundaries and inset removal, leading to false positive 
+change detections.</p>
+<p>For example, some sites have quirks in their HTML that can make them 
+difficult to properly extract, such as embedded “popover” text that is 
+rendered in HTML as standard body text, with JavaScript code that 
+dynamically hides it at runtime or “last updated” text that reports how 
+many hours it has been since the page was published and is integrated 
+into the body text with no styling or other visual or structural 
+indicators to allow it to be separated.</p>
+<p>In the end this means that not all changes the algorithms detect are 
+correct – there will always be a certain percentage of false positives. 
+For precision comparison needs, we recommend you manually compare the 
+current version of the page against a historical version and search for 
+the changes we report. Since 2014 GDELT has sent a realtime <a href="https://blog.gdeltproject.org/archiving-the-world-gdelt-joins-the-internet-archives-no-more-404-initiative/">stream</a>
+ of all of the URLs we monitor to the Internet Archive for ingestion 
+into their Wayback Machine, which as of last November totaled more than 
+221TB across 5.3 billion URLS. However, there can be a delay of several 
+hours between the URL being received by the Archive and when they are 
+able to crawl it, meaning that changes made in the first hour or two 
+after publication may not be reflected in the Archive’s version of the 
+page. We are currently working on several fronts to make it easier to 
+manually verify changes for high precision use cases.</p>
+<p>Caveats aside, in the majority of cases when you see a text change 
+recorded in the GDG it means there was a legitimate change to the 
+article’s text.</p>
+<p>&nbsp;</p>
+<h2><strong>DOCUMENT EXTRACTION INFRASTRUCTURE UPGRADES</strong></h2>
+<p>Correctly and robustly extracting the body text of a news article 
+from the rest of the page text and doing so accurately at planetary 
+scale, spanning a growing fraction of accessible online news outlets in 
+every country and more than 65 languages requires an immensely complex 
+and powerful document extraction infrastructure that we are constantly 
+improving over time. Ordinarily these continual improvements are 
+invisible – the quality of extractions just continues to improve over 
+time. Periodically however, we release substantial upgrades that 
+materially improve handling for a large number of cases. These kinds of 
+large changes create a problem when comparing the article text extracted
+ today using the upgraded infrastructure from the article text extracted
+ yesterday using the original infrastructure – the changes between the 
+two text versions may merely reflect adjustments in the functioning of 
+the algorithm rather than legitimate changes to the article itself.</p>
+<p>To address this, the alpha GDG release will only compare versions of 
+an article that were extracted using the same document extraction 
+infrastructure versions. This means that when we roll out a major 
+upgrade to the extraction infrastructure, the version numbers of its 
+various components will change. If we release an upgrade today, the GDG 
+crawlers will immediately begin extracting using the new codebase, but 
+the version signature of the extracted text won’t match that of the 
+previous versions of the article extracted yesterday and one week ago. 
+In this case, the GDG crawlers will still perform the HTTP and HTML 
+checks but will not proceed to document extraction and title and text 
+comparison.</p>
+<p>Thus, during the alpha phase, any major upgrade to the extraction 
+infrastructure will mean a 24-hour period from that point forward where 
+the GDG system will not perform title or text comparison checks. After 
+24 hours the versions of the articles being dispatched for their 24-hour
+ check will now match the previous version and the comparisons will 
+resume and after one week the weekly checks will resume as well.</p>
+<p>As we progress through the alpha phase towards beta we are working on
+ a fallback infrastructure that will allow the GDG crawlers to directly 
+fetch the previous original HTML and reperform document extraction using
+ the new engine so that the results are matched. This approach poses 
+considerable infrastructure and computational requirements and so likely
+ will not be implemented until the beta release but we hope to have such
+ dynamic reextraction in place for beta.</p>
+<p>&nbsp;</p>
+<h2><strong>TECHNICAL DETAILS AND FILE FORMAT</strong></h2>
+<p>The GDG is available as either newline delimited JSON files, produced
+ once per minute or as a BigQuery table updated every 15 minutes. The 
+BigQuery table is loaded directly from the JSON files so mirrors their 
+format precisely. An additional RSS feed of the changed URLs is also 
+available.</p>
+<p>&nbsp;</p>
+<ul>
+<li><strong>JSON Files</strong>. All files are in newline delimited 
+gzipped UTF8 JSON format and available at 
+http://data.gdeltproject.org/gdeltv3/gdg/YYYYMMDDHHMMSS.gdg.v3.json.gz, 
+starting from the first file <a href="http://data.gdeltproject.org/gdeltv3/gdg/20180827133100.gdg.v3.json.gz">http://data.gdeltproject.org/gdeltv3/gdg/20180827133100.gdg.v3.json.gz</a>
+ and running through one minute ago. The “SS” (seconds) component of the
+ date is always zero and the files are added one per minute. To download
+ all of the available files, iterate from the first file to one minute 
+ago in one-minute increments. Note that due to the 15 minute update 
+cycle of GDELT 2.0, the GDG receives a new batch of URLs every 15 
+minutes and may finish them after a few minutes, meaning there may be 
+gaps of no files when it was waiting for new URLs between input batches,
+ so be aware that there are many missing minute files representing 
+periods of no data.</li>
+<li><strong>BigQuery</strong>. The entire dataset is also available as a public BigQuery table as <a href="https://bigquery.cloud.google.com/table/gdelt-bq:gdeltv2.gdg_partitioned?pli=1">gdelt-bq:gdeltv2.gdg_partitioned</a>
+ and is partitioned on the “fetchdate_check” field to allow you to 
+minimize the amount of data you have to query. The BigQuery table is 
+populated directly from the JSON files, so is an exact duplicate in 
+terms of the meaning of each of the fields.</li>
+<li><strong>RSS Feed</strong>. For web archives and others that want a continual updating stream of changed URLs, there is also an RSS 2.0 feed at <a href="http://data.gdeltproject.org/gdeltv3/gdg/RSS-GDG-15MINROLLUP.rss">http://data.gdeltproject.org/gdeltv3/gdg/RSS-GDG-15MINROLLUP.rss</a>
+ that updates every 15 minutes (typically a few minutes after :00, :15, 
+:30 and :45 after the hour) and contains a list of all of the URLs that 
+the GDG detected in the last 15 minutes as having changed in some 
+fashion since they were originally crawled. The feed contains only those
+ URLs found in the last 15 minutes, meaning it must be monitored every 
+15 minutes (ideally at :05, :20, :35 and :50 minutes after the hour to 
+give room in case it takes the system a minute or two to generate the 
+file). At this time the feed includes all URLs that were flagged as 
+having any kind of change, so for archives that wish to record only 
+specific kinds of changes (such as only 404’s), they should process the 
+JSON files and filter based on the status code.</li>
+</ul>
+<p>&nbsp;</p>
+<p>The JSON format is relatively simple. Each JSON file contains a 
+series of records, one per line, that document a specific page status 
+observed by the GDG system. A page status might indicate that the HTML 
+of the page is unchanged, that the HTML is changed, but the text has not
+ been edited, that the title has changed, that the URL now redirects to a
+ new URL or that the URL now yields a error, among other indicators. 
+Each record includes a “status” field that indicates the type of status 
+it represents and then a series of additional fields distinct to that 
+status. Some fields are present in all statuses, while many are present 
+only in some statuses. A given URL may have multiple entries in the JSON
+ file reflecting multiple observed status changes. For example, a URL 
+that now redirects to a new URL and has edits to its title and body text
+ would appear as three separate rows in the JSON file, one each for the 
+redirect, title and body text changes.</p>
+<p>The table below is organized by the value of the “status” field and 
+shows under each status the fields that are present (though some fields 
+may be blank).</p>
+<p>&nbsp;</p>
+<ul>
+<li><strong>HTTP_ERROR</strong>. This indicates a fatal error in 
+retrieving the page. Since the page content could not be successfully 
+downloaded, no further analysis will be performed. Presently only code 
+404, 410 and 451 errors are returned – all other errors are too 
+transient or related to potential IP targeting to reliably return at 
+this time, though we will likely update this list over time.
+<ul>
+<li><strong>page_url</strong>. The URL of the article being checked.</li>
+<li><strong>page_title</strong>. The original title of the article.</li>
+<li><strong>page_domain_full</strong>. The full domain of the article, including all subdomains (such as “arabic.cnn.com”).</li>
+<li><strong>page_domain_root</strong>. The root domain of the article, minus subdomains (“arabic.cnn.com” would be recorded as just “cnn.com” in this field).</li>
+<li><strong>page_lang</strong>. The human readable name of the language the article is written in (as detected when it was first crawled).</li>
+<li><strong>fetchdate_orig</strong>. The precise UTC time (to the second) that the article was originally crawled.</li>
+<li><strong>fetchdate_check</strong>. The precise UTC time (to the second) that the article was crawled by the GDG system to perform the comparison check.</li>
+<li><strong>http_code</strong>. The HTTP code reported by the server.</li>
+<li><strong>http_size</strong>. The total number of bytes returned by the server.</li>
+</ul>
+</li>
+<li><strong>HTTP_REDIRECT</strong>. This indicates that when the URL was
+ fetched, the server redirected the client to a new URL. Redirects that 
+purely change from HTTP to HTTPS or only insert a “www” at the front of 
+the domain name or a slash at the end of the URL are not reflected here.
+ The GDG crawler automatically follows the redirect to the new URL and 
+otherwise treats it as a normal URL, meaning that an article that 
+appears with this code will still be checked for title and content 
+changes. In the case that a server redirects the client multiple times, 
+only the final redirected URL is recorded.
+<ul>
+<li><strong>page_url</strong>. The URL of the article being checked.</li>
+<li><strong>page_title</strong>. The original title of the article.</li>
+<li><strong>page_domain_full</strong>. The full domain of the article, including all subdomains (such as “arabic.cnn.com”).</li>
+<li><strong>page_domain_root</strong>. The root domain of the article, minus subdomains (“arabic.cnn.com” would be recorded as just “cnn.com” in this field).</li>
+<li><strong>page_lang</strong>. The human readable name of the language the article is written in (as detected when it was first crawled).</li>
+<li><strong>fetchdate_orig</strong>. The precise UTC time (to the second) that the article was originally crawled.</li>
+<li><strong>fetchdate_check</strong>. The precise UTC time (to the second) that the article was crawled by the GDG system to perform the comparison check.</li>
+<li><strong>http_code</strong>. The HTTP code reported by the server.</li>
+<li><strong>http_size</strong>. The total number of bytes returned by the server.</li>
+<li><strong>redirect_url</strong>. The final URL the client was redirected to. In the case of multiple redirects, only the last one is recorded.</li>
+</ul>
+</li>
+<li><strong>UNCHANGED_HTML</strong>.&nbsp;This indicates that the HTML 
+of the entire article page remains unchanged. Since this necessarily 
+indicates that there are no content changes to the page, the comparison 
+process is ended for the article at this point.
+<ul>
+<li><strong>page_url</strong>. The URL of the article being checked.</li>
+<li><strong>page_title</strong>. The original title of the article.</li>
+<li><strong>page_domain_full</strong>. The full domain of the article, including all subdomains (such as “arabic.cnn.com”).</li>
+<li><strong>page_domain_root</strong>. The root domain of the article, minus subdomains (“arabic.cnn.com” would be recorded as just “cnn.com” in this field).</li>
+<li><strong>page_lang</strong>. The human readable name of the language the article is written in (as detected when it was first crawled).</li>
+<li><strong>fetchdate_orig</strong>. The precise UTC time (to the second) that the article was originally crawled.</li>
+<li><strong>fetchdate_check</strong>. The precise UTC time (to the second) that the article was crawled by the GDG system to perform the comparison check.</li>
+</ul>
+</li>
+<li><strong>UNCHANGED_CONTENT</strong>. This indicates that the HTML of 
+the page changed, but that neither the title nor the article text 
+changed. Typically this means a change to headers, footers, related 
+content insets, etc.
+<ul>
+<li>Same fields as <strong>UNCHANGED_HTML</strong>.</li>
+</ul>
+</li>
+<li><strong>PAGE_TITLECHANGE.&nbsp;</strong>This indicates that one or 
+more changes were detected in the page title. If the body text also 
+changed there will also be a separate entry for PAGE_TEXTCHANGE.
+<ul>
+<li><strong>page_url</strong>. The URL of the article being checked.</li>
+<li><strong>page_title</strong>. The original title of the article.</li>
+<li><strong>page_domain_full</strong>. The full domain of the article, including all subdomains (such as “arabic.cnn.com”).</li>
+<li><strong>page_domain_root</strong>. The root domain of the article, minus subdomains (“arabic.cnn.com” would be recorded as just “cnn.com” in this field).</li>
+<li><strong>page_lang</strong>. The human readable name of the language the article is written in (as detected when it was first crawled).</li>
+<li><strong>fetchdate_orig</strong>. The precise UTC time (to the second) that the article was originally crawled.</li>
+<li><strong>fetchdate_check</strong>. The precise UTC time (to the second) that the article was crawled by the GDG system to perform the comparison check.</li>
+<li><strong>title_new</strong>. The new title of the article.</li>
+<li><strong>num_changes</strong>. The total number of “changes” in the 
+page where a change is a run of text that can be a single word/character
+ or a large block of them.</li>
+<li><strong>change_unit</strong>. This will either be “word” indicating 
+that the document was split into “words” (specifically the text is 
+divided on spans of spaces) or “char” indicating that the document was 
+split into individual characters (specifically the Unicode definition of
+ a discrete “character” in the given language). For space-segmented 
+languages, word-level comparison yields more semantically meaningful 
+results, while character-level segmentation ensures fidelity to the 
+original text for non-space-segmented languages (since word segmentation
+ algorithms are imperfect and would introduce error to the process).</li>
+<li><strong>from_numchars</strong>. Total length of the original text in characters.</li>
+<li><strong>to_numchars</strong>. Total length of the new text in characters.</li>
+<li><strong>from_changedchars</strong>. Total number of characters of the original text that were replaced.</li>
+<li><strong>to_changedchars</strong>. Total number of characters of the new text that were different from the original.</li>
+<li><strong>tot_changedchars</strong>. Total number of characters changed in both the original and new text (calculated as “from_changedchars + to_changedchars”).</li>
+<li><strong>perc_changedchars</strong>. Percent of the total number of 
+characters in both the original and new text that changed (calculated as
+ “tot_changedchars / (from_numchars + to_numchars)”).</li>
+<li><strong>changes</strong>. This is a JSON array that contains a 
+series of objects representing each of the individual changes identified
+ by the differencing algorithm.
+<ul>
+<li>This is the first 75 characters of the original text block (text longer than this is truncated with a “…” added to the end).</li>
+<li>This is the first 75 characters of the new text block that replaced 
+it (text longer than this is truncated with a “…” added to the end).</li>
+<li><strong>from_range</strong>. This has the format “start-end” and 
+records the starting token position and ending token position of the 
+text in the original version that was changed. If “change_unit” is 
+“word” this will record word offsets, otherwise character offsets. 
+Offsets begin with 0. A single word change will result in both start and
+ end having the same value. A value of “3-3” with “change_unit” being 
+“word” means that word position 3 (the fourth word in the document since
+ offsets begin with 0) was replaced. A value of “0-3” means the words at
+ positions 0, 1, 2 and 3 were all replaced (a four word span). The 
+purpose of this field is to allow you to understand where approximately 
+in the text the change occurred (at the start, at the end, in the 
+middle, etc) and its length in words or characters to estimate its 
+overall size.</li>
+<li><strong>to_range</strong>. Same format and meaning as “from_range” but applies to the replacement text.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>PAGE_TEXTCHANGE</strong>. This indicates that one or more 
+changes were detected in the article text. If the page title also 
+changed there will also be a separate entry for PAGE_TITLECHANGE.
+<ul>
+<li>Same fields as <strong>PAGE_TITLECHANGE</strong>.</li>
+</ul>
+</li>
+</ul>
+<p><strong>&nbsp;</strong></p>
+<p>We’re tremendously excited by the potential this incredible new 
+dataset offers and we can’t wait to see what you are able to do with it!</p>
+<p>&nbsp;</p>
+    </div><!-- .entry-content -->
+
+    <footer class="entry-footer">
+            </footer><!-- .entry-footer -->
+
+    
+</article>
+    
+	<nav class="navigation post-navigation" role="navigation" aria-label="Posts">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="https://blog.gdeltproject.org/vgkg-2-0-adds-histogram-based-image-entropy-filtering-and-webp-support/" rel="prev">← VGKG 2.0 Adds Histogram-Based Image Entropy Filtering And WEBP Support</a></div><div class="nav-next"><a href="https://blog.gdeltproject.org/understanding-false-positives-in-the-new-gdg/" rel="next">Understanding False Positives In the New GDG →</a></div></div>
+	</nav>
+    
+<div class="clear"></div>
+
+</div><!--/#clean-grid-posts-wrapper -->
+
+
+<div class="clean-grid-featured-posts-area clearfix">
+</div>
+
+<div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all; width: 920px; height: 8386px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div></div>
+</div><!-- /#clean-grid-main-wrapper -->
+
+
+<div class="clean-grid-sidebar-wrapper clearfix" id="clean-grid-sidebar-wrapper" itemscope="itemscope" itemtype="http://schema.org/WPSideBar" role="complementary" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: relative; transform: none;">
+
+
+<div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all; width: 920px; height: 11px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div></div>
+</div><!-- /#clean-grid-sidebar-wrapper-->
+
+</div><!--/#clean-grid-content-wrapper -->
+</div><!--/#clean-grid-wrapper -->
+
+
+
+<div class="clean-grid-footer-blocks clearfix" id="clean-grid-footer-blocks" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
+<div class="clearfix">
+
+<div class="clean-grid-footer-block-1">
+<div id="archives-8" class="clean-grid-footer-widget widget widget_archive"><h2 class="clean-grid-widget-title"><span>Archives</span></h2>		<label class="screen-reader-text" for="archives-dropdown-8">Archives</label>
+		<select id="archives-dropdown-8" name="archive-dropdown">
+			
+			<option value="" selected="selected">Select Month</option>
+				<option value="https://blog.gdeltproject.org/2025/03/"> March 2025 </option>
+	<option value="https://blog.gdeltproject.org/2025/02/"> February 2025 </option>
+	<option value="https://blog.gdeltproject.org/2025/01/"> January 2025 </option>
+	<option value="https://blog.gdeltproject.org/2024/12/"> December 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/11/"> November 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/10/"> October 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/09/"> September 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/08/"> August 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/07/"> July 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/06/"> June 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/05/"> May 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/04/"> April 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/03/"> March 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/02/"> February 2024 </option>
+	<option value="https://blog.gdeltproject.org/2024/01/"> January 2024 </option>
+	<option value="https://blog.gdeltproject.org/2023/12/"> December 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/11/"> November 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/10/"> October 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/09/"> September 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/08/"> August 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/07/"> July 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/06/"> June 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/05/"> May 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/04/"> April 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/03/"> March 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/02/"> February 2023 </option>
+	<option value="https://blog.gdeltproject.org/2023/01/"> January 2023 </option>
+	<option value="https://blog.gdeltproject.org/2022/12/"> December 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/11/"> November 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/10/"> October 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/09/"> September 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/08/"> August 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/07/"> July 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/06/"> June 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/05/"> May 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/04/"> April 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/03/"> March 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/02/"> February 2022 </option>
+	<option value="https://blog.gdeltproject.org/2022/01/"> January 2022 </option>
+	<option value="https://blog.gdeltproject.org/2021/12/"> December 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/11/"> November 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/10/"> October 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/09/"> September 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/08/"> August 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/07/"> July 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/06/"> June 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/05/"> May 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/04/"> April 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/03/"> March 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/02/"> February 2021 </option>
+	<option value="https://blog.gdeltproject.org/2021/01/"> January 2021 </option>
+	<option value="https://blog.gdeltproject.org/2020/12/"> December 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/11/"> November 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/10/"> October 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/09/"> September 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/08/"> August 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/07/"> July 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/06/"> June 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/05/"> May 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/04/"> April 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/03/"> March 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/02/"> February 2020 </option>
+	<option value="https://blog.gdeltproject.org/2020/01/"> January 2020 </option>
+	<option value="https://blog.gdeltproject.org/2019/12/"> December 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/11/"> November 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/10/"> October 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/09/"> September 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/08/"> August 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/07/"> July 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/06/"> June 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/05/"> May 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/04/"> April 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/03/"> March 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/02/"> February 2019 </option>
+	<option value="https://blog.gdeltproject.org/2019/01/"> January 2019 </option>
+	<option value="https://blog.gdeltproject.org/2018/12/"> December 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/11/"> November 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/10/"> October 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/09/"> September 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/08/"> August 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/07/"> July 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/06/"> June 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/05/"> May 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/04/"> April 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/03/"> March 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/02/"> February 2018 </option>
+	<option value="https://blog.gdeltproject.org/2018/01/"> January 2018 </option>
+	<option value="https://blog.gdeltproject.org/2017/12/"> December 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/11/"> November 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/10/"> October 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/09/"> September 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/08/"> August 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/07/"> July 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/06/"> June 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/05/"> May 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/04/"> April 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/03/"> March 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/02/"> February 2017 </option>
+	<option value="https://blog.gdeltproject.org/2017/01/"> January 2017 </option>
+	<option value="https://blog.gdeltproject.org/2016/12/"> December 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/11/"> November 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/10/"> October 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/09/"> September 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/08/"> August 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/07/"> July 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/06/"> June 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/05/"> May 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/04/"> April 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/03/"> March 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/02/"> February 2016 </option>
+	<option value="https://blog.gdeltproject.org/2016/01/"> January 2016 </option>
+	<option value="https://blog.gdeltproject.org/2015/12/"> December 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/11/"> November 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/10/"> October 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/09/"> September 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/08/"> August 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/07/"> July 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/06/"> June 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/05/"> May 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/04/"> April 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/03/"> March 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/02/"> February 2015 </option>
+	<option value="https://blog.gdeltproject.org/2015/01/"> January 2015 </option>
+	<option value="https://blog.gdeltproject.org/2014/12/"> December 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/11/"> November 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/10/"> October 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/09/"> September 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/08/"> August 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/07/"> July 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/06/"> June 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/05/"> May 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/04/"> April 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/03/"> March 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/02/"> February 2014 </option>
+	<option value="https://blog.gdeltproject.org/2014/01/"> January 2014 </option>
+	<option value="https://blog.gdeltproject.org/2013/12/"> December 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/11/"> November 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/10/"> October 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/09/"> September 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/08/"> August 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/07/"> July 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/06/"> June 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/05/"> May 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/04/"> April 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/03/"> March 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/02/"> February 2013 </option>
+	<option value="https://blog.gdeltproject.org/2013/01/"> January 2013 </option>
+	<option value="https://blog.gdeltproject.org/2012/12/"> December 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/11/"> November 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/10/"> October 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/09/"> September 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/08/"> August 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/07/"> July 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/06/"> June 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/05/"> May 2012 </option>
+	<option value="https://blog.gdeltproject.org/2012/04/"> April 2012 </option>
+	<option value="https://blog.gdeltproject.org/2011/12/"> December 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/11/"> November 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/10/"> October 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/09/"> September 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/08/"> August 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/07/"> July 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/05/"> May 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/04/"> April 2011 </option>
+	<option value="https://blog.gdeltproject.org/2011/03/"> March 2011 </option>
+	<option value="https://blog.gdeltproject.org/2010/11/"> November 2010 </option>
+	<option value="https://blog.gdeltproject.org/2010/09/"> September 2010 </option>
+	<option value="https://blog.gdeltproject.org/2010/08/"> August 2010 </option>
+	<option value="https://blog.gdeltproject.org/2010/06/"> June 2010 </option>
+	<option value="https://blog.gdeltproject.org/2010/03/"> March 2010 </option>
+	<option value="https://blog.gdeltproject.org/2009/11/"> November 2009 </option>
+	<option value="https://blog.gdeltproject.org/2009/10/"> October 2009 </option>
+	<option value="https://blog.gdeltproject.org/2009/07/"> July 2009 </option>
+	<option value="https://blog.gdeltproject.org/2009/05/"> May 2009 </option>
+	<option value="https://blog.gdeltproject.org/2009/01/"> January 2009 </option>
+	<option value="https://blog.gdeltproject.org/2008/11/"> November 2008 </option>
+	<option value="https://blog.gdeltproject.org/2008/10/"> October 2008 </option>
+	<option value="https://blog.gdeltproject.org/2008/07/"> July 2008 </option>
+	<option value="https://blog.gdeltproject.org/2008/04/"> April 2008 </option>
+	<option value="https://blog.gdeltproject.org/2008/01/"> January 2008 </option>
+	<option value="https://blog.gdeltproject.org/2007/10/"> October 2007 </option>
+	<option value="https://blog.gdeltproject.org/2007/07/"> July 2007 </option>
+	<option value="https://blog.gdeltproject.org/2006/06/"> June 2006 </option>
+	<option value="https://blog.gdeltproject.org/2006/05/"> May 2006 </option>
+	<option value="https://blog.gdeltproject.org/2006/01/"> January 2006 </option>
+	<option value="https://blog.gdeltproject.org/2005/12/"> December 2005 </option>
+	<option value="https://blog.gdeltproject.org/2005/09/"> September 2005 </option>
+	<option value="https://blog.gdeltproject.org/2005/05/"> May 2005 </option>
+	<option value="https://blog.gdeltproject.org/2005/01/"> January 2005 </option>
+	<option value="https://blog.gdeltproject.org/2004/07/"> July 2004 </option>
+	<option value="https://blog.gdeltproject.org/2004/06/"> June 2004 </option>
+
+		</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "archives-dropdown-8" );
+	function onSelectChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value !== '' ) {
+			document.location.href = this.options[ this.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onSelectChange;
+})();
+/* ]]> */
+</script>
+			</div></div>
+
+<div class="clean-grid-footer-block-2">
+</div>
+
+<div class="clean-grid-footer-block-3">
+</div>
+
+<div class="clean-grid-footer-block-4">
+</div>
+
+</div>
+</div><!--/#clean-grid-footer-blocks-->
+
+
+<div class="clean-grid-footer clearfix" id="clean-grid-footer">
+<div class="clean-grid-foot-wrap clearfix">
+  <p class="clean-grid-copyright">The Official GDELT Project Blog</p>
+</div>
+</div><!--/#clean-grid-footer -->
+
+</div>
+</div>
+
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/jquery.fitvids.js" id="fitvids-js"></script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/ResizeSensor.js" id="ResizeSensor-js"></script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/theia-sticky-sidebar.js" id="theia-sticky-sidebar-js"></script>
+<script type="text/javascript" id="clean-grid-customjs-js-extra">
+/* <![CDATA[ */
+var clean_grid_ajax_object = {"ajaxurl":"https:\/\/blog.gdeltproject.org\/wp-admin\/admin-ajax.php","sticky_menu":"1","sticky_sidebar":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/custom.js" id="clean-grid-customjs-js"></script>
+<script type="text/javascript" src="Announcing%20the%20GDELT%20Global%20Difference%20Graph%20(GDG)_%20Planetary%20Scale%20Change%20Detection%20For%20The%20Global%20News%20Media%20%E2%80%93%20The%20GDELT%20Project_files/wp-embed.min.js" id="wp-embed-js"></script>
+
+</body></html>
