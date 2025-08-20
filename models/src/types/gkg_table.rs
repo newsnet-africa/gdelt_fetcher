@@ -15,6 +15,8 @@ use super::event_table::{
 };
 use super::lookup_types::country::CountryZone;
 use super::lookup_types::geography_type::GeographyType;
+use crate::gcam::lookup::EnrichedGCAMEntry;
+use crate::gcam::memory_database::GCAMCodebookDatabase;
 
 /// Character offset within a document
 #[derive(Debug, Clone, PartialEq)]
@@ -92,13 +94,6 @@ pub struct Tone {
     pub activity_reference_density: f32,
     pub selfgroup_reference_density: f32,
     pub word_count: u64,
-}
-
-/// GCAM (Global Content Analysis Measures) entry
-#[derive(Debug, Clone, PartialEq)]
-pub struct GCAMEntry {
-    pub key: String,
-    pub value: f32,
 }
 
 /// Quotation with metadata
@@ -186,8 +181,8 @@ pub struct GKGTable {
     /// V2.1ENHANCEDDATES - Date references with offsets
     pub enhanced_dates: Vec<EnhancedDate>,
 
-    /// V2GCAM - Global Content Analysis Measures
-    pub gcam: Vec<GCAMEntry>,
+    /// V2GCAM - Global Content Analysis Measures (Enhanced)
+    pub gcam: Vec<EnrichedGCAMEntry>,
 
     /// V2.1SHARINGIMAGE - Sharing image URL
     pub sharing_image: Option<Url>,
@@ -296,8 +291,61 @@ impl GKGTable {
     }
 
     /// Get GCAM data
-    pub fn gcam(&self) -> &[GCAMEntry] {
+    pub fn gcam(&self) -> &[EnrichedGCAMEntry] {
         &self.gcam
+    }
+
+    /// Get GCAM entries by dictionary type
+    pub fn gcam_by_dictionary(
+        &self,
+        dictionary: &crate::gcam::lookup::Dictionary,
+    ) -> Vec<&EnrichedGCAMEntry> {
+        self.gcam
+            .iter()
+            .filter(|entry| {
+                entry
+                    .metadata
+                    .as_ref()
+                    .map(|meta| &meta.dictionary == dictionary)
+                    .unwrap_or(false)
+            })
+            .collect()
+    }
+
+    /// Get GCAM entries with available metadata
+    pub fn gcam_with_metadata(&self) -> Vec<&EnrichedGCAMEntry> {
+        self.gcam
+            .iter()
+            .filter(|entry| entry.metadata.is_some())
+            .collect()
+    }
+
+    /// Get GCAM entries without metadata (unknown variables)
+    pub fn gcam_without_metadata(&self) -> Vec<&EnrichedGCAMEntry> {
+        self.gcam
+            .iter()
+            .filter(|entry| entry.metadata.is_none())
+            .collect()
+    }
+
+    /// Get GCAM coverage statistics
+    pub fn gcam_coverage_stats(&self) -> crate::gcam::GCAMCoverageStats {
+        let total_entries = self.gcam.len();
+        let entries_with_metadata = self.gcam_with_metadata().len();
+        let entries_without_metadata = self.gcam_without_metadata().len();
+
+        let coverage_percentage = if total_entries > 0 {
+            (entries_with_metadata as f64 / total_entries as f64) * 100.0
+        } else {
+            0.0
+        };
+
+        crate::gcam::GCAMCoverageStats {
+            total_entries,
+            entries_with_metadata,
+            entries_without_metadata,
+            coverage_percentage,
+        }
     }
 
     /// Get sharing image URL
@@ -690,7 +738,14 @@ fn parse_simple_list(s: &str) -> Vec<String> {
 }
 
 /// Parse GCAM data
-fn parse_gcam(s: &str) -> Vec<GCAMEntry> {
+fn parse_gcam(s: &str) -> Vec<EnrichedGCAMEntry> {
+    parse_gcam_with_database(s, None)
+}
+
+fn parse_gcam_with_database(
+    s: &str,
+    gcam_db: Option<&GCAMCodebookDatabase>,
+) -> Vec<EnrichedGCAMEntry> {
     if s.is_empty() {
         return vec![];
     }
@@ -708,7 +763,13 @@ fn parse_gcam(s: &str) -> Vec<GCAMEntry> {
 
         let key = parts[0].to_string();
         if let Ok(value) = parts[1].parse::<f32>() {
-            entries.push(GCAMEntry { key, value });
+            let enriched_entry = if let Some(db) = gcam_db {
+                db.enrich_gcam_entry(&key, value)
+                    .unwrap_or_else(|_| EnrichedGCAMEntry::from_simple(key, value))
+            } else {
+                EnrichedGCAMEntry::from_simple(key, value)
+            };
+            entries.push(enriched_entry);
         }
     }
 
@@ -916,10 +977,20 @@ fn parse_translation_info(s: &str) -> Option<TranslationInfo> {
     }
 }
 
-impl TryFrom<StringRecord> for GKGTable {
-    type Error = anyhow::Error;
+impl GKGTable {
+    /// Create GKGTable from StringRecord with GCAM database for enrichment
+    pub fn try_from_with_gcam_db(
+        record: StringRecord,
+        gcam_db: &GCAMCodebookDatabase,
+    ) -> Result<Self, anyhow::Error> {
+        Self::try_from_with_optional_gcam_db(record, Some(gcam_db))
+    }
 
-    fn try_from(record: StringRecord) -> Result<Self, Self::Error> {
+    /// Create GKGTable from StringRecord with optional GCAM database for enrichment
+    pub fn try_from_with_optional_gcam_db(
+        record: StringRecord,
+        gcam_db: Option<&GCAMCodebookDatabase>,
+    ) -> Result<Self, anyhow::Error> {
         // GKG V2.1 format has variable number of fields, but minimum 16 for core data
         if record.len() < 16 {
             return Err(anyhow!(
@@ -1046,7 +1117,7 @@ impl TryFrom<StringRecord> for GKGTable {
             enhanced_dates: parse_enhanced_dates(fields.get(16).map_or("", |s| s)),
 
             // Field 17: V2GCAM (comma-delimited blocks with colon key/value pairs)
-            gcam: parse_gcam(fields.get(17).map_or("", |s| s)),
+            gcam: parse_gcam_with_database(fields.get(17).map_or("", |s| s), gcam_db),
 
             // Field 18: V2.1SHARINGIMAGE (textual URL)
             sharing_image: fields
@@ -1075,6 +1146,18 @@ impl TryFrom<StringRecord> for GKGTable {
             // Field 26: V2.1TRANSLATIONINFO (semicolon-delimited fields)
             translation_info: parse_translation_info(fields.get(26).map_or("", |s| s)),
         })
+    }
+}
+
+impl TryFrom<StringRecord> for GKGTable {
+    type Error = anyhow::Error;
+
+    fn try_from(record: StringRecord) -> Result<Self, Self::Error> {
+        // Use the in-memory GCAM database for enrichment by default
+        match GCAMCodebookDatabase::new_temp() {
+            Ok(db) => Self::try_from_with_optional_gcam_db(record, Some(&db)),
+            Err(_) => Self::try_from_with_optional_gcam_db(record, None),
+        }
     }
 }
 
@@ -1254,6 +1337,80 @@ mod tests {
         assert_eq!(gcam[0].value, 125.0);
         assert_eq!(gcam[1].key, "c2.21");
         assert_eq!(gcam[1].value, 4.0);
+        assert_eq!(gcam[2].key, "c10.1");
+        assert_eq!(gcam[2].value, 40.0);
+        assert_eq!(gcam[3].key, "v10.1");
+        assert_eq!(gcam[3].value, 3.21111111);
+    }
+
+    #[test]
+    #[ignore]
+    fn test_gcam_enrichment_in_gkg_table() {
+        // Create a mock GKG table record with GCAM data that should be enriched
+        let fields = vec![
+            "20230820120000-123",                                // Field 0: compound ID
+            "20230820120000",                                    // Field 1: date
+            "1",                       // Field 2: source collection identifier
+            "Test Source",             // Field 3: source common name
+            "http://example.com/test", // Field 4: document identifier
+            "",                        // Field 5: V1 counts
+            "",                        // Field 6: V2 counts
+            "",                        // Field 7: V1 themes
+            "",                        // Field 8: V2 enhanced themes
+            "",                        // Field 9: V1 locations
+            "",                        // Field 10: V2 enhanced locations
+            "",                        // Field 11: V1 persons
+            "",                        // Field 12: V2 enhanced persons
+            "",                        // Field 13: V1 organizations
+            "",                        // Field 14: V2 enhanced organizations
+            "0,0,0,0,0,0,100",         // Field 15: tone
+            "",                        // Field 16: enhanced dates
+            "c1.1:0.75,v19.1:4.785,v20.1:0.471,unknown_var:1.0", // Field 17: GCAM
+            "",                        // Field 18: sharing image
+            "",                        // Field 19: related images
+            "",                        // Field 20: social image embeds
+            "",                        // Field 21: social video embeds
+            "",                        // Field 22: quotations
+            "",                        // Field 23: all names
+            "",                        // Field 24: amounts
+            "",                        // Field 25: reserved
+            "",                        // Field 26: translation info
+        ];
+
+        let record = csv::StringRecord::from(fields);
+
+        // Parse the GKG table - this should now use the in-memory database by default
+        let gkg_table = GKGTable::try_from(record).expect("Failed to parse GKG table");
+
+        // Verify GCAM entries were enriched
+        assert_eq!(gkg_table.gcam.len(), 4);
+
+        // Check that known variables were enriched
+        let c1_1_entry = gkg_table.gcam.iter().find(|e| e.key == "c1.1").unwrap();
+        assert!(c1_1_entry.metadata.is_some(), "c1.1 should have metadata");
+
+        let v19_1_entry = gkg_table.gcam.iter().find(|e| e.key == "v19.1").unwrap();
+        assert!(v19_1_entry.metadata.is_some(), "v19.1 should have metadata");
+
+        let v20_1_entry = gkg_table.gcam.iter().find(|e| e.key == "v20.1").unwrap();
+        assert!(v20_1_entry.metadata.is_some(), "v20.1 should have metadata");
+
+        // Check that unknown variables have no metadata
+        let unknown_entry = gkg_table
+            .gcam
+            .iter()
+            .find(|e| e.key == "unknown_var")
+            .unwrap();
+        assert!(
+            unknown_entry.metadata.is_none(),
+            "unknown_var should not have metadata"
+        );
+
+        // Verify specific metadata content
+        if let Some(metadata) = &c1_1_entry.metadata {
+            assert_eq!(metadata.variable, "c1.1");
+            assert_eq!(metadata.dimension_name, "AESTHETIC");
+        }
     }
 
     #[test]

@@ -17,5 +17,14 @@ url = "2.5.4"
 tokio-util = "0.7.15"
 tempfile = { version = "3.20.0", features = ["nightly"] }
 
-[workspace]
-members = ["data", "models"]
+[[bin]]
+name = "populate_gcam_db"
+path = "populate_gcam_db.rs"
+
+[[bin]]
+name = "fix_csv_encoding"
+path = "fix_csv_encoding.rs"
+
+[[bin]]
+name = "verify_gcam_enrichment"
+path = "verify_gcam_enrichment.rs"
