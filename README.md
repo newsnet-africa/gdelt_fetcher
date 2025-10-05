@@ -8,6 +8,20 @@ The gdelt_fetcher crate provides foundational GDELT data access with basic fetch
 
 ## Completed Components
 
+### Simplified API (New!)
+- [x] Clean, high-level API in `gdelt_fetcher::api` module:
+  - `fetch_latest_events()` - Fetch the most recent events
+  - `fetch_latest_mentions()` - Fetch the most recent mentions
+  - `fetch_latest_gkg()` - Fetch the most recent GKG data
+  - `fetch_events_by_date(date)` - Fetch events for specific date
+  - `fetch_mentions_by_date(date)` - Fetch mentions for specific date
+  - `fetch_gkg_by_date(date)` - Fetch GKG data for specific date
+  - `fetch_all_latest()` - Fetch all data types concurrently
+  - `fetch_all_by_date(date)` - Fetch all data types for specific date
+- [x] All functions return vectors of strongly-typed data structures
+- [x] Timezone-aware date handling with automatic UTC conversion
+- [x] Comprehensive documentation and examples
+
 ### Main Library Interface
 - [x] High-level convenience functions for fetching latest data:
   - `fetch_and_parse_events()` - Async function for latest GDELT events
@@ -45,6 +59,53 @@ The gdelt_fetcher crate provides foundational GDELT data access with basic fetch
 - [x] GCAM database population script (`populate_gcam_db.rs`)
 - [x] CSV encoding fix utility (`fix_csv_encoding.rs`)
 - [x] GCAM enrichment verification script (`verify_gcam_enrichment.rs`)
+
+## Quick Start
+
+### Using the Simplified API (Recommended)
+
+```rust
+use gdelt_fetcher::api::{fetch_latest_events, fetch_events_by_date};
+use chrono::{Utc, TimeZone};
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // Fetch latest events
+    let events = fetch_latest_events().await?;
+    println!("Fetched {} latest events", events.len());
+
+    // Fetch events for a specific date
+    let date = Utc.with_ymd_and_hms(2024, 1, 15, 0, 0, 0).unwrap();
+    let historical_events = fetch_events_by_date(date).await?;
+    println!("Fetched {} events for 2024-01-15", historical_events.len());
+
+    // Fetch all data types at once
+    let (events, mentions, gkg_data) = fetch_all_latest().await?;
+    println!("Fetched {} events, {} mentions, {} GKG records",
+             events.len(), mentions.len(), gkg_data.len());
+
+    Ok(())
+}
+```
+
+See `examples/simple_api_example.rs` for comprehensive usage examples and `API_README.md` for detailed API documentation.
+
+### Using the Lower-Level Interface
+
+```rust
+use gdelt_fetcher::{fetch_and_parse_events, fetch_and_parse_mentions, fetch_and_parse_gkg};
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let events = fetch_and_parse_events().await?;
+    let mentions = fetch_and_parse_mentions().await?;
+    let gkg_data = fetch_and_parse_gkg().await?;
+    
+    println!("Fetched {} events, {} mentions, {} GKG records",
+             events.len(), mentions.len(), gkg_data.len());
+    Ok(())
+}
+```
 
 ## TODO
 

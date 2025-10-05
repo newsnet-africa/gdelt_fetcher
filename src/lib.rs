@@ -59,12 +59,16 @@ use anyhow::Result;
 use log::info;
 use std::fs;
 
+// API module for simplified GDELT data fetching
+pub mod api;
+
 // Re-export main types and fetchers for convenience
 pub use data::fetchers::{
     DataFetcher,
     gdelt::{
-        CsvExtension, EventTableFetcher, FileExtension, GKGTableFetcher, GdeltFetcher,
-        GdeltVersion, JsonExtension, MentionTableFetcher, TableType,
+        CsvExtension, EventTableFetcher, EventTableIterator, FileExtension, GKGTableFetcher,
+        GKGTableIterator, GdeltFetcher, GdeltVersion, JsonExtension, MentionTableFetcher,
+        MentionTableIterator, TableType,
     },
 };
 
@@ -73,7 +77,7 @@ pub use models::types::{
 };
 
 /// Create temporary directories for a given data type
-fn setup_temp_directories(data_type: &str) -> Result<(String, String)> {
+pub fn setup_temp_directories(data_type: &str) -> Result<(String, String)> {
     let tmp_dir = format!("./tmp/{}", data_type);
     let output_dir = format!("./data/{}", data_type);
 
