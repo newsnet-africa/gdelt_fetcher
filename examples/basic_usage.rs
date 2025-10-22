@@ -6,8 +6,8 @@
 use anyhow::Result;
 use chrono::Timelike;
 use gdelt_fetcher::{
-    DataFetcher, EventTableFetcher, MentionTableFetcher, fetch_and_parse_events,
-    fetch_and_parse_gkg, fetch_and_parse_mentions,
+    DataFetcher, EventTableFetcher, MentionTableFetcher, fetch_and_parse_latest_events,
+    fetch_and_parse_latest_gkg, fetch_and_parse_latest_mentions,
 };
 use std::collections::HashMap;
 use tokio::time::{Duration, sleep};
@@ -46,7 +46,7 @@ async fn basic_fetching_example() -> Result<()> {
     println!("---------------------------------");
 
     println!("🔄 Fetching latest GDELT events...");
-    let events = fetch_and_parse_events().await?;
+    let events = fetch_and_parse_latest_events().await?;
     println!("✅ Fetched {} events", events.len());
 
     // Display a sample event
@@ -74,7 +74,7 @@ async fn basic_fetching_example() -> Result<()> {
     }
 
     println!("\n🔄 Fetching latest mentions...");
-    let mentions = fetch_and_parse_mentions().await?;
+    let mentions = fetch_and_parse_latest_mentions().await?;
     println!("✅ Fetched {} mentions", mentions.len());
 
     // Display a sample mention
@@ -92,7 +92,7 @@ async fn basic_fetching_example() -> Result<()> {
     }
 
     println!("\n🔄 Fetching latest GKG data...");
-    let gkg_data = fetch_and_parse_gkg().await?;
+    let gkg_data = fetch_and_parse_latest_gkg().await?;
     println!("✅ Fetched {} GKG records", gkg_data.len());
 
     // Display a sample GKG record
@@ -202,8 +202,8 @@ async fn data_analysis_example() -> Result<()> {
 
     // Fetch data for analysis
     println!("🔄 Fetching data for analysis...");
-    let events = fetch_and_parse_events().await?;
-    let mentions = fetch_and_parse_mentions().await?;
+    let events = fetch_and_parse_latest_events().await?;
+    let mentions = fetch_and_parse_latest_mentions().await?;
 
     println!(
         "✅ Data fetched: {} events, {} mentions",
@@ -326,7 +326,7 @@ async fn error_handling_example() -> Result<()> {
         attempt += 1;
         println!("  Attempt {} of {}", attempt, max_retries);
 
-        match fetch_and_parse_events().await {
+        match fetch_and_parse_latest_events().await {
             Ok(events) => {
                 println!(
                     "✅ Successfully fetched {} events on attempt {}",
@@ -360,7 +360,7 @@ async fn error_handling_example() -> Result<()> {
     // Try to fetch different data types
     // Try different fetching operations
     println!("Testing Events...");
-    match fetch_and_parse_events().await {
+    match fetch_and_parse_latest_events().await {
         Ok(_) => {
             println!("✅ Events fetch successful");
             successful_fetches += 1;
@@ -372,7 +372,7 @@ async fn error_handling_example() -> Result<()> {
     }
 
     println!("Testing Mentions...");
-    match fetch_and_parse_mentions().await {
+    match fetch_and_parse_latest_mentions().await {
         Ok(_) => {
             println!("✅ Mentions fetch successful");
             successful_fetches += 1;
@@ -384,7 +384,7 @@ async fn error_handling_example() -> Result<()> {
     }
 
     println!("Testing GKG...");
-    match fetch_and_parse_gkg().await {
+    match fetch_and_parse_latest_gkg().await {
         Ok(_) => {
             println!("✅ GKG fetch successful");
             successful_fetches += 1;
@@ -458,7 +458,7 @@ async fn performance_monitoring_example() -> Result<()> {
     println!("\n📊 Method 2: Collection Processing");
     let start_time = Instant::now();
 
-    let events = fetch_and_parse_events().await?;
+    let events = fetch_and_parse_latest_events().await?;
     let collection_fetch_time = start_time.elapsed();
 
     let process_start = Instant::now();
