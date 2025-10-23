@@ -41,9 +41,9 @@ web-sys = { version = "0.3", features = ["Request", "RequestInit", "RequestMode"
 js-sys = "0.3"
 
 # Netabase for masterfilelist storage (optional)
-netabase_store = { path = "../../netabase_store", default-features = false, optional = true }
-netabase_macros = { path = "../../netabase_store/netabase_macros", optional = true }
-netabase_deps = { path = "../../netabase_store/netabase_deps", optional = true }
+netabase_store = { git = "https://github.com/newsnet-africa/netabase_store.git", default-features = false, optional = true }
+netabase_macros = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true }
+netabase_deps = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true }
 
 [dev-dependencies]
 tempfile = "3.0"
