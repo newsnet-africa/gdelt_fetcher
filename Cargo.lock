@@ -1499,13 +1499,13 @@ dependencies = [
 
 [[package]]
 name = "is-terminal"
-version = "0.4.16"
+version = "0.4.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e04d7f318608d35d4b61ddd75cbdaee86b023ebe2bd5a66ee0915f0bf93095a9"
+checksum = "3640c1c38b8e4e43584d8df18be5fc6b0aa314ce6ebf51b53313d4306cca8e46"
 dependencies = [
  "hermit-abi",
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1842,6 +1842,7 @@ dependencies = [
 [[package]]
 name = "netabase_deps"
 version = "0.1.0"
+source = "git+https://github.com/newsnet-africa/netabase_store.git#e651139c684d93fc1903e7abd1cc343603792cd4"
 dependencies = [
  "bincode",
  "derive_more",
@@ -1853,6 +1854,7 @@ dependencies = [
 [[package]]
 name = "netabase_macros"
 version = "0.1.0"
+source = "git+https://github.com/newsnet-africa/netabase_store.git#e651139c684d93fc1903e7abd1cc343603792cd4"
 dependencies = [
  "anyhow",
  "bincode",
@@ -1871,6 +1873,7 @@ dependencies = [
 [[package]]
 name = "netabase_store"
 version = "0.1.0"
+source = "git+https://github.com/newsnet-africa/netabase_store.git#e651139c684d93fc1903e7abd1cc343603792cd4"
 dependencies = [
  "anyhow",
  "bincode",
@@ -2217,9 +2220,9 @@ checksum = "c834641d8ad1b348c9ee86dec3b9840d805acd5f24daa5f90c788951a52ff59b"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.102"
+version = "1.0.103"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e0f6df8eaa422d97d72edcd152e1451618fed47fabbdbd5a8864167b1d4aff7"
+checksum = "5ee95bc4ef87b8d5ba32e8b7714ccc834865276eab0aed5c9958d00ec45f49e8"
 dependencies = [
  "unicode-ident",
 ]
@@ -2716,9 +2719,9 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
 name = "syn"
-version = "2.0.107"
+version = "2.0.108"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a26dbd934e5451d21ef060c018dae56fc073894c5a7896f882928a76e6d081b"
+checksum = "da58917d35242480a05c2897064da0a80589a2a0476c9a3f2fdc83b53502e917"
 dependencies = [
  "proc-macro2",
  "quote",
