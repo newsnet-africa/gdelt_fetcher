@@ -1,23 +1,46 @@
+// HTTP fetcher (works on both WASM and native)
+pub mod http_fetcher;
+
+// Old fetcher code (non-WASM only, requires file system and tokio)
+#[cfg(not(target_arch = "wasm32"))]
 use std::fs;
+#[cfg(not(target_arch = "wasm32"))]
 use std::path::PathBuf;
 
+#[cfg(not(target_arch = "wasm32"))]
 pub mod event_table_fetcher;
+#[cfg(not(target_arch = "wasm32"))]
 pub mod gdelt_fetcher;
+#[cfg(not(target_arch = "wasm32"))]
 pub mod gkg_table_fetcher;
+#[cfg(not(target_arch = "wasm32"))]
 pub mod mention_table_fetcher;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod masterfilelist_fetcher;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod geg_fetcher;
 
-// Re-export main types for easier access
+// Re-export main types for easier access (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
 pub use gdelt_fetcher::{
     CsvExtension, FileExtension, GdeltFetcher, GdeltFileEntry, GdeltUrlBuilder, GdeltVersion,
     JsonExtension, TableType, TableTypeConfig,
 };
 
-// Re-export table fetchers
+// Re-export table fetchers (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
 pub use event_table_fetcher::{EventTableFetcher, EventTableIterator};
+#[cfg(not(target_arch = "wasm32"))]
 pub use gkg_table_fetcher::{GKGTableFetcher, GKGTableIterator};
+#[cfg(not(target_arch = "wasm32"))]
 pub use mention_table_fetcher::{MentionTableFetcher, MentionTableIterator};
+#[cfg(not(target_arch = "wasm32"))]
+pub use masterfilelist_fetcher::{GdeltVersionForMasterfilelist, MasterfilelistFetcher};
+#[cfg(not(target_arch = "wasm32"))]
+pub use geg_fetcher::GEGFetcher;
 
-/// Find files in a directory that contain a specific string and have a specific file extension
+/// Find files in a directory that contain a specific string and have a specific file extension (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
 pub fn find_files_with_string_and_type(
     directory: &std::path::Path,
     search_string: &str,
@@ -57,7 +80,8 @@ pub fn find_files_with_string_and_type(
     Ok(matching_files)
 }
 
-/// Find files with string and type, plus CSV validation for CSV files
+/// Find files with string and type, plus CSV validation for CSV files (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
 pub fn find_files_with_string_and_type_validated(
     directory: &std::path::Path,
     search_string: &str,
@@ -79,7 +103,8 @@ pub fn find_files_with_string_and_type_validated(
     }
 }
 
-/// Verifies that a CSV file is valid by attempting to read its headers and first record
+/// Verifies that a CSV file is valid by attempting to read its headers and first record (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
 fn verify_csv_format(file_path: &std::path::Path) -> anyhow::Result<bool> {
     use csv::Reader;
 

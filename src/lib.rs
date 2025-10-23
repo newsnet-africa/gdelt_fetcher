@@ -10,20 +10,20 @@
 //! ## Quick Start
 //!
 //! ```rust,no_run
-//! use gdelt_fetcher::{fetch_and_parse_events, fetch_and_parse_mentions, fetch_and_parse_gkg};
+//! use gdelt_fetcher::{fetch_and_parse_latest_events, fetch_and_parse_latest_mentions, fetch_and_parse_latest_gkg};
 //!
 //! #[tokio::main]
 //! async fn main() -> anyhow::Result<()> {
 //!     // Fetch latest events
-//!     let events = fetch_and_parse_events().await?;
+//!     let events = fetch_and_parse_latest_events().await?;
 //!     println!("Fetched {} events", events.len());
 //!
 //!     // Fetch latest mentions
-//!     let mentions = fetch_and_parse_mentions().await?;
+//!     let mentions = fetch_and_parse_latest_mentions().await?;
 //!     println!("Fetched {} mentions", mentions.len());
 //!
 //!     // Fetch latest GKG data
-//!     let gkg_data = fetch_and_parse_gkg().await?;
+//!     let gkg_data = fetch_and_parse_latest_gkg().await?;
 //!     println!("Fetched {} GKG records", gkg_data.len());
 //!
 //!     Ok(())
@@ -56,27 +56,36 @@
 //! ```
 
 use anyhow::Result;
-use log::info;
-use std::fs;
 
-// API module for simplified GDELT data fetching
-pub mod api;
-
-// Re-export main types and fetchers for convenience
-pub use data::fetchers::{
-    DataFetcher,
-    gdelt::{
-        CsvExtension, EventTableFetcher, EventTableIterator, FileExtension, GKGTableFetcher,
-        GKGTableIterator, GdeltFetcher, GdeltVersion, JsonExtension, MentionTableFetcher,
-        MentionTableIterator, TableType,
-    },
-};
-
+// Re-export model types (work on all platforms)
 pub use models::types::{
     event_table::EventTable, gkg_table::GKGTable, mention_table::MentionTable,
 };
 
-/// Create temporary directories for a given data type
+// Re-export new in-memory API (works on all platforms including WASM)
+pub use data::{GdeltFetcher, MasterlistManager, StorageMode};
+
+// Old file-based API (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
+use log::info;
+#[cfg(not(target_arch = "wasm32"))]
+use std::fs;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub mod api;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub use data::fetchers::{
+    DataFetcher,
+    gdelt::{
+        CsvExtension, EventTableFetcher, EventTableIterator, FileExtension, GKGTableFetcher,
+        GKGTableIterator, GdeltFetcher as OldGdeltFetcher, GdeltVersion, JsonExtension, MentionTableFetcher,
+        MentionTableIterator, TableType,
+    },
+};
+
+/// Create temporary directories for a given data type (non-WASM only)
+#[cfg(not(target_arch = "wasm32"))]
 pub fn setup_temp_directories(data_type: &str) -> Result<(String, String)> {
     let tmp_dir = format!("./tmp/{}", data_type);
     let output_dir = format!("./data/{}", data_type);
@@ -94,7 +103,7 @@ pub fn setup_temp_directories(data_type: &str) -> Result<(String, String)> {
     Ok((tmp_dir, output_dir))
 }
 
-/// Fetch and parse the latest mention data from GDELT
+/// Fetch and parse the latest mention data from GDELT (non-WASM only)
 ///
 /// This is a convenience function that sets up temporary directories,
 /// creates a MentionTableFetcher, and fetches the latest data.
@@ -104,17 +113,18 @@ pub fn setup_temp_directories(data_type: &str) -> Result<(String, String)> {
 ///
 /// # Example
 /// ```rust,no_run
-/// use gdelt_fetcher::fetch_and_parse_mentions;
+/// use gdelt_fetcher::fetch_and_parse_latest_mentions;
 ///
 /// #[tokio::main]
 /// async fn main() -> anyhow::Result<()> {
-///     let mentions = fetch_and_parse_mentions().await?;
+///     let mentions = fetch_and_parse_latest_mentions().await?;
 ///     println!("Fetched {} mention records", mentions.len());
 ///     Ok(())
 /// }
 /// ```
-pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
-    info!("🚀 Starting fetch_and_parse_mentions()");
+#[cfg(not(target_arch = "wasm32"))]
+pub async fn fetch_and_parse_latest_mentions() -> Result<Vec<MentionTable>> {
+    info!("🚀 Starting fetch_and_parse_latest_mentions()");
     let start_time = std::time::Instant::now();
 
     info!("📁 Setting up temporary directories for mentions");
@@ -144,7 +154,7 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
     Ok(results)
 }
 
-/// Fetch and parse the latest event data from GDELT
+/// Fetch and parse the latest event data from GDELT (non-WASM only)
 ///
 /// This is a convenience function that sets up temporary directories,
 /// creates an EventTableFetcher, and fetches the latest data.
@@ -154,17 +164,18 @@ pub async fn fetch_and_parse_mentions() -> Result<Vec<MentionTable>> {
 ///
 /// # Example
 /// ```rust,no_run
-/// use gdelt_fetcher::fetch_and_parse_events;
+/// use gdelt_fetcher::fetch_and_parse_latest_events;
 ///
 /// #[tokio::main]
 /// async fn main() -> anyhow::Result<()> {
-///     let events = fetch_and_parse_events().await?;
+///     let events = fetch_and_parse_latest_events().await?;
 ///     println!("Fetched {} event records", events.len());
 ///     Ok(())
 /// }
 /// ```
-pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
-    info!("🚀 Starting fetch_and_parse_events()");
+#[cfg(not(target_arch = "wasm32"))]
+pub async fn fetch_and_parse_latest_events() -> Result<Vec<EventTable>> {
+    info!("🚀 Starting fetch_and_parse_latest_events()");
     let start_time = std::time::Instant::now();
 
     info!("📁 Setting up temporary directories for events");
@@ -194,7 +205,7 @@ pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
     Ok(results)
 }
 
-/// Fetch and parse the latest GKG (Global Knowledge Graph) data from GDELT
+/// Fetch and parse the latest GKG (Global Knowledge Graph) data from GDELT (non-WASM only)
 ///
 /// This is a convenience function that sets up temporary directories,
 /// creates a GKGTableFetcher, and fetches the latest data.
@@ -204,17 +215,18 @@ pub async fn fetch_and_parse_events() -> Result<Vec<EventTable>> {
 ///
 /// # Example
 /// ```rust,no_run
-/// use gdelt_fetcher::fetch_and_parse_gkg;
+/// use gdelt_fetcher::fetch_and_parse_latest_gkg;
 ///
 /// #[tokio::main]
 /// async fn main() -> anyhow::Result<()> {
-///     let gkg_data = fetch_and_parse_gkg().await?;
+///     let gkg_data = fetch_and_parse_latest_gkg().await?;
 ///     println!("Fetched {} GKG records", gkg_data.len());
 ///     Ok(())
 /// }
 /// ```
-pub async fn fetch_and_parse_gkg() -> Result<Vec<GKGTable>> {
-    info!("🚀 Starting fetch_and_parse_gkg()");
+#[cfg(not(target_arch = "wasm32"))]
+pub async fn fetch_and_parse_latest_gkg() -> Result<Vec<GKGTable>> {
+    info!("🚀 Starting fetch_and_parse_latest_gkg()");
     let start_time = std::time::Instant::now();
 
     info!("📁 Setting up temporary directories for gkg");
@@ -298,7 +310,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_fetch_and_parse_events() -> Result<()> {
+    async fn test_fetch_and_parse_latest_events() -> Result<()> {
         init_logger();
         print_section_header(
             "Event Table Fetch Test",
@@ -306,9 +318,9 @@ mod tests {
         );
 
         let start_time = std::time::Instant::now();
-        log::debug!("Calling fetch_and_parse_events() at {:?}", start_time);
+        log::debug!("Calling fetch_and_parse_latest_events() at {:?}", start_time);
 
-        let events = fetch_and_parse_events().await?;
+        let events = fetch_and_parse_latest_events().await?;
         let duration = start_time.elapsed();
 
         print_timing_info("Event Table fetch", duration, events.len());
@@ -330,7 +342,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_fetch_and_parse_mentions() -> Result<()> {
+    async fn test_fetch_and_parse_latest_mentions() -> Result<()> {
         init_logger();
         print_section_header(
             "Mention Table Fetch Test",
@@ -338,9 +350,9 @@ mod tests {
         );
 
         let start_time = std::time::Instant::now();
-        log::debug!("Calling fetch_and_parse_mentions() at {:?}", start_time);
+        log::debug!("Calling fetch_and_parse_latest_mentions() at {:?}", start_time);
 
-        let mentions = fetch_and_parse_mentions().await?;
+        let mentions = fetch_and_parse_latest_mentions().await?;
         let duration = start_time.elapsed();
 
         print_timing_info("Mention Table fetch", duration, mentions.len());
@@ -362,7 +374,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_fetch_and_parse_gkg() -> Result<()> {
+    async fn test_fetch_and_parse_latest_gkg() -> Result<()> {
         init_logger();
         print_section_header(
             "GKG Table Fetch Test",
@@ -370,9 +382,9 @@ mod tests {
         );
 
         let start_time = std::time::Instant::now();
-        log::debug!("Calling fetch_and_parse_gkg() at {:?}", start_time);
+        log::debug!("Calling fetch_and_parse_latest_gkg() at {:?}", start_time);
 
-        let gkg_data = fetch_and_parse_gkg().await?;
+        let gkg_data = fetch_and_parse_latest_gkg().await?;
         let duration = start_time.elapsed();
 
         print_timing_info("GKG Table fetch", duration, gkg_data.len());
@@ -407,7 +419,7 @@ mod tests {
         // Test that all three main functions work
         log::debug!("Fetching Events...");
         let events_start = std::time::Instant::now();
-        let events = fetch_and_parse_events().await?;
+        let events = fetch_and_parse_latest_events().await?;
         let events_duration = events_start.elapsed();
         log::info!(
             "✅ Events fetched: {} records in {:?}",
@@ -417,7 +429,7 @@ mod tests {
 
         log::debug!("Fetching Mentions...");
         let mentions_start = std::time::Instant::now();
-        let mentions = fetch_and_parse_mentions().await?;
+        let mentions = fetch_and_parse_latest_mentions().await?;
         let mentions_duration = mentions_start.elapsed();
         log::info!(
             "✅ Mentions fetched: {} records in {:?}",
@@ -427,7 +439,7 @@ mod tests {
 
         log::debug!("Fetching GKG data...");
         let gkg_start = std::time::Instant::now();
-        let gkg_data = fetch_and_parse_gkg().await?;
+        let gkg_data = fetch_and_parse_latest_gkg().await?;
         let gkg_duration = gkg_start.elapsed();
         log::info!(
             "✅ GKG data fetched: {} records in {:?}",

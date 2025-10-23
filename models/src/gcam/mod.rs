@@ -64,9 +64,16 @@ pub mod debug_test;
 pub mod lookup;
 pub mod memory_database;
 
+// Feature-gated static HashMap for GCAM codebook (large file, slow compilation)
+#[cfg(feature = "gcam-hashmap")]
+pub mod static_hashmap;
+
 // Re-export commonly used types for convenience
 pub use lookup::{Dictionary, EnrichedGCAMEntry, GCAMCodebookEntry, Language, MeasurementType};
 pub use memory_database::{GCAMCodebookDatabase, GCAMCodebookParser};
+
+#[cfg(feature = "gcam-hashmap")]
+pub use static_hashmap::GCAM_CODEBOOK;
 
 /// Debug helper function to diagnose GCAM enrichment issues
 pub fn debug_gcam_enrichment(db: &GCAMCodebookDatabase, test_key: &str) -> anyhow::Result<String> {
@@ -249,7 +256,7 @@ where
 }
 
 /// GCAM coverage statistics
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, bincode::Encode, bincode::Decode)]
 pub struct GCAMCoverageStats {
     pub total_entries: usize,
     pub entries_with_metadata: usize,
@@ -259,11 +266,14 @@ pub struct GCAMCoverageStats {
 
 impl GCAMCoverageStats {
     pub fn to_bytes(&self) -> anyhow::Result<Vec<u8>> {
-        bincode::serialize(self).map_err(|e| anyhow::anyhow!("Serialization failed: {}", e))
+        bincode::encode_to_vec(self, bincode::config::standard())
+            .map_err(|e| anyhow::anyhow!("Serialization failed: {}", e))
     }
 
     pub fn from_bytes(bytes: &[u8]) -> anyhow::Result<Self> {
-        bincode::deserialize(bytes).map_err(|e| anyhow::anyhow!("Deserialization failed: {}", e))
+        let (result, _) = bincode::decode_from_slice(bytes, bincode::config::standard())
+            .map_err(|e| anyhow::anyhow!("Deserialization failed: {}", e))?;
+        Ok(result)
     }
 }
 

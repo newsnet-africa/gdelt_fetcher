@@ -3,6 +3,16 @@ name = "gdelt_fetcher"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+default = []
+gcam-hashmap = ["models/gcam-hashmap"]
+wasm = ["data/wasm", "models/wasm"]
+netabase = ["data/netabase"]
+wasm-netabase = ["wasm", "netabase", "data/wasm-netabase"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
 data = {path = "./data"}
 models = {path = "./models"}

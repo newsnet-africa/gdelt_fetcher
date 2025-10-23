@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /// Language codes used in GCAM data
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, bincode::Encode, bincode::Decode)]
 pub enum Language {
     #[serde(rename = "eng")]
     English,
@@ -64,7 +64,7 @@ impl From<&str> for Language {
 }
 
 /// Dictionary names from the GCAM Master Codebook
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, bincode::Encode, bincode::Decode)]
 pub enum Dictionary {
     ForestValues,
     GdeltGlobalKnowledgeGraphThemes,
@@ -219,7 +219,7 @@ impl Dictionary {
 }
 
 /// Type of measurement for the GCAM entry
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, bincode::Encode, bincode::Decode)]
 pub enum MeasurementType {
     #[serde(rename = "WORDCOUNT")]
     WordCount,
@@ -253,7 +253,7 @@ impl From<&str> for MeasurementType {
 }
 
 /// Enriched GCAM entry structure based on the GCAM Master Codebook
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, bincode::Encode, bincode::Decode)]
 pub struct GCAMCodebookEntry {
     /// Variable identifier (e.g., "c1.1")
     pub variable: String,
@@ -298,7 +298,7 @@ impl GCAMCodebookEntry {
 }
 
 /// Enhanced GCAM entry that combines the original key-value with enriched metadata
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, bincode::Encode, bincode::Decode)]
 pub struct EnrichedGCAMEntry {
     /// Original GCAM key
     pub key: String,
@@ -342,12 +342,13 @@ impl EnrichedGCAMEntry {
     }
 
     /// Serialize to bytes using bincode
-    pub fn to_bytes(&self) -> Result<Vec<u8>, bincode::Error> {
-        bincode::serialize(self)
+    pub fn to_bytes(&self) -> Result<Vec<u8>, bincode::error::EncodeError> {
+        bincode::encode_to_vec(self, bincode::config::standard())
     }
 
     /// Deserialize from bytes using bincode
-    pub fn from_bytes(bytes: &[u8]) -> Result<Self, bincode::Error> {
-        bincode::deserialize(bytes)
+    pub fn from_bytes(bytes: &[u8]) -> Result<Self, bincode::error::DecodeError> {
+        let (result, _) = bincode::decode_from_slice(bytes, bincode::config::standard())?;
+        Ok(result)
     }
 }
