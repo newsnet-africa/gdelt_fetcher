@@ -27,4 +27,6 @@ tempfile = "3.0"
 phf = { version = "0.11", features = ["macros"], optional = true }
 
 # Netabase for persistent storage (feature-gated)
-netabase_store = { git = "https://github.com/newsnet-africa/netabase_store.git", default-features = false, optional = true }
+# netabase_store = { git = "https://github.com/newsnet-africa/netabase_store.git", default-features = false, optional = true }
+netabase_store = { path = "../../netabase_store", default-features = false, optional = true }
+strum = { version = "0.27.2", features = ["derive"] }

@@ -13,9 +13,7 @@ use netabase_store::netabase_definition_module;
 #[netabase_definition_module(MasterfilelistDefinition, MasterfilelistKeys)]
 pub mod masterfilelist_schema {
     use super::*;
-    use netabase_deps::{bincode, serde};
-    use netabase_macros::NetabaseModel;
-    use netabase_store::netabase;
+    use netabase_macros::{netabase, NetabaseModel};
 
     /// Masterfilelist entry stored in the database
     ///

@@ -1818,6 +1818,7 @@ dependencies = [
  "phf",
  "serde",
  "serde_json",
+ "strum",
  "tempfile",
  "url",
 ]
@@ -1842,7 +1843,6 @@ dependencies = [
 [[package]]
 name = "netabase_deps"
 version = "0.1.0"
-source = "git+https://github.com/newsnet-africa/netabase_store.git#e651139c684d93fc1903e7abd1cc343603792cd4"
 dependencies = [
  "bincode",
  "derive_more",
@@ -1854,7 +1854,6 @@ dependencies = [
 [[package]]
 name = "netabase_macros"
 version = "0.1.0"
-source = "git+https://github.com/newsnet-africa/netabase_store.git#e651139c684d93fc1903e7abd1cc343603792cd4"
 dependencies = [
  "anyhow",
  "bincode",
@@ -1873,7 +1872,6 @@ dependencies = [
 [[package]]
 name = "netabase_store"
 version = "0.1.0"
-source = "git+https://github.com/newsnet-africa/netabase_store.git#e651139c684d93fc1903e7abd1cc343603792cd4"
 dependencies = [
  "anyhow",
  "bincode",

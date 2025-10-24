@@ -6,8 +6,8 @@ edition = "2024"
 [features]
 default = []
 wasm = []
-netabase = ["dep:netabase_store", "dep:netabase_macros", "dep:netabase_deps"]
-wasm-netabase = ["wasm", "netabase", "netabase_store/wasm"]
+netabase = ["dep:netabase_store", "dep:netabase_macros", "dep:netabase_deps", "netabase_store/native"]
+wasm-netabase = ["wasm", "dep:netabase_store", "dep:netabase_macros", "dep:netabase_deps", "netabase_store/wasm"]
 
 [dependencies]
 anyhow = "*"
@@ -19,6 +19,13 @@ log = "*"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 bincode = { version = "2.0", features = ["derive", "serde"] }
+strum = { version = "0.27.2", features = ["derive"] }
+derive_more = { version = "2.0.1", features = ["from", "try_into", "into"] }
+
+# Netabase for masterfilelist storage (optional)
+netabase_store = { path = "/home/rusta/Projects/NewsNet/netabase_store", optional = true }
+netabase_macros = { path = "/home/rusta/Projects/NewsNet/netabase_store/netabase_macros", optional = true }
+netabase_deps = { path = "/home/rusta/Projects/NewsNet/netabase_store/netabase_deps", optional = true }
 # Non-WASM dependencies
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 gcloud-bigquery = "*"
@@ -39,11 +46,6 @@ wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 web-sys = { version = "0.3", features = ["Request", "RequestInit", "RequestMode", "Response", "Window"] }
 js-sys = "0.3"
-
-# Netabase for masterfilelist storage (optional)
-netabase_store = { git = "https://github.com/newsnet-africa/netabase_store.git", default-features = false, optional = true }
-netabase_macros = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true }
-netabase_deps = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true }
 
 [dev-dependencies]
 tempfile = "3.0"

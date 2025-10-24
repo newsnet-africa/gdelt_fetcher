@@ -48,7 +48,6 @@ impl NetabaseMasterfilelistStore {
             tree.put(netabase_entry)?;
             count += 1;
         }
-        self.store.flush()?;
         Ok(count)
     }
 

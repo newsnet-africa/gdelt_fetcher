@@ -8,12 +8,7 @@ use chrono::{Datelike, NaiveDate, NaiveDateTime, Utc};
 use models::types::masterlist::{MasterlistEntry, TableType};
 
 #[cfg(feature = "netabase")]
-use netabase_store::{
-    backends::Backend,
-    model::NetabaseModelTrait,
-    sled_backend::SledBackend,
-    tree::NetabaseSledTree,
-};
+use crate::storage::netabase_masterfilelist_store::NetabaseMasterfilelistStore;
 
 use crate::fetchers::gdelt::http_fetcher;
 
@@ -26,7 +21,7 @@ const GDELT_V3_GEG_MASTERLIST: &str =
 /// Manager for GDELT master file lists with persistence
 pub struct MasterlistManager {
     #[cfg(feature = "netabase")]
-    tree: Option<NetabaseSledTree<MasterlistEntry, models::types::masterlist::MasterlistEntryKey>>,
+    store: Option<NetabaseMasterfilelistStore>,
 
     #[cfg(not(feature = "netabase"))]
     in_memory_cache: std::collections::HashMap<String, MasterlistEntry>,
@@ -40,7 +35,7 @@ impl MasterlistManager {
     pub fn new_in_memory() -> Self {
         Self {
             #[cfg(feature = "netabase")]
-            tree: None,
+            store: None,
             #[cfg(not(feature = "netabase"))]
             in_memory_cache: std::collections::HashMap::new(),
             v2_initialized: false,
@@ -51,15 +46,11 @@ impl MasterlistManager {
     /// Create a new masterlist manager with netabase persistence
     #[cfg(feature = "netabase")]
     pub fn with_storage(storage_path: &str) -> Result<Self> {
-        let backend = SledBackend::new(storage_path)
-            .with_context(|| format!("Failed to create storage backend at: {}", storage_path))?;
-
-        let tree = backend
-            .get_tree("gdelt_masterlist")
-            .with_context(|| "Failed to open masterlist tree")?;
+        let store = NetabaseMasterfilelistStore::new(storage_path)
+            .with_context(|| format!("Failed to create storage at: {}", storage_path))?;
 
         Ok(Self {
-            tree: Some(tree),
+            store: Some(store),
             v2_initialized: false,
             v3_initialized: false,
         })
@@ -127,11 +118,11 @@ impl MasterlistManager {
     async fn insert_entry(&mut self, entry: MasterlistEntry) -> Result<bool> {
         #[cfg(feature = "netabase")]
         {
-            if let Some(tree) = &self.tree {
-                let key = entry.key();
+            if let Some(store) = &self.store {
+                let timestamp = entry.get_timestamp();
                 // Check if entry already exists
-                if tree.get(&key)?.is_none() {
-                    tree.insert(entry.key(), entry)?;
+                if !store.exists(timestamp, entry.table_type, entry.is_translation)? {
+                    store.insert(&entry)?;
                     return Ok(true);
                 }
                 return Ok(false);
@@ -175,17 +166,16 @@ impl MasterlistManager {
         table_type: TableType,
         is_translation: bool,
     ) -> Result<Option<MasterlistEntry>> {
-        let id = MasterlistEntry::generate_id(&timestamp, table_type, is_translation);
-
         #[cfg(feature = "netabase")]
         {
-            if let Some(tree) = &self.tree {
-                return tree.get(&id);
+            if let Some(store) = &self.store {
+                return store.get(timestamp, table_type, is_translation);
             }
         }
 
         #[cfg(not(feature = "netabase"))]
         {
+            let id = MasterlistEntry::generate_id(&timestamp, table_type, is_translation);
             return Ok(self.in_memory_cache.get(&id).cloned());
         }
 
@@ -238,8 +228,8 @@ impl MasterlistManager {
     pub async fn count(&self) -> Result<usize> {
         #[cfg(feature = "netabase")]
         {
-            if let Some(tree) = &self.tree {
-                return Ok(tree.len());
+            if let Some(store) = &self.store {
+                return store.count();
             }
         }
 
