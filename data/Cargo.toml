@@ -24,9 +24,9 @@ strum = { version = "0.27.2", features = ["derive"] }
 derive_more = { version = "2.0.1", features = ["from", "try_into", "into"] }
 
 # Netabase for masterfilelist storage (optional)
-netabase_store = { path = "../../netabase_store", optional = true, default-features = false }
-netabase_macros = { path = "../../netabase_store/netabase_macros", optional = true }
-netabase_deps = { path = "../../netabase_store/netabase_deps", optional = true }
+netabase_store = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true, default-features = false }
+netabase_macros = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true }
+netabase_deps = { git = "https://github.com/newsnet-africa/netabase_store.git", optional = true }
 # Non-WASM dependencies
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 gcloud-bigquery = "*"
