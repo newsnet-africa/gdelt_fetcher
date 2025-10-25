@@ -4,10 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-default = []
+default = ["native"]
+native = ["data/native", "models/native"]
 gcam-hashmap = ["models/gcam-hashmap"]
 wasm = ["data/wasm", "models/wasm"]
+# Netabase storage features
 netabase = ["data/netabase"]
+native-netabase = ["native", "netabase", "data/netabase"]
 wasm-netabase = ["wasm", "netabase", "data/wasm-netabase"]
 
 [lib]

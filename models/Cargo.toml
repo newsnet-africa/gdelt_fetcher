@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-default = []
+default = ["native"]
+native = []
 gcam-hashmap = ["phf"]
 wasm = []
 netabase = ["dep:netabase_store"]

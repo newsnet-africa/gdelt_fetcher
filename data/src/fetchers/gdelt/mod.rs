@@ -15,9 +15,10 @@ pub mod gdelt_fetcher;
 pub mod gkg_table_fetcher;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod mention_table_fetcher;
-#[cfg(not(target_arch = "wasm32"))]
+// Old masterfilelist_fetcher only for non-netabase builds
+#[cfg(all(not(target_arch = "wasm32"), not(feature = "netabase")))]
 pub mod masterfilelist_fetcher;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(not(target_arch = "wasm32"), not(feature = "netabase")))]
 pub mod geg_fetcher;
 
 // Re-export main types for easier access (non-WASM only)
@@ -34,9 +35,10 @@ pub use event_table_fetcher::{EventTableFetcher, EventTableIterator};
 pub use gkg_table_fetcher::{GKGTableFetcher, GKGTableIterator};
 #[cfg(not(target_arch = "wasm32"))]
 pub use mention_table_fetcher::{MentionTableFetcher, MentionTableIterator};
-#[cfg(not(target_arch = "wasm32"))]
+// Old masterfilelist_fetcher only for non-netabase builds
+#[cfg(all(not(target_arch = "wasm32"), not(feature = "netabase")))]
 pub use masterfilelist_fetcher::{GdeltVersionForMasterfilelist, MasterfilelistFetcher};
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(not(target_arch = "wasm32"), not(feature = "netabase")))]
 pub use geg_fetcher::GEGFetcher;
 
 /// Find files in a directory that contain a specific string and have a specific file extension (non-WASM only)

@@ -1,23 +1,27 @@
-///! Netabase models for masterfilelist storage
+///! Netabase models for masterlist storage
 ///
-/// Defines MasterfilelistEntry as a NetabaseModel that works with both
+/// Defines MasterlistEntry as a NetabaseModel that works with both
 /// SledStore (native) and RedbStore/IndexedDBStore
+///
+/// This re-exports the MasterlistEntry from models::types::masterlist
+/// as a netabase model for database storage.
 
-use models::types::masterlist::{MasterlistEntry as ModelEntry, TableType};
+use models::types::masterlist::{MasterlistEntry, TableType};
 
 #[cfg(feature = "netabase")]
 use netabase_store::netabase_definition_module;
 
 // Define the netabase module with definitions and keys
 #[cfg(feature = "netabase")]
-#[netabase_definition_module(MasterfilelistDefinition, MasterfilelistKeys)]
-pub mod masterfilelist_schema {
+#[netabase_definition_module(MasterlistDefinition, MasterlistKeys)]
+pub mod masterlist_schema {
     use super::*;
     use netabase_macros::{netabase, NetabaseModel};
 
-    /// Masterfilelist entry stored in the database
+    /// Masterlist entry stored in the database
     ///
     /// This model is compatible with both native (sled/redb) and WASM (IndexedDB) storage
+    /// It matches the structure from models::types::masterlist::MasterlistEntry
     #[derive(
         NetabaseModel,
         Clone,
@@ -29,8 +33,8 @@ pub mod masterfilelist_schema {
         serde::Serialize,
         serde::Deserialize,
     )]
-    #[netabase(MasterfilelistDefinition)]
-    pub struct MasterfilelistEntry {
+    #[netabase(MasterlistDefinition)]
+    pub struct MasterlistEntry {
         /// Composite primary key: timestamp + table_type + is_translation
         #[primary_key]
         pub id: String,
@@ -61,12 +65,12 @@ pub mod masterfilelist_schema {
 }
 
 #[cfg(feature = "netabase")]
-pub use masterfilelist_schema::*;
+pub use masterlist_schema::*;
 
 // Conversion functions between the models types
 #[cfg(feature = "netabase")]
-impl From<ModelEntry> for MasterfilelistEntry {
-    fn from(entry: ModelEntry) -> Self {
+impl From<MasterlistEntry> for masterlist_schema::MasterlistEntry {
+    fn from(entry: MasterlistEntry) -> Self {
         Self {
             id: entry.id,
             size: entry.size,
@@ -81,8 +85,8 @@ impl From<ModelEntry> for MasterfilelistEntry {
 }
 
 #[cfg(feature = "netabase")]
-impl From<MasterfilelistEntry> for ModelEntry {
-    fn from(entry: MasterfilelistEntry) -> Self {
+impl From<masterlist_schema::MasterlistEntry> for MasterlistEntry {
+    fn from(entry: masterlist_schema::MasterlistEntry) -> Self {
         Self {
             id: entry.id,
             size: entry.size,

@@ -145,17 +145,25 @@ impl MasterlistManager {
         table_type: TableType,
         is_translation: bool,
     ) -> Result<Option<MasterlistEntry>> {
-        let now = Utc::now().naive_utc();
-        let rounded = MasterlistEntry::round_to_15min(now);
-
-        // Search backward from current time
-        for minutes_back in (0..=60).step_by(15) {
-            let target_time = rounded - chrono::Duration::minutes(minutes_back);
-            if let Some(entry) = self.find_by_timestamp(target_time, table_type, is_translation).await? {
-                return Ok(Some(entry));
+        #[cfg(feature = "netabase")]
+        {
+            if let Some(store) = &self.store {
+                return store.get_latest(table_type, is_translation);
             }
         }
 
+        #[cfg(not(feature = "netabase"))]
+        {
+            // For in-memory cache, find the entry with the latest timestamp
+            return Ok(self
+                .in_memory_cache
+                .values()
+                .filter(|e| e.table_type == table_type && e.is_translation == is_translation)
+                .max_by_key(|e| e.timestamp)
+                .cloned());
+        }
+
+        #[cfg(feature = "netabase")]
         Ok(None)
     }
 

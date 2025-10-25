@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use netabase_store::NetabaseModel;
 
 /// Table types in GDELT
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Hash, bincode::Encode, bincode::Decode)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash, bincode::Encode, bincode::Decode)]
 pub enum TableType {
     Export,
     Mentions,

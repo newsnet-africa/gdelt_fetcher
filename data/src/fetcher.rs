@@ -17,9 +17,7 @@ use models::types::{
     mention_table::MentionTable,
 };
 
-#[cfg(not(feature = "netabase"))]
 use crate::masterlist_manager::MasterlistManager;
-
 use crate::data_processor;
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -46,7 +44,6 @@ impl Default for StorageMode {
 
 /// Main GDELT fetcher with time-based query capabilities
 pub struct GdeltFetcher {
-    #[cfg(not(feature = "netabase"))]
     masterlist: MasterlistManager,
     auto_update: bool,
     storage_mode: StorageMode,
@@ -56,7 +53,6 @@ impl GdeltFetcher {
     /// Create a new fetcher with in-memory processing (default, WASM-compatible)
     pub fn new() -> Self {
         Self {
-            #[cfg(not(feature = "netabase"))]
             masterlist: MasterlistManager::new_in_memory(),
             auto_update: true,
             storage_mode: StorageMode::InMemory,
